@@ -11,7 +11,7 @@
 
 | ディレクトリ | 内容 |
 |---|---|
-| [`docs/company/`](docs/company/) | 会社概要・ミッション・事業計画 |
+| [`docs/company/`](docs/company/) | 会社概要・ミッション・事業計画・**組織/ガバナンス** |
 | [`docs/services/`](docs/services/) | サービスカタログ・料金体系 |
 | [`docs/operations/`](docs/operations/) | 業務フロー・使用ツール |
 | [`clients/`](clients/) | 顧客案件の管理（案件ごとにフォルダを作成） |
@@ -40,6 +40,7 @@
 - **会社名**: Kaizen AI（カイゼンAI）
 - **事業内容**: AI活用による業務効率化コンサルティング
 - **ミッション**: AIで、日本の現場に "改善" を。
+- **組織体制**: オーナー（人間）× AI CEO（Claude）の二層経営 — [`docs/company/governance.md`](docs/company/governance.md)
 - 詳細は [`docs/company/overview.md`](docs/company/overview.md) を参照
 
 ---
