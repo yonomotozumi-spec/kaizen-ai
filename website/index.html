@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kaizen AI — AIで、日本の現場に "改善" を。</title>
+<meta name="description" content="Kaizen AI は、AIを駆使した業務効率化コンサルティング会社です。診断から定着まで一気通貫で伴走し、効果を数字で示します。まずは60分の無料相談から。">
+<style>
+  :root {
+    --ink: #22335C;
+    --ink2: #3A4E85;
+    --panel: #2C3E6B;
+    --ice: #C9D8EE;
+    --bg-soft: #F4F7FB;
+    --acc: #E8543F;
+    --acc-soft: #FDEDE9;
+    --gray: #5B6570;
+    --white: #FFFFFF;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+    color: var(--ink);
+    background: var(--white);
+    line-height: 1.75;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  section { padding: 88px 0; }
+  h2 { font-size: clamp(26px, 4vw, 34px); margin-bottom: 10px; }
+  .lead { color: var(--gray); margin-bottom: 48px; font-size: 15px; }
+  .accent { color: var(--acc); }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255,255,255,.94); backdrop-filter: blur(8px);
+    border-bottom: 1px solid #E5EAF2;
+  }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .logo { font-size: 20px; font-weight: 800; letter-spacing: .5px; color: var(--ink); text-decoration: none; }
+  .logo span { color: var(--acc); }
+  .nav-links { display: flex; gap: 26px; align-items: center; }
+  .nav-links a { color: var(--ink); text-decoration: none; font-size: 14px; }
+  .nav-links a:hover { color: var(--acc); }
+  .btn {
+    display: inline-block; padding: 12px 28px; border-radius: 999px;
+    background: var(--acc); color: var(--white); text-decoration: none;
+    font-weight: 700; font-size: 15px; transition: opacity .2s, transform .2s;
+  }
+  .btn:hover { opacity: .88; transform: translateY(-1px); }
+  .btn.small { padding: 9px 20px; font-size: 13px; }
+  .btn.ghost { background: transparent; border: 2px solid var(--ice); color: var(--white); }
+  @media (max-width: 720px) { .nav-links a:not(.btn) { display: none; } }
+
+  /* ---------- hero ---------- */
+  .hero {
+    background: var(--ink); color: var(--white);
+    position: relative; overflow: hidden; padding: 110px 0 120px;
+  }
+  .hero .circles { position: absolute; right: -140px; top: 50%; transform: translateY(-50%); width: 560px; height: 560px; pointer-events: none; }
+  .hero .c1, .hero .c2, .hero .c3 { position: absolute; border-radius: 50%; }
+  .hero .c1 { inset: 0; border: 2px solid var(--ink2); }
+  .hero .c2 { inset: 90px; border: 3px solid var(--acc); }
+  .hero .c3 { inset: 205px; background: var(--panel); }
+  .hero .dot { position: absolute; top: 60px; right: 70px; width: 22px; height: 22px; border-radius: 50%; background: var(--ice); }
+  .hero .eyebrow { color: var(--ice); font-size: 13px; letter-spacing: 3px; margin-bottom: 22px; }
+  .hero h1 { font-size: clamp(34px, 6vw, 56px); line-height: 1.35; margin-bottom: 22px; }
+  .hero h1 em { font-style: normal; color: var(--acc); }
+  .hero p.sub { color: var(--ice); font-size: clamp(15px, 2vw, 18px); margin-bottom: 40px; max-width: 560px; }
+  .hero .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
+  @media (max-width: 860px) { .hero .circles { opacity: .35; } }
+
+  /* ---------- pain ---------- */
+  .pain-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+  .pain-card {
+    background: var(--bg-soft); border-radius: 14px; padding: 26px 24px;
+    display: flex; gap: 16px; align-items: flex-start;
+  }
+  .pain-card .ico { flex: 0 0 46px; height: 46px; border-radius: 50%; background: var(--ink); color: var(--white); display: grid; place-items: center; font-size: 20px; }
+  .pain-card h3 { font-size: 16.5px; margin-bottom: 6px; }
+  .pain-card p { color: var(--gray); font-size: 13.5px; }
+  .pain-close { margin-top: 42px; font-size: clamp(18px, 3vw, 22px); font-weight: 800; }
+
+  /* ---------- about ---------- */
+  .about { background: var(--ink); color: var(--white); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 56px; align-items: start; }
+  @media (max-width: 860px) { .about-grid { grid-template-columns: 1fr; } }
+  .about .mission-label { color: var(--acc); font-size: 12px; letter-spacing: 3px; font-weight: 700; margin-bottom: 14px; }
+  .about .mission { font-size: clamp(24px, 3.4vw, 32px); font-weight: 800; line-height: 1.5; margin-bottom: 20px; }
+  .about .mission-sub { color: var(--ice); font-size: 14.5px; }
+  .feature { display: flex; gap: 18px; margin-bottom: 30px; }
+  .feature .ico { flex: 0 0 52px; height: 52px; border-radius: 50%; background: var(--panel); display: grid; place-items: center; font-size: 22px; }
+  .feature .ico.acc { background: var(--acc); }
+  .feature h3 { font-size: 17px; margin-bottom: 5px; }
+  .feature p { color: var(--ice); font-size: 13.5px; }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+  .chip { background: var(--panel); color: var(--ice); font-size: 12px; font-weight: 700; padding: 7px 16px; border-radius: 999px; }
+
+  /* ---------- services ---------- */
+  .svc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+  .svc-card { background: var(--bg-soft); border-radius: 14px; padding: 26px 22px; }
+  .svc-card.acc { background: var(--acc-soft); }
+  .svc-card .ico { width: 46px; height: 46px; border-radius: 50%; background: var(--ink); color: var(--white); display: grid; place-items: center; font-size: 20px; margin-bottom: 16px; }
+  .svc-card.acc .ico { background: var(--acc); }
+  .svc-card h3 { font-size: 15.5px; margin-bottom: 6px; }
+  .svc-card p { color: var(--gray); font-size: 13px; }
+
+  /* ---------- approach ---------- */
+  .approach { background: var(--bg-soft); }
+  .step-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-bottom: 46px; }
+  .step-card { background: var(--white); border-radius: 14px; padding: 26px 22px; position: relative; }
+  .step-card .num { position: absolute; top: 20px; right: 20px; color: var(--acc); font-weight: 800; font-size: 15px; }
+  .step-card .ico { width: 46px; height: 46px; border-radius: 50%; background: var(--ink); color: var(--white); display: grid; place-items: center; font-size: 20px; margin-bottom: 16px; }
+  .step-card.last .ico { background: var(--acc); }
+  .step-card h3 { font-size: 18px; margin-bottom: 6px; }
+  .step-card p { color: var(--gray); font-size: 13px; }
+  .kpi-note h3 { font-size: 20px; margin-bottom: 6px; }
+  .kpi-note > p { color: var(--gray); font-size: 14px; margin-bottom: 18px; }
+  .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+  .kpi { background: var(--acc-soft); border-radius: 10px; padding: 13px 16px; font-size: 13px; }
+  .kpi b { color: var(--acc); }
+
+  /* ---------- pricing ---------- */
+  .price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; margin-bottom: 30px; }
+  .price-card { background: var(--bg-soft); border-radius: 14px; padding: 30px 24px; position: relative; }
+  .price-card.top { background: var(--acc-soft); }
+  .price-card .badge {
+    position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+    background: var(--acc); color: var(--white); font-size: 11.5px; font-weight: 700;
+    padding: 5px 16px; border-radius: 999px; white-space: nowrap;
+  }
+  .price-card h3 { font-size: 16px; margin-bottom: 12px; }
+  .price-card .price { font-size: 24px; font-weight: 800; margin-bottom: 2px; }
+  .price-card.top .price { color: var(--acc); }
+  .price-card .unit { color: var(--gray); font-size: 11.5px; margin-bottom: 14px; }
+  .price-card p.desc { color: var(--gray); font-size: 13px; }
+  .price-note { font-size: 13.5px; color: var(--gray); }
+  .price-note b { color: var(--ink); }
+
+  /* ---------- reasons ---------- */
+  .reasons { background: var(--bg-soft); }
+  .reason-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 26px; margin-bottom: 40px; }
+  .reason { text-align: center; }
+  .reason .ico { width: 68px; height: 68px; border-radius: 50%; background: var(--ink); color: var(--white); display: grid; place-items: center; font-size: 28px; margin: 0 auto 16px; }
+  .reason:nth-child(even) .ico { background: var(--acc); }
+  .reason h3 { font-size: 17px; margin-bottom: 8px; }
+  .reason p { color: var(--gray); font-size: 13px; text-align: left; }
+  .honesty { background: var(--white); border-radius: 12px; padding: 18px 24px; font-size: 14px; }
+  .honesty b { color: var(--ink); }
+  .honesty span { color: var(--gray); }
+
+  /* ---------- flow ---------- */
+  .flow-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px; margin-bottom: 40px; }
+  .flow-item { text-align: center; padding: 10px; }
+  .flow-item .stepno { color: var(--acc); font-weight: 800; font-size: 12px; letter-spacing: 2px; }
+  .flow-item h3 { font-size: 17px; margin: 6px 0 12px; }
+  .flow-item .ico { width: 60px; height: 60px; border-radius: 50%; background: var(--ink); color: var(--white); display: grid; place-items: center; font-size: 24px; margin: 0 auto 14px; }
+  .flow-item.last .ico { background: var(--acc); }
+  .flow-item p { color: var(--gray); font-size: 12.5px; margin-bottom: 12px; }
+  .flow-item .dur { display: inline-block; background: var(--bg-soft); border-radius: 999px; font-size: 12px; font-weight: 700; padding: 5px 16px; }
+  .speed { background: var(--acc-soft); border-radius: 12px; padding: 18px 24px; font-size: 14.5px; }
+  .speed b { color: var(--acc); }
+
+  /* ---------- faq ---------- */
+  .faq details { border-bottom: 1px solid #E5EAF2; padding: 4px 0; }
+  .faq summary { cursor: pointer; font-weight: 700; font-size: 15.5px; padding: 16px 4px; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "＋"; color: var(--acc); font-weight: 400; }
+  .faq details[open] summary::after { content: "−"; }
+  .faq .a { color: var(--gray); font-size: 14px; padding: 0 4px 18px; }
+
+  /* ---------- cta ---------- */
+  .cta { background: var(--ink); color: var(--white); position: relative; overflow: hidden; }
+  .cta .circles { position: absolute; right: -120px; top: -180px; width: 420px; height: 420px; pointer-events: none; }
+  .cta .c1 { position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--ink2); }
+  .cta .c2 { position: absolute; inset: 80px; border-radius: 50%; border: 3px solid var(--acc); }
+  @media (max-width: 860px) { .cta .circles { opacity: .18; } }
+  .cta h2 { font-size: clamp(26px, 4.4vw, 38px); }
+  .cta p.sub { color: var(--ice); margin: 18px 0 34px; max-width: 620px; font-size: 15px; }
+  .cta-steps { display: flex; gap: 22px; flex-wrap: wrap; margin-bottom: 44px; }
+  .cta-steps .s { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 14px; }
+  .cta-steps .n { width: 30px; height: 30px; border-radius: 50%; background: var(--acc); display: grid; place-items: center; font-size: 13px; }
+  .contact-box { background: var(--panel); border-radius: 14px; padding: 26px 30px; max-width: 640px; }
+  .contact-box h3 { font-size: 15px; margin-bottom: 8px; }
+  .contact-box p { color: var(--ice); font-size: 13.5px; }
+
+  footer { background: var(--ink); color: var(--ink2); border-top: 1px solid var(--panel); padding: 26px 0; }
+  .foot { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; font-size: 12.5px; }
+  .foot .flogo { color: var(--white); font-weight: 800; font-size: 16px; }
+  .foot .flogo span { color: var(--acc); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="#top">Kaizen <span>AI</span></a>
+    <nav class="nav-links">
+      <a href="#services">サービス</a>
+      <a href="#approach">アプローチ</a>
+      <a href="#pricing">料金</a>
+      <a href="#flow">ご依頼の流れ</a>
+      <a href="#faq">FAQ</a>
+      <a class="btn small" href="#contact">無料相談</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<div class="hero" id="top">
+  <div class="circles"><div class="c1"></div><div class="c2"></div><div class="c3"></div><div class="dot"></div></div>
+  <div class="wrap" style="position:relative">
+    <div class="eyebrow">AI × 業務効率化コンサルティング</div>
+    <h1>AIで、日本の現場に<br><em>"改善"</em> を。</h1>
+    <p class="sub">業務の一つひとつにAIを組み込み、無理・無駄・ムラをなくす。診断から定着まで一気通貫で伴走し、効果は必ず数字で示します。</p>
+    <div class="cta-row">
+      <a class="btn" href="#contact">60分の無料相談を予約する</a>
+      <a class="btn ghost" href="#services">サービスを見る</a>
+    </div>
+  </div>
+</div>
+
+<!-- ================= PAIN ================= -->
+<section>
+  <div class="wrap">
+    <h2>こんなお悩みはありませんか？</h2>
+    <p class="lead">AI活用が進む一方で、現場ではこんな声をよく伺います。</p>
+    <div class="pain-grid">
+      <div class="pain-card"><div class="ico">？</div><div><h3>何に使えばいいか分からない</h3><p>AIが話題だが、自社の業務への活かし方が見えない。</p></div></div>
+      <div class="pain-card"><div class="ico">🔌</div><div><h3>ツールが定着しない</h3><p>導入はしたものの、一部の人しか使っていない。</p></div></div>
+      <div class="pain-card"><div class="ico">👥</div><div><h3>社内にAI人材がいない</h3><p>推進役が不在で、外部への丸投げも不安。</p></div></div>
+      <div class="pain-card"><div class="ico">📉</div><div><h3>効果が見えない</h3><p>投資に見合う成果が出ているのか分からない。</p></div></div>
+    </div>
+    <p class="pain-close">その悩み、<span class="accent">「仕組み」</span>で解決できます。</p>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section class="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div>
+        <div class="mission-label">MISSION</div>
+        <div class="mission">AIで、日本の現場に<br>"改善" を。</div>
+        <p class="mission-sub">一度きりの効率化ではなく、継続的な改善（カイゼン）を回し続けられる状態を、お客様とともにつくります。</p>
+      </div>
+      <div>
+        <div class="feature"><div class="ico">🧭</div><div><h3>一気通貫の伴走</h3><p>診断 → 設計 → 導入 → 定着まで丸ごと支援。ツールを入れて終わり、にしません。</p></div></div>
+        <div class="feature"><div class="ico">🔄</div><div><h3>改善が続く仕組みづくり</h3><p>現場が自ら改善を回し続けられる状態をゴールにします。</p></div></div>
+        <div class="feature"><div class="ico acc">🤖</div><div><h3>自らも "AI経営" を実践</h3><p>AIを経営の中枢に据えた体制で自社を運営。日々検証した実践知をそのまま提供します。</p></div></div>
+        <div class="chip-row">
+          <span class="chip">現場ファースト</span><span class="chip">小さく速く</span><span class="chip">内製化を助ける</span><span class="chip">数字で語る</span><span class="chip">誠実なAI活用</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SERVICES ================= -->
+<section id="services">
+  <div class="wrap">
+    <h2>サービス一覧</h2>
+    <p class="lead">課題に合わせて、単体でも組み合わせでもご提供します。</p>
+    <div class="svc-grid">
+      <div class="svc-card"><div class="ico">🤖</div><h3>生成AI導入支援</h3><p>利用ルール整備と現場ユースケース設計で "使われるAI" に。</p></div>
+      <div class="svc-card"><div class="ico">⚙️</div><h3>業務自動化・AIエージェント</h3><p>定型作業を自動化し、工数を大幅削減。</p></div>
+      <div class="svc-card"><div class="ico">📄</div><h3>ドキュメント自動生成</h3><p>議事録・報告書・提案書の作成を高速化。</p></div>
+      <div class="svc-card"><div class="ico">📊</div><h3>データ分析・可視化</h3><p>意思決定に使える数字とダッシュボード。</p></div>
+      <div class="svc-card"><div class="ico">📚</div><h3>社内ナレッジ検索（RAG）</h3><p>散らばる社内情報を "探せる資産" に。</p></div>
+      <div class="svc-card"><div class="ico">🎧</div><h3>サポート業務効率化</h3><p>AIチャットボットで一次対応を自動化。</p></div>
+      <div class="svc-card"><div class="ico">🎓</div><h3>AI研修・内製化支援</h3><p>自走できる人材と推進体制づくり。</p></div>
+      <div class="svc-card acc"><div class="ico">🧩</div><h3>組み合わせは自由</h3><p>課題に合わせて最適な形をご提案します。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= APPROACH ================= -->
+<section class="approach" id="approach">
+  <div class="wrap">
+    <h2>私たちのアプローチ</h2>
+    <p class="lead">4つのステップで、"使われるAI" と "続く改善" を実現します。</p>
+    <div class="step-grid">
+      <div class="step-card"><span class="num">01</span><div class="ico">🔍</div><h3>診断</h3><p>業務を可視化し、AIで改善できる領域と優先順位を特定。</p></div>
+      <div class="step-card"><span class="num">02</span><div class="ico">📐</div><h3>設計</h3><p>改善施策・ツール選定・新しい業務フローを設計。</p></div>
+      <div class="step-card"><span class="num">03</span><div class="ico">🚀</div><h3>導入</h3><p>生成AI・自動化ツール・エージェントを実装。</p></div>
+      <div class="step-card last"><span class="num">04</span><div class="ico">🔄</div><h3>定着</h3><p>教育・運用ルール・伴走支援で現場に定着させる。</p></div>
+    </div>
+    <div class="kpi-note">
+      <h3>効果は、必ず数字で。</h3>
+      <p>すべての施策で Before / After を測定し、改善効果をレポートでご報告します。</p>
+      <div class="kpi-row">
+        <div class="kpi"><b>時間</b>｜作業時間・月間削減時間</div>
+        <div class="kpi"><b>コスト</b>｜人件費換算・外注費削減</div>
+        <div class="kpi"><b>品質</b>｜エラー率・手戻り件数</div>
+        <div class="kpi"><b>量</b>｜処理件数・対応キャパ</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRICING ================= -->
+<section id="pricing">
+  <div class="wrap">
+    <h2>料金と始め方</h2>
+    <p class="lead">小さく始めて、成果を確認しながら広げられます。</p>
+    <div class="price-grid">
+      <div class="price-card top">
+        <span class="badge">おすすめの始め方</span>
+        <h3>業務診断</h3>
+        <div class="price">20〜80<span style="font-size:15px">万円</span></div>
+        <div class="unit">目安（税抜）／1回</div>
+        <p class="desc">現状分析＋改善提案レポート。まずはここから。</p>
+      </div>
+      <div class="price-card">
+        <h3>プロジェクト型</h3>
+        <div class="price">30〜300<span style="font-size:15px">万円</span></div>
+        <div class="unit">目安（税抜）／1件</div>
+        <p class="desc">特定業務の自動化・AI導入をスポットで実施。</p>
+      </div>
+      <div class="price-card">
+        <h3>顧問契約</h3>
+        <div class="price">月15〜50<span style="font-size:15px">万円</span></div>
+        <div class="unit">目安（税抜）／月額</div>
+        <p class="desc">継続的に改善を支援。社内のAI推進役として伴走。</p>
+      </div>
+      <div class="price-card">
+        <h3>研修・ワークショップ</h3>
+        <div class="price">10〜50<span style="font-size:15px">万円</span></div>
+        <div class="unit">目安（税抜）／1回</div>
+        <p class="desc">生成AI活用研修・プロンプト研修（半日〜1日）。</p>
+      </div>
+    </div>
+    <p class="price-note"><b>診断 → プロジェクト → 顧問</b> と段階的に。価格は範囲・規模により個別にお見積りします。</p>
+  </div>
+</section>
+
+<!-- ================= REASONS ================= -->
+<section class="reasons">
+  <div class="wrap">
+    <h2>Kaizen AI が選ばれる理由</h2>
+    <p class="lead">私たちの行動指針が、そのままお客様への約束です。</p>
+    <div class="reason-grid">
+      <div class="reason"><div class="ico">⛑️</div><h3>現場ファースト</h3><p>机上論ではなく、実際の業務フローに手を入れて成果を出します。</p></div>
+      <div class="reason"><div class="ico">⚡</div><h3>小さく速く</h3><p>大きな計画より、まず2週間で動くもの。高速で改善を回します。</p></div>
+      <div class="reason"><div class="ico">🌱</div><h3>内製化を助ける</h3><p>依存させない支援。お客様が自走できる状態がゴールです。</p></div>
+      <div class="reason"><div class="ico">📈</div><h3>数字で語る</h3><p>削減時間・コスト・エラー率。効果は必ず定量で示します。</p></div>
+    </div>
+    <div class="honesty"><b>誠実なAI活用：</b><span>過度な期待は煽りません。できること・できないことを正直にお伝えします。</span></div>
+  </div>
+</section>
+
+<!-- ================= FLOW ================= -->
+<section id="flow">
+  <div class="wrap">
+    <h2>ご依頼からの流れ</h2>
+    <p class="lead">初回のご相談は無料です。お気軽にお問い合わせください。</p>
+    <div class="flow-grid">
+      <div class="flow-item"><div class="stepno">STEP 1</div><h3>無料相談</h3><div class="ico">🤝</div><p>困りごとを伺い、改善の方向性をその場でご提案。</p><span class="dur">60分</span></div>
+      <div class="flow-item"><div class="stepno">STEP 2</div><h3>業務診断</h3><div class="ico">🔍</div><p>現場ヒアリングと業務の可視化・改善マップ作成。</p><span class="dur">2〜4週間</span></div>
+      <div class="flow-item"><div class="stepno">STEP 3</div><h3>ご提案・お見積り</h3><div class="ico">📄</div><p>施策・体制・効果目標をご提案。</p><span class="dur">約1週間</span></div>
+      <div class="flow-item last"><div class="stepno">STEP 4</div><h3>導入・伴走</h3><div class="ico">🚀</div><p>実装と定着支援。効果を測定しながら改善。</p><span class="dur">継続</span></div>
+    </div>
+    <div class="speed"><b>スピード重視：</b>診断開始から約2週間で、最初の「動く改善」をお見せすることを目指します。</div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="faq" id="faq" style="padding-top:0">
+  <div class="wrap">
+    <h2>よくあるご質問</h2>
+    <p class="lead">その他のご質問は無料相談でお気軽にどうぞ。</p>
+    <details>
+      <summary>ITに詳しい社員がいなくても大丈夫ですか？</summary>
+      <p class="a">はい。非IT部門・中小企業のご支援を前提に設計しています。専門用語を使わない説明と、現場に合わせた運用ルールづくりまで含めて伴走します。</p>
+    </details>
+    <details>
+      <summary>どのくらいの規模の会社が対象ですか？</summary>
+      <p class="a">従業員10〜300名規模の中小企業、士業・不動産・建設・医療・教育などの専門サービス業、大企業の特定部門を主な対象としています。</p>
+    </details>
+    <details>
+      <summary>機密情報をAIに入力するのが不安です。</summary>
+      <p class="a">取り扱うデータは最小限にとどめ、生成AIへの入力可否は事前にお客様と合意します。学習利用オフ設定の確認など、安全な利用ルールの整備自体もサービスに含まれます。</p>
+    </details>
+    <details>
+      <summary>小さく試すことはできますか？</summary>
+      <p class="a">はい、それが推奨の始め方です。まず業務診断で改善余地を可視化し、効果を確認しながら段階的に広げられます。</p>
+    </details>
+  </div>
+</section>
+
+<!-- ================= CTA ================= -->
+<section class="cta" id="contact">
+  <div class="circles"><div class="c1"></div><div class="c2"></div></div>
+  <div class="wrap" style="position:relative">
+    <h2>まずは、60分の無料相談から。</h2>
+    <p class="sub">現状の業務の困りごとを伺い、AIで改善できるポイントをその場でご提案します。売り込みはいたしません。情報収集の段階でも歓迎です。</p>
+    <div class="cta-steps">
+      <div class="s"><span class="n">1</span>無料相談</div>
+      <div class="s"><span class="n">2</span>簡易診断のご提案</div>
+      <div class="s"><span class="n">3</span>お見積り・開始</div>
+    </div>
+    <div class="contact-box">
+      <h3>お問い合わせ</h3>
+      <p>メールアドレス・お問い合わせフォームは現在準備中です。（設立手続き完了後に掲載します）</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <div class="flogo">Kaizen <span>AI</span></div>
+    <div>© 2026 Kaizen AI — AIで、日本の現場に "改善" を。</div>
+  </div>
+</footer>
+
+</body>
+</html>

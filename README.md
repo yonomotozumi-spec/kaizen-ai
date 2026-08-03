@@ -15,6 +15,7 @@
 | [`docs/services/`](docs/services/) | サービスカタログ・料金体系 |
 | [`docs/operations/`](docs/operations/) | 業務フロー・使用ツール |
 | [`docs/sales/`](docs/sales/) | 営業資料（会社紹介デッキ） |
+| [`website/`](website/) | 会社Webサイト（LP、1枚もの） |
 | [`clients/`](clients/) | 顧客案件の管理（案件ごとにフォルダを作成） |
 | [`templates/`](templates/) | 提案書・報告書・チェックリストの雛形 |
 | [`knowledge/`](knowledge/) | ナレッジベース（事例・プロンプト集・調査メモ） |
