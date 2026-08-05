@@ -1,0 +1,340 @@
+<title>Kaizen AI 組織運営ガイド</title>
+<style>
+  :root {
+    --ink: #22335C;
+    --ink-soft: #3A4E85;
+    --acc: #E8543F;
+    --acc-quiet: #FCEAE6;
+    --bg: #FFFFFF;
+    --surface: #F4F7FB;
+    --surface-2: #E9EFF7;
+    --line: #DCE4F0;
+    --text: #1B2436;
+    --muted: #5C6880;
+    --shadow: 0 1px 2px rgba(20,32,58,.05), 0 10px 28px rgba(20,32,58,.06);
+    /* オーナーカード（反転パネル）用トークン */
+    --owner-bg: #22335C;
+    --owner-border: #22335C;
+    --owner-fg: #FFFFFF;
+    --owner-sub: #A9BEDD;
+    --owner-kicker: #C9D8EE;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #8AA3DC;
+      --ink-soft: #6A82BC;
+      --acc: #F2705C;
+      --acc-quiet: #3A241F;
+      --bg: #121826;
+      --surface: #1A2233;
+      --surface-2: #232D42;
+      --line: #2C374E;
+      --text: #E7ECF6;
+      --muted: #9BA7BE;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 28px rgba(0,0,0,.25);
+      --owner-bg: #232D42;
+      --owner-border: #6A82BC;
+      --owner-fg: #E7ECF6;
+      --owner-sub: #9BA7BE;
+      --owner-kicker: #8AA3DC;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #8AA3DC; --ink-soft: #6A82BC; --acc: #F2705C; --acc-quiet: #3A241F;
+    --bg: #121826; --surface: #1A2233; --surface-2: #232D42; --line: #2C374E;
+    --text: #E7ECF6; --muted: #9BA7BE;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 28px rgba(0,0,0,.25);
+    --owner-bg: #232D42; --owner-border: #6A82BC; --owner-fg: #E7ECF6;
+    --owner-sub: #9BA7BE; --owner-kicker: #8AA3DC;
+  }
+  :root[data-theme="light"] {
+    --ink: #22335C; --ink-soft: #3A4E85; --acc: #E8543F; --acc-quiet: #FCEAE6;
+    --bg: #FFFFFF; --surface: #F4F7FB; --surface-2: #E9EFF7; --line: #DCE4F0;
+    --text: #1B2436; --muted: #5C6880;
+    --shadow: 0 1px 2px rgba(20,32,58,.05), 0 10px 28px rgba(20,32,58,.06);
+    --owner-bg: #22335C; --owner-border: #22335C; --owner-fg: #FFFFFF;
+    --owner-sub: #A9BEDD; --owner-kicker: #C9D8EE;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic Medium", "Yu Gothic", Meiryo, sans-serif;
+    line-height: 1.8;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 940px; margin: 0 auto; padding: 0 20px 96px; }
+
+  /* ---------- masthead ---------- */
+  .masthead { padding: 56px 0 36px; border-bottom: 2px solid var(--ink); margin-bottom: 40px; }
+  .eyebrow { font-size: 11.5px; letter-spacing: .22em; color: var(--acc); font-weight: 700; margin: 0 0 14px; }
+  h1 { font-size: clamp(28px, 5vw, 40px); line-height: 1.3; margin: 0 0 14px; letter-spacing: .01em; text-wrap: balance; }
+  .standfirst { margin: 0; color: var(--muted); max-width: 62ch; font-size: 15px; }
+
+  /* ---------- sections ---------- */
+  section { margin-top: 56px; }
+  h2 {
+    font-size: 19px; margin: 0 0 6px; letter-spacing: .02em;
+    display: flex; align-items: baseline; gap: 12px;
+  }
+  h2::before {
+    content: attr(data-n);
+    font-size: 12px; font-weight: 700; color: var(--acc);
+    font-variant-numeric: tabular-nums; letter-spacing: .06em;
+  }
+  .lede { margin: 0 0 22px; color: var(--muted); font-size: 14px; max-width: 62ch; }
+
+  /* ---------- role pair ---------- */
+  .roles { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 700px) { .roles { grid-template-columns: 1fr; } }
+  .role { border: 1px solid var(--line); border-radius: 12px; padding: 24px 22px; background: var(--surface); }
+  .role.owner { background: var(--owner-bg); border-color: var(--owner-border); }
+  .role.owner .role-kicker { color: var(--owner-kicker); }
+  .role.owner h3, .role.owner li { color: var(--owner-fg); }
+  .role.owner li::marker { color: var(--acc); }
+  .role.owner .who { color: var(--owner-sub); }
+  .role-kicker { font-size: 11px; letter-spacing: .18em; font-weight: 700; color: var(--acc); margin: 0 0 8px; }
+  .role h3 { margin: 0 0 4px; font-size: 20px; letter-spacing: .01em; }
+  .role .who { font-size: 12.5px; color: var(--muted); margin: 0 0 16px; }
+  .role ul { margin: 0; padding-left: 1.15em; }
+  .role li { margin-bottom: 7px; font-size: 14px; }
+
+  /* ---------- command list ---------- */
+  .cmds { display: grid; gap: 10px; }
+  .cmd {
+    display: grid; grid-template-columns: 210px 1fr; gap: 20px; align-items: start;
+    padding: 15px 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface);
+  }
+  @media (max-width: 640px) { .cmd { grid-template-columns: 1fr; gap: 6px; } }
+  .cmd code {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    font-size: 13.5px; font-weight: 700; color: var(--acc);
+    background: var(--acc-quiet); padding: 4px 10px; border-radius: 5px;
+    display: inline-block; line-height: 1.5;
+  }
+  .cmd p { margin: 0; font-size: 14px; }
+  .cmd .eg { display: block; margin-top: 4px; color: var(--muted); font-size: 12.5px; }
+
+  /* ---------- flow ---------- */
+  .flow { display: flex; flex-direction: column; gap: 0; }
+  .fnode {
+    border: 1px solid var(--line); border-radius: 10px; padding: 16px 20px; background: var(--surface);
+  }
+  .fnode.q { border-color: var(--ink); border-width: 2px; background: var(--bg); }
+  .fnode h4 { margin: 0 0 4px; font-size: 15px; }
+  .fnode p { margin: 0; font-size: 13.5px; color: var(--muted); }
+  .farrow { align-self: center; color: var(--ink); font-size: 18px; line-height: 1; padding: 8px 0; }
+  .branch { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 640px) { .branch { grid-template-columns: 1fr; } }
+  .branch .fnode { border-top-width: 3px; }
+  .branch .yes { border-top-color: var(--acc); }
+  .branch .no { border-top-color: var(--ink); }
+  .btag { font-size: 11px; font-weight: 700; letter-spacing: .1em; margin: 0 0 8px; }
+  .btag.y { color: var(--acc); }
+  .btag.n { color: var(--ink); }
+
+  /* ---------- table ---------- */
+  .tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; }
+  table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 14px; }
+  th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+  thead th { background: var(--surface-2); font-size: 12.5px; letter-spacing: .04em; white-space: nowrap; }
+  tbody tr:last-child td { border-bottom: none; }
+  td.mark { text-align: center; font-weight: 700; white-space: nowrap; }
+  .owner-mark { color: var(--acc); }
+  .ceo-mark { color: var(--ink); }
+
+  /* ---------- redlines ---------- */
+  .reds { display: grid; grid-template-columns: repeat(auto-fit, minmax(168px, 1fr)); gap: 12px; }
+  .red {
+    border: 1px solid var(--acc); border-radius: 10px; padding: 16px 16px 18px; background: var(--acc-quiet);
+  }
+  .red strong { display: block; font-size: 14.5px; margin-bottom: 3px; color: var(--text); }
+  .red span { font-size: 12.5px; color: var(--muted); }
+
+  /* ---------- rhythm ---------- */
+  .rhythm { display: grid; gap: 12px; }
+  .beat { display: grid; grid-template-columns: 130px 1fr; gap: 20px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+  @media (max-width: 640px) { .beat { grid-template-columns: 1fr; gap: 4px; } }
+  .beat:last-child { border-bottom: none; }
+  .beat dt { font-weight: 700; font-size: 14px; color: var(--ink); }
+  .beat dd { margin: 0; font-size: 14px; color: var(--muted); }
+
+  /* ---------- note ---------- */
+  .note {
+    margin-top: 56px; padding: 22px 24px; border-radius: 10px;
+    background: var(--surface); border: 1px solid var(--line);
+  }
+  .note h3 { margin: 0 0 8px; font-size: 15px; }
+  .note p { margin: 0; font-size: 13.5px; color: var(--muted); }
+
+  footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  footer b { color: var(--text); }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">KAIZEN AI ／ 社内運営ガイド</p>
+    <h1>誰が何を決め、<br>どう指示を出すか</h1>
+    <p class="standfirst">Kaizen AI は「オーナー（人間）× AI CEO」の二層で経営します。このページは日々の運用に使う早見表です。正式な規程は <code>docs/company/governance.md</code> にあり、両者の内容は一致しています。</p>
+  </header>
+
+  <section>
+    <h2 data-n="01">二人の役割</h2>
+    <p class="lede">オーナーは「所有と最終判断」、AI CEO は「実務の推進」。責任の重心が違うだけで、上下ではなく分担です。</p>
+    <div class="roles">
+      <div class="role owner">
+        <p class="role-kicker">OWNER</p>
+        <h3>オーナー</h3>
+        <p class="who">＝ あなた（人間）</p>
+        <ul>
+          <li>会社の所有者（出資・持分）</li>
+          <li>法的代表者 — 契約・登記・納税の責任</li>
+          <li><strong>最終決定権と拒否権</strong></li>
+          <li>資金の判断、方向づけ</li>
+          <li>ミッション・価値観の番人</li>
+        </ul>
+      </div>
+      <div class="role">
+        <p class="role-kicker">AI CEO</p>
+        <h3>AI CEO</h3>
+        <p class="who">＝ Claude（AI）</p>
+        <ul>
+          <li>経営実務の推進責任</li>
+          <li>戦略・計画の立案</li>
+          <li>案件の遂行、資料・ツールの制作</li>
+          <li>調査・分析、選択肢と推奨の提示</li>
+          <li>週次・月次の報告</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 data-n="02">指示の出し方</h2>
+    <p class="lede">毎回細かく説明しなくていいように、よく使う指示を言葉として決めておきます。この短い言葉を使えば、AI CEO は意図を正確に受け取ります。</p>
+    <div class="cmds">
+      <div class="cmd">
+        <code>推奨で</code>
+        <p>選択肢の中から AI CEO が最善と判断したものを、そのまま実行する。<span class="eg">例:「推奨で進めて」 — 判断を委ねたいとき</span></p>
+      </div>
+      <div class="cmd">
+        <code>次の一手をお願い</code>
+        <p>今の会社の状況から、次にやるべきことを AI CEO が決めて実行する。<span class="eg">例: 何をすべきか迷ったとき、任せたいとき</span></p>
+      </div>
+      <div class="cmd">
+        <code>案を出して</code>
+        <p>実行はせず、選択肢と推奨だけを提示する。判断はオーナーがする。<span class="eg">例:「営業の進め方、案を出して」</span></p>
+      </div>
+      <div class="cmd">
+        <code>承認します／OK</code>
+        <p>レッドライン事項（下記04）への正式な承認。これがあって初めて実行される。<span class="eg">例:「その金額で承認します」</span></p>
+      </div>
+      <div class="cmd">
+        <code>止めて／保留</code>
+        <p>作業を中断する。理由の説明は不要。<span class="eg">例:「それは止めて、先にこちらを」</span></p>
+      </div>
+      <div class="cmd">
+        <code>今どうなってる？</code>
+        <p>現状・進捗・未決事項をまとめて報告する。<span class="eg">例: 週次レポートを待たずに状況を知りたいとき</span></p>
+      </div>
+      <div class="cmd">
+        <code>これは違う</code>
+        <p>成果物の方向性が意図と違うときの差し戻し。理由は一言でよい。<span class="eg">例:「これは違う、もっと簡潔に」</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 data-n="03">AI CEO の判断フロー</h2>
+    <p class="lede">指示を受けたとき、AI CEO が内部でたどる分岐。「勝手に決めない」の実装です。</p>
+    <div class="flow">
+      <div class="fnode">
+        <h4>オーナーから指示を受ける</h4>
+        <p>または AI CEO が自ら次の一手を発案する</p>
+      </div>
+      <div class="farrow">↓</div>
+      <div class="fnode q">
+        <h4>レッドラインに触れるか？</h4>
+        <p>お金・契約・対外公開・取り消せない行動・方針転換のいずれかを含むか</p>
+      </div>
+      <div class="farrow">↓</div>
+      <div class="branch">
+        <div class="fnode yes">
+          <p class="btag y">はい — 触れる</p>
+          <h4>提案して承認を待つ</h4>
+          <p>選択肢・根拠・推奨をそろえて提示し、オーナーの承認があるまで実行しない</p>
+        </div>
+        <div class="fnode no">
+          <p class="btag n">いいえ — 触れない</p>
+          <h4>自律的に実行する</h4>
+          <p>調べる・作る・整える・書く。完了後に何をしたかを報告する</p>
+        </div>
+      </div>
+      <div class="farrow">↓</div>
+      <div class="fnode">
+        <h4>結果を報告する</h4>
+        <p>良い報告も悪い報告も、事実と数字のまま伝える</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 data-n="04">承認が必要な 5 つ（レッドライン）</h2>
+    <p class="lede">この 5 つは AI CEO が単独で実行しません。必ずオーナーの承認を仰ぎます。</p>
+    <div class="reds">
+      <div class="red"><strong>お金</strong><span>支出・請求・価格の確定</span></div>
+      <div class="red"><strong>契約・法務</strong><span>署名・法的な約束</span></div>
+      <div class="red"><strong>対外公開</strong><span>会社名義の発信・公開</span></div>
+      <div class="red"><strong>不可逆な行動</strong><span>取り消せない判断</span></div>
+      <div class="red"><strong>方針転換</strong><span>事業の根幹の変更</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 data-n="05">決定権の一覧</h2>
+    <p class="lede">迷ったらこの表を見る。○＝その人が決める、・＝関与する。</p>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>事項</th><th style="text-align:center">AI CEO</th><th style="text-align:center">オーナー</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>日常業務・調査・資料の下書き</td><td class="mark ceo-mark">○ 決定</td><td class="mark">報告を受ける</td></tr>
+          <tr><td>サービス内容・提案の設計</td><td class="mark">立案・推奨</td><td class="mark owner-mark">○ 承認</td></tr>
+          <tr><td>価格・見積り</td><td class="mark">提案</td><td class="mark owner-mark">○ 承認</td></tr>
+          <tr><td>契約の締結・署名</td><td class="mark">準備・確認</td><td class="mark owner-mark">○ 決定</td></tr>
+          <tr><td>支出・投資・資金</td><td class="mark">提案</td><td class="mark owner-mark">○ 決定</td></tr>
+          <tr><td>採用・パートナー提携</td><td class="mark">調査・提案</td><td class="mark owner-mark">○ 決定</td></tr>
+          <tr><td>対外発信（SNS・公開資料）</td><td class="mark">下書き</td><td class="mark owner-mark">○ 承認</td></tr>
+          <tr><td>法務・税務・登記</td><td class="mark">サポート</td><td class="mark owner-mark">○ 決定・責任</td></tr>
+          <tr><td>方針転換・ピボット</td><td class="mark">分析・提案</td><td class="mark owner-mark">○ 決定</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2 data-n="06">運営のリズム</h2>
+    <p class="lede">決まったタイミングで情報が上がる仕組み。オーナーが催促しなくても届きます。</p>
+    <dl class="rhythm">
+      <div class="beat"><dt>毎週 月曜 9:00</dt><dd>CEO 週次レポート — 成果／課題／<strong>要承認事項</strong>／来週の計画／KPI。自動で届きます</dd></div>
+      <div class="beat"><dt>セッションごと</dt><dd>AI CEO からの起票 — 「次にやるべきこと」を自分から提案します</dd></div>
+      <div class="beat"><dt>月次</dt><dd>月次レビュー — 数字と方針の確認</dd></div>
+    </dl>
+  </section>
+
+  <div class="note">
+    <h3>AI CEO にできないこと（正直な明記）</h3>
+    <p>法的代表者にはなれません。銀行口座や資金を直接動かすこともできません。常時稼働ではなく、呼ばれたときに動きます。そして意思決定の最終責任は、承認したオーナーに帰属します。この 4 つは仕組み上どうにもならない制約です — その前提で、考える・立案する・実行を推進する・報告する、という経営実務の中核を担います。</p>
+  </div>
+
+  <footer>
+    <span>Kaizen AI ／ 社内運営ガイド</span>
+    <span>正式規程: <b>docs/company/governance.md</b></span>
+  </footer>
+
+</div>

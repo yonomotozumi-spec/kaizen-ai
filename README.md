@@ -43,7 +43,9 @@
 - **会社名**: Kaizen AI（カイゼンAI）
 - **事業内容**: AI活用による業務効率化コンサルティング
 - **ミッション**: AIで、日本の現場に "改善" を。
-- **組織体制**: オーナー（人間）× AI CEO（Claude）の二層経営 — [`docs/company/governance.md`](docs/company/governance.md)
+- **組織体制**: オーナー（人間）× AI CEO（Claude）の二層経営
+  - 📌 日々の運用: [`docs/company/指示ガイド.md`](docs/company/指示ガイド.md)（指示コマンド集・決定権一覧）
+  - 正式規程: [`docs/company/governance.md`](docs/company/governance.md)
 - 詳細は [`docs/company/overview.md`](docs/company/overview.md) を参照
 
 ---
