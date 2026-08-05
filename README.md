@@ -19,7 +19,7 @@
 | [`clients/`](clients/) | 顧客案件の管理（案件ごとにフォルダを作成） |
 | [`templates/`](templates/) | 提案書・報告書・チェックリストの雛形 |
 | [`knowledge/`](knowledge/) | ナレッジベース（事例・プロンプト集・調査メモ） |
-| [`tools/`](tools/) | 自社製AIツール（議事録要約・提案書ドラフト生成） |
+| [`tools/`](tools/) | 自社製AIツール（**業務改善診断ツール**・議事録要約・提案書ドラフト生成） |
 
 ---
 
@@ -29,6 +29,10 @@
 1. `clients/` に `YYYYMMDD_顧客名/` フォルダを作成
 2. `templates/` から必要な雛形をコピー
 3. [`clients/README.md`](clients/README.md) の手順に従って進める
+
+### 商談で見せるとき
+[`tools/gyomu-shindan.html`](tools/gyomu-shindan.html) をブラウザで開く（インストール・APIキー不要）
+→ 「サンプルを入れる」で即デモ。その場で顧客の数字に書き換えて、削減見込み額と投資回収期間を提示
 
 ### 提案書を作るとき
 `templates/proposal-template.md` をコピーして編集

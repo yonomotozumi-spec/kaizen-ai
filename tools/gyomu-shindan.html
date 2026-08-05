@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>業務改善診断ツール — Kaizen AI</title>
+<meta name="description" content="業務を棚卸しして入力するだけで、年間工数・人件費・AI活用による削減見込み・優先順位・投資回収期間をその場で算出します。">
+<style>
+  :root {
+    --ink: #22335C;
+    --ink2: #3A4E85;
+    --panel: #2C3E6B;
+    --ice: #C9D8EE;
+    --bg-soft: #F4F7FB;
+    --acc: #E8543F;
+    --acc-soft: #FDEDE9;
+    --gray: #5B6570;
+    --line: #E5EAF2;
+    --white: #FFFFFF;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+    color: var(--ink);
+    background: var(--bg-soft);
+    line-height: 1.7;
+    -webkit-text-size-adjust: 100%;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky; top: 0; z-index: 60;
+    background: var(--ink); color: var(--white);
+    border-bottom: 3px solid var(--acc);
+  }
+  .nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 62px; flex-wrap: wrap; padding: 10px 0; }
+  .brand { display: flex; align-items: baseline; gap: 12px; }
+  .logo { font-size: 19px; font-weight: 800; letter-spacing: .5px; }
+  .logo span { color: var(--acc); }
+  .brand .tool-name { font-size: 13px; color: var(--ice); }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  button {
+    font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
+    border-radius: 999px; padding: 8px 16px; border: 1.5px solid transparent;
+    transition: opacity .15s, transform .15s; line-height: 1.4;
+  }
+  button:hover { opacity: .85; transform: translateY(-1px); }
+  button:focus-visible { outline: 3px solid var(--ice); outline-offset: 2px; }
+  .btn-acc { background: var(--acc); color: var(--white); }
+  .btn-ghost { background: transparent; color: var(--white); border-color: rgba(201,216,238,.55); }
+  .btn-plain { background: var(--white); color: var(--ink); border-color: var(--line); }
+
+  /* ---------- layout ---------- */
+  main { padding: 28px 0 80px; }
+  .card {
+    background: var(--white); border-radius: 14px; padding: 24px;
+    margin-bottom: 20px; border: 1px solid var(--line);
+  }
+  .card > h2 {
+    font-size: 18px; margin-bottom: 4px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .step-no {
+    flex: 0 0 26px; height: 26px; border-radius: 50%;
+    background: var(--ink); color: var(--white);
+    font-size: 13px; display: grid; place-items: center;
+  }
+  .card > .hint { color: var(--gray); font-size: 13px; margin-bottom: 18px; }
+
+  label { font-size: 12.5px; color: var(--gray); font-weight: 700; display: block; margin-bottom: 4px; }
+  input, select {
+    font-family: inherit; font-size: 14px; color: var(--ink);
+    border: 1.5px solid var(--line); border-radius: 8px; padding: 7px 10px;
+    background: var(--white); width: 100%;
+  }
+  input:focus, select:focus { outline: none; border-color: var(--ink2); }
+  input[type=number] { text-align: right; }
+
+  .assump { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px; }
+  .assump .note { grid-column: 1 / -1; font-size: 12.5px; color: var(--gray); background: var(--bg-soft); border-radius: 8px; padding: 10px 14px; }
+
+  /* ---------- table ---------- */
+  .table-scroll { overflow-x: auto; margin: 0 -4px; }
+  table { border-collapse: collapse; width: 100%; min-width: 940px; }
+  th, td { padding: 8px 8px; text-align: left; vertical-align: middle; }
+  thead th {
+    font-size: 11.5px; color: var(--gray); font-weight: 700;
+    border-bottom: 2px solid var(--line); white-space: nowrap;
+  }
+  tbody tr { border-bottom: 1px solid var(--line); }
+  tbody tr:hover { background: var(--bg-soft); }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; font-size: 13.5px; }
+  td.calc { color: var(--gray); font-size: 13px; }
+  .del {
+    background: transparent; border: none; color: var(--gray);
+    font-size: 17px; padding: 2px 8px; border-radius: 6px;
+  }
+  .del:hover { color: var(--acc); background: var(--acc-soft); transform: none; }
+  .w-name { min-width: 210px; }
+  .w-dept { min-width: 110px; }
+  .w-type { min-width: 160px; }
+  .w-freq { min-width: 105px; }
+  .w-sm  { width: 84px; }
+  .empty-row td { text-align: center; color: var(--gray); font-size: 13.5px; padding: 30px 8px; }
+  .table-foot { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 14px; }
+  .row-count { font-size: 12.5px; color: var(--gray); margin-left: auto; }
+
+  /* ---------- KPI ---------- */
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
+  .kpi {
+    background: var(--bg-soft); border-radius: 12px; padding: 18px 18px 16px;
+    border-left: 4px solid var(--ink);
+  }
+  .kpi.hero { background: var(--acc-soft); border-left-color: var(--acc); }
+  .kpi .k-label { font-size: 12.5px; color: var(--gray); font-weight: 700; }
+  .kpi .k-value { font-size: clamp(24px, 3.4vw, 31px); font-weight: 800; line-height: 1.25; margin-top: 4px; font-variant-numeric: tabular-nums; }
+  .kpi.hero .k-value { color: var(--acc); }
+  .kpi .k-sub { font-size: 12.5px; color: var(--gray); margin-top: 2px; }
+
+  /* ---------- chart ---------- */
+  .chart { margin-top: 8px; }
+  .chart-row {
+    display: grid; grid-template-columns: minmax(120px, 210px) 1fr;
+    gap: 14px; align-items: center; padding: 5px 0;
+  }
+  .chart-row:hover .bar-fill { opacity: .82; }
+  .c-label { font-size: 13px; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .track { position: relative; height: 22px; }
+  .grid-lines { position: absolute; inset: 0; pointer-events: none; }
+  .grid-lines i { position: absolute; top: -5px; bottom: -5px; width: 1px; background: var(--line); }
+  .bar-fill {
+    position: absolute; left: 0; top: 0; height: 22px;
+    background: var(--ink); border-radius: 0 4px 4px 0; min-width: 2px;
+    transition: width .35s ease;
+  }
+  .bar-val {
+    position: absolute; top: 0; height: 22px; display: flex; align-items: center;
+    font-size: 12px; font-variant-numeric: tabular-nums; color: var(--ink); white-space: nowrap;
+    padding-left: 8px;
+  }
+  /* 長いバーは値ラベルがはみ出すので、バーの内側に白抜きで置く */
+  .bar-val.inside { transform: translateX(-100%); padding: 0 10px 0 0; color: var(--white); }
+  .axis { display: grid; grid-template-columns: minmax(120px, 210px) 1fr; gap: 14px; margin-top: 6px; }
+  .axis-scale { position: relative; height: 18px; }
+  .axis-scale span { position: absolute; top: 0; font-size: 11px; color: var(--gray); transform: translateX(-50%); white-space: nowrap; }
+  .axis-title { font-size: 11.5px; color: var(--gray); text-align: right; }
+
+  /* ---------- ranking ---------- */
+  .rank-table { min-width: 760px; }
+  .rank-table td { font-size: 13.5px; }
+  .badge {
+    display: inline-block; font-size: 11.5px; font-weight: 800;
+    padding: 3px 10px; border-radius: 999px; white-space: nowrap;
+  }
+  .badge.a { background: var(--acc); color: var(--white); }
+  .badge.b { background: var(--ink); color: var(--white); }
+  .badge.c { background: var(--line); color: var(--gray); }
+  .rank-no { font-weight: 800; color: var(--gray); font-variant-numeric: tabular-nums; }
+
+  /* ---------- roadmap ---------- */
+  .phase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+  .phase {
+    background: var(--bg-soft); border-radius: 12px; padding: 20px; position: relative;
+  }
+  .phase.p1 { background: var(--acc-soft); }
+  .phase .p-tag { font-size: 11.5px; font-weight: 800; letter-spacing: 1.5px; color: var(--acc); }
+  .phase.p2 .p-tag, .phase.p3 .p-tag { color: var(--ink2); }
+  .phase h3 { font-size: 16px; margin: 4px 0 2px; }
+  .phase .p-when { font-size: 12.5px; color: var(--gray); margin-bottom: 12px; }
+  .phase ul { list-style: none; }
+  .phase li { font-size: 13px; padding: 5px 0 5px 16px; position: relative; border-top: 1px solid rgba(91,101,112,.14); }
+  .phase li:first-child { border-top: none; }
+  .phase li::before { content: "▸"; position: absolute; left: 0; color: var(--acc); }
+  .phase .p-none { font-size: 13px; color: var(--gray); }
+  .phase .p-sum { font-size: 12.5px; color: var(--gray); margin-top: 12px; padding-top: 10px; border-top: 1px dashed rgba(91,101,112,.3); }
+
+  /* ---------- payback ---------- */
+  .pay-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; align-items: end; }
+  .pay-out { background: var(--ink); color: var(--white); border-radius: 12px; padding: 18px 20px; }
+  .pay-out .k-label { color: var(--ice); font-size: 12.5px; font-weight: 700; }
+  .pay-out .k-value { font-size: 30px; font-weight: 800; line-height: 1.25; font-variant-numeric: tabular-nums; }
+  .pay-out .k-sub { color: var(--ice); font-size: 12.5px; }
+
+  /* ---------- misc ---------- */
+  details { border-top: 1px solid var(--line); margin-top: 18px; padding-top: 14px; }
+  summary { cursor: pointer; font-size: 13px; font-weight: 700; color: var(--ink2); }
+  details table { min-width: 520px; margin-top: 12px; }
+  details td, details th { font-size: 12.5px; }
+  .disclaimer { font-size: 12px; color: var(--gray); background: var(--bg-soft); border-radius: 10px; padding: 14px 16px; }
+  .cta {
+    background: var(--ink); color: var(--white); border-radius: 14px;
+    padding: 28px; text-align: center;
+  }
+  .cta h2 { font-size: 20px; margin-bottom: 6px; }
+  .cta p { color: var(--ice); font-size: 13.5px; }
+  .hidden { display: none !important; }
+
+  /* ---------- tooltip ---------- */
+  #tip {
+    position: fixed; z-index: 200; pointer-events: none; opacity: 0;
+    background: var(--ink); color: var(--white); border-radius: 8px;
+    padding: 9px 12px; font-size: 12px; line-height: 1.6; max-width: 260px;
+    box-shadow: 0 6px 20px rgba(34,51,92,.28); transition: opacity .12s;
+  }
+  #tip b { color: var(--ice); font-weight: 700; }
+
+  /* ---------- print ---------- */
+  @media print {
+    body { background: var(--white); }
+    header { position: static; }
+    .actions, .del, .table-foot button, .no-print { display: none !important; }
+    .card { border: 1px solid var(--line); break-inside: avoid; page-break-inside: avoid; }
+    input, select { border-color: transparent; padding-left: 0; }
+    .bar-fill { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    .kpi, .phase, .pay-out, .badge, header { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="brand">
+      <div class="logo">Kaizen<span>AI</span></div>
+      <div class="tool-name">業務改善診断ツール</div>
+    </div>
+    <div class="actions">
+      <button class="btn-acc"   id="btnSample">サンプルを入れる</button>
+      <button class="btn-ghost" id="btnAdd">＋ 業務を追加</button>
+      <button class="btn-ghost" id="btnPrint">印刷 / PDF</button>
+      <button class="btn-ghost" id="btnCsv">CSV出力</button>
+      <button class="btn-ghost" id="btnClear">クリア</button>
+    </div>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <!-- STEP 1 -->
+  <section class="card">
+    <h2><span class="step-no">1</span>前提条件</h2>
+    <p class="hint">自社の実態に合わせて調整してください。ここを変えると診断結果はすべて自動で再計算されます。</p>
+    <div class="assump">
+      <div>
+        <label for="wage">平均時間単価（円 / 人時）</label>
+        <input type="number" id="wage" value="3000" min="0" step="100">
+      </div>
+      <div>
+        <label for="days">年間営業日数（日）</label>
+        <input type="number" id="days" value="240" min="1" max="366" step="1">
+      </div>
+      <div>
+        <label for="cname">診断対象（会社名・部門名）</label>
+        <input type="text" id="cname" placeholder="例）サンプル商事 株式会社">
+      </div>
+      <p class="note">時間単価は「給与 ÷ 労働時間」ではなく、法定福利費・間接費を含んだ<strong>人件費ベース</strong>（一般的な目安：2,500〜4,500円）を推奨します。</p>
+    </div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section class="card">
+    <h2><span class="step-no">2</span>業務の棚卸し</h2>
+    <p class="hint">時間を取られている業務を書き出します。「業務の種類」を選ぶと、AI活用による削減率の目安が自動で入ります（個別に上書き可）。</p>
+    <div class="table-scroll">
+      <table id="tbl">
+        <thead>
+          <tr>
+            <th class="w-name">業務名</th>
+            <th class="w-dept">部門</th>
+            <th class="w-type">業務の種類</th>
+            <th class="w-freq">頻度</th>
+            <th class="w-sm">1回の<br>所要時間(分)</th>
+            <th class="w-sm">関与<br>人数</th>
+            <th class="w-sm">削減率<br>(%)</th>
+            <th class="num">年間工数</th>
+            <th class="num">年間人件費</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div class="table-foot">
+      <button class="btn-plain" id="btnAdd2">＋ 業務を追加</button>
+      <span class="row-count" id="rowCount"></span>
+    </div>
+
+    <details>
+      <summary>削減率・難易度の前提（クリックで開く）</summary>
+      <div class="table-scroll">
+        <table id="presetTbl">
+          <thead><tr><th>業務の種類</th><th class="num">AI削減率の目安</th><th>導入難易度</th><th>主な打ち手</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="disclaimer" style="margin-top:12px">削減率は一般的な導入実績にもとづく初期仮説です。実際の値は業務の標準化度合い・データの整備状況により変動します。診断フェーズで実測し、確定させます。</p>
+    </details>
+
+    <details>
+      <summary>優先度スコアの算出ロジック（クリックで開く）</summary>
+      <p class="disclaimer" style="margin-top:12px">
+        <strong>スコア ＝ 効果（0〜100） × 実現しやすさ係数</strong><br>
+        ・<strong>効果</strong>：年間削減見込み額を、最大の業務を100とした相対値に換算（1件の巨大業務に順位が引きずられないよう平方根スケールで圧縮）<br>
+        ・<strong>実現しやすさ係数</strong>：導入難易度 低 = 1.0 ／ 中 = 0.7 ／ 高 = 0.35<br>
+        ・<strong>優先度</strong>：スコア 55以上 = A（即着手）／ 22以上 = B（次に着手）／ 22未満 = C（当面見送り）<br>
+        金額が大きくても難易度が高い業務は後回しになります。「AIでやるべきでない業務」を見送りとして明示することも、この診断の目的のひとつです。
+      </p>
+    </details>
+  </section>
+
+  <!-- STEP 3 -->
+  <section class="card" id="resultCard">
+    <h2><span class="step-no">3</span>診断結果</h2>
+    <p class="hint" id="resultHint">現状の負荷と、AI活用で削減できる見込みです。</p>
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="k-label">年間総工数</div>
+        <div class="k-value" id="kpiHours">—</div>
+        <div class="k-sub" id="kpiHoursSub">&nbsp;</div>
+      </div>
+      <div class="kpi">
+        <div class="k-label">年間人件費（対象業務）</div>
+        <div class="k-value" id="kpiCost">—</div>
+        <div class="k-sub" id="kpiCostSub">&nbsp;</div>
+      </div>
+      <div class="kpi">
+        <div class="k-label">削減見込み工数 / 年</div>
+        <div class="k-value" id="kpiSaveH">—</div>
+        <div class="k-sub" id="kpiSaveHSub">&nbsp;</div>
+      </div>
+      <div class="kpi hero">
+        <div class="k-label">削減見込み額 / 年</div>
+        <div class="k-value" id="kpiSaveY">—</div>
+        <div class="k-sub" id="kpiSaveYSub">&nbsp;</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHART -->
+  <section class="card" id="chartCard">
+    <h2>削減見込み額が大きい業務（年間・円）</h2>
+    <p class="hint">どこから手をつけると効果が大きいかを、金額の大きい順に並べています。</p>
+    <div class="chart" id="chart"></div>
+    <div class="axis">
+      <div class="axis-title">年間削減見込み額 →</div>
+      <div class="axis-scale" id="axisScale"></div>
+    </div>
+  </section>
+
+  <!-- RANKING -->
+  <section class="card" id="rankCard">
+    <h2>着手優先順位</h2>
+    <p class="hint">「削減効果の大きさ」×「導入のしやすさ」でスコア化し、A（即着手）／B（次に着手）／C（当面見送り）に分類しています。</p>
+    <div class="table-scroll">
+      <table class="rank-table">
+        <thead>
+          <tr>
+            <th class="num">#</th><th>業務名</th><th>部門</th><th>優先度</th>
+            <th class="num">年間削減工数</th><th class="num">年間削減額</th>
+            <th>導入難易度</th><th class="num">スコア</th>
+          </tr>
+        </thead>
+        <tbody id="rankBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section class="card" id="roadCard">
+    <h2>導入ロードマップ（案）</h2>
+    <p class="hint">優先度に沿って3フェーズに分けた進め方です。小さく始めて、効果を数字で確認しながら広げます。</p>
+    <div class="phase-grid">
+      <div class="phase p1">
+        <div class="p-tag">PHASE 1</div>
+        <h3>クイックウィン</h3>
+        <div class="p-when">0〜3ヶ月 / 優先度A</div>
+        <ul id="ph1"></ul>
+        <div class="p-sum" id="ph1sum"></div>
+      </div>
+      <div class="phase p2">
+        <div class="p-tag">PHASE 2</div>
+        <h3>本格導入</h3>
+        <div class="p-when">3〜6ヶ月 / 優先度B</div>
+        <ul id="ph2"></ul>
+        <div class="p-sum" id="ph2sum"></div>
+      </div>
+      <div class="phase p3">
+        <div class="p-tag">PHASE 3</div>
+        <h3>定着・横展開</h3>
+        <div class="p-when">6ヶ月〜 / 優先度C・要検討</div>
+        <ul id="ph3"></ul>
+        <div class="p-sum" id="ph3sum"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAYBACK -->
+  <section class="card" id="payCard">
+    <h2>投資回収の目安（Phase 1）</h2>
+    <p class="hint">優先度Aの業務に絞って着手した場合の概算です。投資額は難易度から自動見積もりしていますが、直接入力もできます。</p>
+    <div class="pay-grid">
+      <div>
+        <label for="invest">想定投資額（円・初年度）</label>
+        <input type="number" id="invest" min="0" step="100000">
+        <p class="k-sub" style="font-size:12px;color:var(--gray);margin-top:6px" id="investNote"></p>
+      </div>
+      <div class="pay-out">
+        <div class="k-label">投資回収期間</div>
+        <div class="k-value" id="payback">—</div>
+        <div class="k-sub" id="paybackSub">&nbsp;</div>
+      </div>
+      <div class="pay-out" style="background:var(--acc)">
+        <div class="k-label" style="color:#FFE6E1">初年度の実質効果</div>
+        <div class="k-value" id="netY">—</div>
+        <div class="k-sub" style="color:#FFE6E1">削減見込み額 − 投資額</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <p class="disclaimer">
+      <strong>本診断は、入力値にもとづく概算シミュレーションです。</strong>
+      削減率は業務の標準化度合い・データ整備状況・現場の運用定着度により変動し、算出結果を保証するものではありません。
+      実際の導入判断にあたっては、業務の実測・現行システムの制約・体制面の確認を含む詳細診断を推奨します。
+      入力したデータはこのブラウザ内にのみ保存され、外部に送信されることはありません。
+    </p>
+  </section>
+
+  <section class="cta no-print">
+    <h2>次のステップ：60分の無料相談</h2>
+    <p>この診断結果をもとに、御社で最初に着手すべき業務と進め方を具体化します。<br>詳細診断（アセスメント）では、実測にもとづく確定値と投資対効果をレポートにまとめてご提出します。</p>
+  </section>
+
+</div>
+</main>
+
+<div id="tip" role="tooltip"></div>
+
+<script>
+"use strict";
+
+/* ============================================================
+   前提テーブル（業務の種類 → 削減率・難易度・打ち手）
+   ============================================================ */
+const TYPES = [
+  { id: "doc",     name: "資料・文書作成",       rate: 60, diff: 1, how: "生成AIによるドラフト自動生成＋テンプレート連携" },
+  { id: "minutes", name: "議事録・会議メモ",     rate: 70, diff: 1, how: "自動文字起こし＋構造化要約（決定事項・TODO抽出）" },
+  { id: "entry",   name: "データ転記・入力",     rate: 80, diff: 2, how: "OCR / API連携＋自動転記ワークフロー" },
+  { id: "report",  name: "集計・レポート作成",   rate: 75, diff: 2, how: "データ集約の自動化＋ダッシュボード / 定期レポート自動生成" },
+  { id: "support", name: "問い合わせ・メール対応", rate: 50, diff: 2, how: "FAQ・履歴を使った回答ドラフト生成／一次対応チャットボット" },
+  { id: "search",  name: "情報検索・調査",       rate: 55, diff: 2, how: "社内ナレッジのRAG検索・社内Q&Aボット" },
+  { id: "check",   name: "チェック・照合・確認", rate: 65, diff: 2, how: "突合ルールの自動化＋AIによる差分・異常検知" },
+  { id: "plan",    name: "企画・分析・検討",     rate: 40, diff: 2, how: "AIによる素案生成・比較整理（最終判断は人）" },
+  { id: "adjust",  name: "承認・調整・折衝",     rate: 20, diff: 3, how: "調整履歴の可視化・下準備の自動化（意思疎通は人が担う）" },
+  { id: "field",   name: "対面・現場作業",       rate: 10, diff: 3, how: "記録・報告の周辺業務のみ自動化（作業自体は人）" }
+];
+const TYPE_MAP = Object.fromEntries(TYPES.map(t => [t.id, t]));
+const DIFF_LABEL = { 1: "低", 2: "中", 3: "高" };
+/* 実現しやすさ係数：難易度が高いほど優先度スコアを下げる */
+const DIFF_FACTOR = { 1: 1.0, 2: 0.7, 3: 0.35 };
+/* 難易度別の初期投資の目安（円 / 業務あたり） — サービスカタログの価格帯に準拠 */
+const DIFF_INVEST = { 1: 300000, 2: 800000, 3: 2000000 };
+
+/* 頻度 → 年間実施回数（"daily" は営業日数を参照） */
+const FREQS = [
+  { id: "daily",   name: "毎日",     times: null },
+  { id: "w3",      name: "週3回",    times: 156 },
+  { id: "weekly",  name: "週1回",    times: 52 },
+  { id: "biweek",  name: "隔週",     times: 26 },
+  { id: "monthly", name: "月1回",    times: 12 },
+  { id: "quarter", name: "四半期1回", times: 4 },
+  { id: "yearly",  name: "年1回",    times: 1 }
+];
+const FREQ_MAP = Object.fromEntries(FREQS.map(f => [f.id, f]));
+
+/* ============================================================
+   サンプルデータ（商談デモ用：中堅企業のバックオフィス想定）
+   ============================================================ */
+const SAMPLE = [
+  { name: "受注データの基幹システム転記", dept: "業務管理",       type: "entry",   freq: "daily",   min: 90,  ppl: 2 },
+  { name: "顧客からの問い合わせ一次対応", dept: "カスタマーサポート", type: "support", freq: "daily",   min: 150, ppl: 3 },
+  { name: "見積書・提案書の作成",         dept: "営業",           type: "doc",     freq: "w3",      min: 120, ppl: 3 },
+  { name: "社内規程・過去資料の検索",     dept: "全社",           type: "search",  freq: "daily",   min: 30,  ppl: 10 },
+  { name: "会議の議事録作成",             dept: "全社",           type: "minutes", freq: "w3",      min: 60,  ppl: 1 },
+  { name: "週次の営業レポート作成",       dept: "営業企画",       type: "report",  freq: "weekly",  min: 180, ppl: 2 },
+  { name: "月次経営報告資料の作成",       dept: "経営企画",       type: "report",  freq: "monthly", min: 960, ppl: 2 },
+  { name: "請求書の内容照合・チェック",   dept: "経理",           type: "check",   freq: "monthly", min: 480, ppl: 2 },
+  { name: "採用面接の日程調整・対応",     dept: "人事",           type: "adjust",  freq: "weekly",  min: 120, ppl: 2 },
+  { name: "現場での在庫棚卸し",           dept: "物流",           type: "field",   freq: "monthly", min: 300, ppl: 4 }
+];
+
+/* ============================================================
+   状態
+   ============================================================ */
+const STORE_KEY = "kaizen-ai.gyomu-shindan.v1";
+let rows = [];
+let investTouched = false;
+
+const $ = id => document.getElementById(id);
+const el = (tag, cls) => { const e = document.createElement(tag); if (cls) e.className = cls; return e; };
+
+/* ---------- 表示フォーマット ---------- */
+function yen(n) {
+  n = Math.round(n || 0);
+  if (Math.abs(n) >= 1e8) return (n / 1e8).toFixed(2).replace(/\.?0+$/, "") + "億円";
+  if (Math.abs(n) >= 1e4) return Math.round(n / 1e4).toLocaleString("ja-JP") + "万円";
+  return n.toLocaleString("ja-JP") + "円";
+}
+function hrs(n) { return Math.round(n || 0).toLocaleString("ja-JP") + "時間"; }
+function num(n)  { return Math.round(n || 0).toLocaleString("ja-JP"); }
+
+/* ============================================================
+   計算
+   ============================================================ */
+function assumptions() {
+  return {
+    wage: Math.max(0, Number($("wage").value) || 0),
+    days: Math.max(1, Number($("days").value) || 240)
+  };
+}
+
+function compute() {
+  const { wage, days } = assumptions();
+  const items = rows.map((r, i) => {
+    const t = TYPE_MAP[r.type] || TYPES[0];
+    const f = FREQ_MAP[r.freq] || FREQS[0];
+    const times = f.times === null ? days : f.times;
+    const hours = times * (Number(r.min) || 0) / 60 * (Number(r.ppl) || 0);
+    const cost  = hours * wage;
+    const rate  = Math.min(100, Math.max(0, Number(r.rate)));
+    const saveH = hours * rate / 100;
+    const saveY = saveH * wage;
+    return { idx: i, ...r, typeName: t.name, diff: t.diff, how: t.how,
+             freqName: f.name, times, hours, cost, saveH, saveY };
+  });
+
+  /* 優先度スコア = 効果 × 実現しやすさ
+     効果は「最大の業務を100とした相対値」。ただし線形だと1件の巨大業務に引きずられ
+     中規模の業務がすべて埋もれるため、平方根スケールで圧縮している。 */
+  const maxSave = Math.max(0, ...items.map(x => x.saveY));
+  items.forEach(x => {
+    const impact = maxSave > 0 ? Math.sqrt(x.saveY / maxSave) * 100 : 0;
+    x.impact = impact;
+    x.score = impact * DIFF_FACTOR[x.diff];
+    x.tier = x.score >= 55 ? "A" : x.score >= 22 ? "B" : "C";
+  });
+
+  const total = items.reduce((a, x) => ({
+    hours: a.hours + x.hours, cost: a.cost + x.cost,
+    saveH: a.saveH + x.saveH, saveY: a.saveY + x.saveY
+  }), { hours: 0, cost: 0, saveH: 0, saveY: 0 });
+
+  return { items, total, wage, days };
+}
+
+/* ============================================================
+   入力テーブルの描画
+   ============================================================ */
+function renderTable() {
+  const tb = $("tbody");
+  tb.textContent = "";
+
+  if (!rows.length) {
+    const tr = el("tr", "empty-row");
+    const td = el("td");
+    td.colSpan = 10;
+    td.textContent = "業務がまだ登録されていません。「サンプルを入れる」または「＋ 業務を追加」から始めてください。";
+    tr.appendChild(td); tb.appendChild(tr);
+  }
+
+  const { wage, days } = assumptions();
+
+  rows.forEach((r, i) => {
+    const t = TYPE_MAP[r.type] || TYPES[0];
+    const f = FREQ_MAP[r.freq] || FREQS[0];
+    const times = f.times === null ? days : f.times;
+    const hours = times * (Number(r.min) || 0) / 60 * (Number(r.ppl) || 0);
+
+    const tr = el("tr");
+
+    tr.appendChild(cellInput("text",   r.name, v => rows[i].name = v, "業務名を入力"));
+    tr.appendChild(cellInput("text",   r.dept, v => rows[i].dept = v, "部門"));
+    tr.appendChild(cellSelect(TYPES, r.type, v => {
+      rows[i].type = v;
+      rows[i].rate = TYPE_MAP[v].rate;   // 種類を変えたら削減率は目安に戻す
+      refresh();
+    }));
+    tr.appendChild(cellSelect(FREQS, r.freq, v => { rows[i].freq = v; refresh(); }));
+    tr.appendChild(cellInput("number", r.min,  v => rows[i].min  = v, "", 0, 5));
+    tr.appendChild(cellInput("number", r.ppl,  v => rows[i].ppl  = v, "", 0, 1));
+    tr.appendChild(cellInput("number", r.rate, v => rows[i].rate = v, "", 0, 5, 100));
+
+    const tdH = el("td", "num calc"); tdH.textContent = hrs(hours);
+    const tdC = el("td", "num calc"); tdC.textContent = yen(hours * wage);
+    tr.appendChild(tdH); tr.appendChild(tdC);
+
+    const tdD = el("td");
+    const btn = el("button", "del");
+    btn.type = "button";
+    btn.textContent = "×";
+    btn.title = "この行を削除";
+    btn.setAttribute("aria-label", (r.name || "この業務") + " を削除");
+    btn.addEventListener("click", () => { rows.splice(i, 1); refresh(); });
+    tdD.appendChild(btn); tr.appendChild(tdD);
+
+    tb.appendChild(tr);
+  });
+
+  $("rowCount").textContent = rows.length ? `登録 ${rows.length} 件` : "";
+}
+
+function cellInput(type, value, onInput, placeholder, min, step, max) {
+  const td = el("td");
+  const inp = el("input");
+  inp.type = type;
+  inp.value = value ?? "";
+  if (placeholder) inp.placeholder = placeholder;
+  if (min !== undefined) inp.min = min;
+  if (max !== undefined) inp.max = max;
+  if (step !== undefined) inp.step = step;
+  inp.addEventListener("input", () => { onInput(type === "number" ? Number(inp.value) : inp.value); refreshCalcOnly(); });
+  td.appendChild(inp);
+  return td;
+}
+
+function cellSelect(options, value, onChange) {
+  const td = el("td");
+  const sel = el("select");
+  options.forEach(o => {
+    const op = el("option");
+    op.value = o.id; op.textContent = o.name;
+    if (o.id === value) op.selected = true;
+    sel.appendChild(op);
+  });
+  sel.addEventListener("change", () => onChange(sel.value));
+  td.appendChild(sel);
+  return td;
+}
+
+/* ============================================================
+   結果の描画
+   ============================================================ */
+function renderResults(data) {
+  const { items, total, wage } = data;
+  const has = items.length > 0;
+
+  ["chartCard", "rankCard", "roadCard", "payCard"].forEach(id => $(id).classList.toggle("hidden", !has));
+
+  $("kpiHours").textContent = has ? hrs(total.hours) : "—";
+  $("kpiHoursSub").textContent = has ? `約 ${num(total.hours / 8)} 人日 / 年（8時間=1人日換算）` : " ";
+  $("kpiCost").textContent  = has ? yen(total.cost) : "—";
+  $("kpiCostSub").textContent = has ? `時間単価 ${num(wage)}円で換算` : " ";
+  $("kpiSaveH").textContent = has ? hrs(total.saveH) : "—";
+  $("kpiSaveHSub").textContent = has
+    ? `総工数の ${total.hours ? Math.round(total.saveH / total.hours * 100) : 0}% / 約 ${num(total.saveH / 8)} 人日`
+    : " ";
+  $("kpiSaveY").textContent = has ? yen(total.saveY) : "—";
+  $("kpiSaveYSub").textContent = has ? `月あたり 約 ${yen(total.saveY / 12)} 相当` : " ";
+
+  const cname = $("cname").value.trim();
+  $("resultHint").textContent = (cname ? `【${cname}】 ` : "") +
+    "現状の負荷と、AI活用で削減できる見込みです。";
+
+  if (!has) { $("chart").textContent = ""; $("axisScale").textContent = ""; return; }
+
+  renderChart(items);
+  renderRanking(items);
+  renderRoadmap(items);
+  renderPayback(items);
+}
+
+/* ---------- 順位バーチャート（単一系列＝1色。優先度はバッジで表現） ---------- */
+function renderChart(items) {
+  const sorted = [...items].sort((a, b) => b.saveY - a.saveY);
+  const max = Math.max(1, ...sorted.map(x => x.saveY));
+  const box = $("chart");
+  box.textContent = "";
+
+  sorted.forEach(x => {
+    const row = el("div", "chart-row");
+    const lab = el("div", "c-label");
+    lab.textContent = x.name || "（無題の業務）";
+    lab.title = x.name || "";
+
+    const track = el("div", "track");
+    const grid = el("div", "grid-lines");
+    [0, 25, 50, 75, 100].forEach(p => {
+      const g = el("i"); g.style.left = p + "%"; grid.appendChild(g);
+    });
+    const fill = el("div", "bar-fill");
+    const pct = (x.saveY / max) * 100;
+    fill.style.width = pct + "%";
+    const val = el("div", "bar-val" + (pct > 80 ? " inside" : ""));
+    val.style.left = pct + "%";
+    val.textContent = yen(x.saveY);
+
+    track.appendChild(grid); track.appendChild(fill); track.appendChild(val);
+    row.appendChild(lab); row.appendChild(track);
+
+    attachTip(row, x);
+    box.appendChild(row);
+  });
+
+  const scale = $("axisScale");
+  scale.textContent = "";
+  [0, 25, 50, 75, 100].forEach(p => {
+    const s = el("span");
+    s.style.left = p + "%";
+    /* 両端は目盛りが枠外にはみ出さないよう揃える */
+    if (p === 0)   s.style.transform = "translateX(0)";
+    if (p === 100) s.style.transform = "translateX(-100%)";
+    s.textContent = p === 0 ? "0" : yen(max * p / 100);
+    scale.appendChild(s);
+  });
+}
+
+function attachTip(node, x) {
+  const tip = $("tip");
+  const show = ev => {
+    tip.innerHTML =
+      `<b>${escapeHtml(x.name || "（無題の業務）")}</b><br>` +
+      `${escapeHtml(x.dept || "—")} / ${escapeHtml(x.typeName)}<br>` +
+      `${escapeHtml(x.freqName)}・${num(x.min)}分・${num(x.ppl)}人<br>` +
+      `年間工数 ${hrs(x.hours)}<br>` +
+      `削減率 ${num(x.rate)}% → <b>${yen(x.saveY)} / 年</b>`;
+    tip.style.opacity = "1";
+    move(ev);
+  };
+  const move = ev => {
+    const pad = 14;
+    let left = ev.clientX + pad, top = ev.clientY + pad;
+    const r = tip.getBoundingClientRect();
+    if (left + r.width > window.innerWidth - 8) left = ev.clientX - r.width - pad;
+    if (top + r.height > window.innerHeight - 8) top = ev.clientY - r.height - pad;
+    tip.style.left = left + "px"; tip.style.top = top + "px";
+  };
+  const hide = () => { tip.style.opacity = "0"; };
+  node.addEventListener("mouseenter", show);
+  node.addEventListener("mousemove", move);
+  node.addEventListener("mouseleave", hide);
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+/* ---------- 優先順位テーブル ---------- */
+function renderRanking(items) {
+  const sorted = [...items].sort((a, b) => b.score - a.score);
+  const tb = $("rankBody");
+  tb.textContent = "";
+
+  sorted.forEach((x, i) => {
+    const tr = el("tr");
+    const cells = [
+      [num(i + 1), "num rank-no"],
+      [x.name || "（無題の業務）", ""],
+      [x.dept || "—", ""],
+      [null, ""],                       // 優先度バッジ
+      [hrs(x.saveH), "num"],
+      [yen(x.saveY), "num"],
+      [`${DIFF_LABEL[x.diff]}（${x.typeName}）`, ""],
+      [x.score.toFixed(0), "num"]
+    ];
+    cells.forEach(([text, cls], ci) => {
+      const td = el("td", cls);
+      if (ci === 3) {
+        const b = el("span", "badge " + x.tier.toLowerCase());
+        b.textContent = x.tier === "A" ? "A 即着手" : x.tier === "B" ? "B 次に着手" : "C 当面見送り";
+        td.appendChild(b);
+      } else {
+        td.textContent = text;
+      }
+      tr.appendChild(td);
+    });
+    attachTip(tr, x);
+    tb.appendChild(tr);
+  });
+}
+
+/* ---------- ロードマップ ---------- */
+function renderRoadmap(items) {
+  const byTier = { A: [], B: [], C: [] };
+  [...items].sort((a, b) => b.score - a.score).forEach(x => byTier[x.tier].push(x));
+
+  [["A", "ph1", "ph1sum"], ["B", "ph2", "ph2sum"], ["C", "ph3", "ph3sum"]].forEach(([tier, listId, sumId]) => {
+    const ul = $(listId); ul.textContent = "";
+    const list = byTier[tier];
+    if (!list.length) {
+      const li = el("li", "p-none");
+      li.textContent = "該当なし";
+      li.style.paddingLeft = "0";
+      ul.appendChild(li);
+    } else {
+      list.forEach(x => {
+        const li = el("li");
+        li.textContent = `${x.name || "（無題の業務）"}｜${x.how}`;
+        ul.appendChild(li);
+      });
+    }
+    const saveY = list.reduce((a, x) => a + x.saveY, 0);
+    const saveH = list.reduce((a, x) => a + x.saveH, 0);
+    $(sumId).textContent = list.length
+      ? `対象 ${list.length}件 ／ 削減見込み ${hrs(saveH)}・${yen(saveY)} / 年`
+      : "—";
+  });
+}
+
+/* ---------- 投資回収 ---------- */
+function renderPayback(items) {
+  const a = items.filter(x => x.tier === "A");
+  const autoInvest = a.reduce((s, x) => s + DIFF_INVEST[x.diff], 0);
+  const inv = $("invest");
+
+  if (!investTouched) inv.value = autoInvest;
+  const investVal = Math.max(0, Number(inv.value) || 0);
+
+  $("investNote").textContent = a.length
+    ? `自動見積: 難易度 低30万 / 中80万 / 高200万 × 優先度A ${a.length}件 = ${yen(autoInvest)}`
+    : "優先度Aの業務がありません。";
+
+  const saveY = a.reduce((s, x) => s + x.saveY, 0);
+  const months = saveY > 0 ? investVal / (saveY / 12) : Infinity;
+
+  if (!a.length || saveY <= 0) {
+    $("payback").textContent = "—";
+    $("paybackSub").textContent = "優先度Aの削減効果がありません";
+  } else if (months <= 0.5) {
+    $("payback").textContent = "即時";
+    $("paybackSub").textContent = `Phase1 削減見込み ${yen(saveY)} / 年`;
+  } else if (months > 60) {
+    $("payback").textContent = "60ヶ月超";
+    $("paybackSub").textContent = "投資額の見直しを推奨";
+  } else {
+    $("payback").textContent = months.toFixed(1) + " ヶ月";
+    $("paybackSub").textContent = `Phase1 削減見込み ${yen(saveY)} / 年`;
+  }
+
+  $("netY").textContent = a.length ? yen(saveY - investVal) : "—";
+}
+
+/* ============================================================
+   保存 / 読み込み / 入出力
+   ============================================================ */
+function save() {
+  try {
+    localStorage.setItem(STORE_KEY, JSON.stringify({
+      rows, wage: $("wage").value, days: $("days").value,
+      cname: $("cname").value, invest: investTouched ? $("invest").value : null
+    }));
+  } catch (e) { /* プライベートモード等では保存しない */ }
+}
+
+function load() {
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (!raw) return false;
+    const d = JSON.parse(raw);
+    if (!d || !Array.isArray(d.rows)) return false;
+    rows = d.rows;
+    if (d.wage)  $("wage").value  = d.wage;
+    if (d.days)  $("days").value  = d.days;
+    if (d.cname) $("cname").value = d.cname;
+    if (d.invest != null) { investTouched = true; $("invest").value = d.invest; }
+    return true;
+  } catch (e) { return false; }
+}
+
+function addRow(seed) {
+  const base = seed || { name: "", dept: "", type: "doc", freq: "weekly", min: 60, ppl: 1 };
+  rows.push({ ...base, rate: base.rate ?? TYPE_MAP[base.type].rate });
+}
+
+function loadSample() {
+  rows = SAMPLE.map(s => ({ ...s, rate: TYPE_MAP[s.type].rate }));
+  investTouched = false;
+  if (!$("cname").value.trim()) $("cname").value = "サンプル商事 株式会社";
+  refresh();
+}
+
+function exportCsv() {
+  const { items, total } = compute();
+  const head = ["業務名", "部門", "業務の種類", "頻度", "1回の所要時間(分)", "関与人数",
+                "年間実施回数", "年間工数(時間)", "年間人件費(円)", "削減率(%)",
+                "年間削減工数(時間)", "年間削減額(円)", "導入難易度", "優先度", "スコア"];
+  const body = [...items].sort((a, b) => b.score - a.score).map(x => [
+    x.name, x.dept, x.typeName, x.freqName, x.min, x.ppl, x.times,
+    Math.round(x.hours), Math.round(x.cost), x.rate,
+    Math.round(x.saveH), Math.round(x.saveY), DIFF_LABEL[x.diff], x.tier, x.score.toFixed(0)
+  ]);
+  body.push([]);
+  body.push(["合計", "", "", "", "", "", "", Math.round(total.hours), Math.round(total.cost),
+             "", Math.round(total.saveH), Math.round(total.saveY), "", "", ""]);
+
+  const esc = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
+  const csv = "﻿" + [head, ...body].map(r => r.map(esc).join(",")).join("\r\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = el("a");
+  const cname = ($("cname").value.trim() || "業務改善診断").replace(/[\\/:*?"<>|]/g, "_");
+  a.href = url; a.download = `${cname}_診断結果.csv`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function renderPresets() {
+  const tb = $("presetTbl").querySelector("tbody");
+  tb.textContent = "";
+  TYPES.forEach(t => {
+    const tr = el("tr");
+    [[t.name, ""], [t.rate + "%", "num"], [DIFF_LABEL[t.diff], ""], [t.how, ""]].forEach(([v, c]) => {
+      const td = el("td", c); td.textContent = v; tr.appendChild(td);
+    });
+    tb.appendChild(tr);
+  });
+}
+
+/* ---------- 再描画 ---------- */
+function refresh() {          // 行の増減・種類変更など、テーブル構造ごと描き直す
+  renderTable();
+  renderResults(compute());
+  save();
+}
+function refreshCalcOnly() {  // 入力中：フォーカスを失わないよう結果だけ更新
+  const data = compute();
+  renderResults(data);
+  updateRowCalcCells(data);
+  save();
+}
+function updateRowCalcCells(data) {
+  const trs = $("tbody").querySelectorAll("tr");
+  data.items.forEach((x, i) => {
+    const tr = trs[i];
+    if (!tr) return;
+    const tds = tr.querySelectorAll("td");
+    if (tds[7]) tds[7].textContent = hrs(x.hours);
+    if (tds[8]) tds[8].textContent = yen(x.cost);
+  });
+}
+
+/* ============================================================
+   起動
+   ============================================================ */
+$("btnSample").addEventListener("click", loadSample);
+$("btnAdd").addEventListener("click",  () => { addRow(); refresh(); focusLastRow(); });
+$("btnAdd2").addEventListener("click", () => { addRow(); refresh(); focusLastRow(); });
+$("btnPrint").addEventListener("click", () => window.print());
+$("btnCsv").addEventListener("click", exportCsv);
+$("btnClear").addEventListener("click", () => {
+  if (!rows.length || confirm("入力内容をすべて削除します。よろしいですか？")) {
+    rows = []; investTouched = false; $("cname").value = "";
+    refresh();
+  }
+});
+
+function focusLastRow() {
+  const trs = $("tbody").querySelectorAll("tr");
+  const last = trs[trs.length - 1];
+  if (last) last.querySelector("input")?.focus();
+}
+
+["wage", "days"].forEach(id => $(id).addEventListener("input", refreshCalcOnly));
+$("cname").addEventListener("input", refreshCalcOnly);
+$("invest").addEventListener("input", () => { investTouched = true; renderPayback(compute().items); save(); });
+
+renderPresets();
+if (!load()) rows = [];
+refresh();
+</script>
+</body>
+</html>
