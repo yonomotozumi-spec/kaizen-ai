@@ -37,6 +37,10 @@ class TestNormalize(unittest.TestCase):
         out = normalize("業務診断    1    450,000    450,000")
         self.assertIn("1    450,000", out)
 
+    def test_桁区切りが句点に化けたのを戻す(self):
+        # 実測: 明朝体の 638,000 が 638。000 と読まれる
+        self.assertIn("638,000", normalize("御請求金額 \\638。000 -"))
+
     def test_小文字エルのAIを直す(self):
         self.assertIn("AIワークフロー", normalize("Alワークフロー"))
 
@@ -119,6 +123,12 @@ class TestExtractFields(unittest.TestCase):
     def test_お客様は宛名として拾わない(self):
         f = extract_fields("お客様 各位\nご請求金額 \\1,000\n", "invoice")
         self.assertEqual(f["請求先"], UNKNOWN)
+
+    def test_登録番号が次の行を飲み込まない(self):
+        # 実測: 登録番号の直後の行（日付）まで拾ってしまい、桁数が壊れていた
+        text = "登録番号 :12223334445556\n2026年3月14日 18:42\n"
+        f = extract_fields(text, "receipt")
+        self.assertEqual(f["登録番号"], "T2223334445556")
 
     def test_見つからない項目は推測せず要確認にする(self):
         f = extract_fields("請 求 書\n", "invoice")

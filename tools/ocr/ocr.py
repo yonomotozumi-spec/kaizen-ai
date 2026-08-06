@@ -209,10 +209,10 @@ def normalize(text: str) -> str:
         for ch in out
     )
 
-    # 数値の桁区切りが . や ・ に化ける（1.350,000 / 1・350,000 → 1,350,000）
+    # 数値の桁区切りが . ・ 。 、 に化ける（1.350,000 / 638。000 → 1,350,000 / 638,000）
     def fix_sep(m: re.Match) -> str:
-        return m.group(0).replace(".", ",").replace("・", ",").replace(" ", "")
-    out = re.sub(r"\d{1,3}(?:[.,・]\d{3})+(?![\d.])", fix_sep, out)
+        return re.sub(r"[.・。、 ]", ",", m.group(0))
+    out = re.sub(r"\d{1,3}(?:[.,・。、]\d{3})+(?![\d.])", fix_sep, out)
 
     # 円記号の直後の数値に空白が入り込む（\33 0,000 → \330,000）。
     # 表の列区切り（空白2つ以上）を壊さないよう、通貨記号に続く並びだけを対象にする。
@@ -284,7 +284,7 @@ TEMPLATES: dict[str, list[tuple[str, str, str]]] = {
         ("合計金額",   r"(?:ご?請求金額|合計金額|お支払金額|税込合計|請求額)\s*[:：]?\s*[\\￥¥]?\s*([\d,]{3,15})", "amount"),
         ("小計",       r"(?:小\s*計)\s*[:：]?\s*[\\￥¥]?\s*([\d,]{3,15})", "amount"),
         ("消費税",     r"(?:消費税|税額)\s*(?:\([^)]*\)|（[^）]*）)?\s*[:：]?\s*[\\￥¥]?\s*([\d,]{2,15})", "amount"),
-        ("登録番号",   r"(?:登録番号|適格請求書発行事業者登録番号|インボイス番号)\s*[:：]?\s*([T1Il|]\s?\d[\d\s\-]{10,18})", "tnum"),
+        ("登録番号",   r"(?:登録番号|適格請求書発行事業者登録番号|インボイス番号)\s*[:：]?\s*([T1Il|][ \t]?\d[\d \t\-]{10,18})", "tnum"),
         ("電話番号",   r"(?:TEL|Tel|電話|℡)\s*[:：]?\s*([\d\-\(\)\s]{9,18})", "tel"),
         ("振込先",     r"(?:お?振込先|振込口座|お振り込み先)\s*[:：]?\s*([^\n]{5,60})", "raw"),
     ],
@@ -293,7 +293,7 @@ TEMPLATES: dict[str, list[tuple[str, str, str]]] = {
         ("金額",       r"(?:金額|合計|領収金額|)\s*[\\￥¥]\s*([\d,]{3,15})", "amount"),
         ("但し書き",   r"但\s*し?\s*[,、]?\s*([^\n]{2,40}?)\s*(?:として|の?代金|$)", "raw"),
         ("発行者",     r"(?:発行者|店舗名|)\s*((?:株式会社|有限会社|合同会社)[^\s\n]{1,20})", "raw"),
-        ("登録番号",   r"(?:登録番号|インボイス番号)\s*[:：]?\s*([T1Il|]\s?\d[\d\s\-]{10,18})", "tnum"),
+        ("登録番号",   r"(?:登録番号|インボイス番号)\s*[:：]?\s*([T1Il|][ \t]?\d[\d \t\-]{10,18})", "tnum"),
     ],
     "delivery": [
         ("納品書番号", r"(?:納品書?番号|No\.?)\s*[:：]?\s*([A-Za-z0-9\-_/]{3,30})", "raw"),
@@ -540,7 +540,7 @@ def print_report(r: Result) -> None:
     print()
 
 
-def write_csv(results: list[Result], out_path: Path) -> None:
+def write_csv(results: list[Result], out_path: Path, quiet: bool = False) -> None:
     keys: list[str] = []
     for r in results:
         for k in r.fields:
@@ -560,17 +560,17 @@ def write_csv(results: list[Result], out_path: Path) -> None:
                 + [r.fields.get(k, "") for k in keys]
                 + [len(r.line_items), " / ".join(missing), " / ".join(r.warnings)]
             )
-    print(f"CSVを書き出しました: {out_path}")
+    print(f"CSVを書き出しました: {out_path}", file=sys.stderr if quiet else sys.stdout)
 
 
-def write_items_csv(results: list[Result], out_path: Path) -> None:
+def write_items_csv(results: list[Result], out_path: Path, quiet: bool = False) -> None:
     with out_path.open("w", encoding="utf-8-sig", newline="") as f:
         w = csv.writer(f)
         w.writerow(["ファイル名", "行番号", "列1", "列2", "列3", "列4", "列5"])
         for r in results:
             for i, row in enumerate(r.line_items, 1):
                 w.writerow([r.path.name, i] + (row + [""] * 5)[:5])
-    print(f"明細CSVを書き出しました: {out_path}")
+    print(f"明細CSVを書き出しました: {out_path}", file=sys.stderr if quiet else sys.stdout)
 
 
 # ============================================================
@@ -661,23 +661,27 @@ def main() -> None:
             print_report(r)
 
     if args.out:
-        write_csv(results, args.out)
+        write_csv(results, args.out, quiet=args.json)
     if args.items:
-        write_items_csv(results, args.items)
+        write_items_csv(results, args.items, quiet=args.json)
 
     ocr_done = [r for r in results if r.source == "OCR"]
     review = [r for r in results
               if r.warnings or any(v == UNKNOWN for v in r.fields.values())]
 
+    # --json は他システムへの受け渡し用なので、標準出力にはJSON以外を混ぜない
+    out = sys.stderr if args.json else sys.stdout
+
     if ocr_done:
         avg = sum(r.confidence for r in ocr_done) / len(ocr_done)
-        print(f"処理 {len(results)}件（うちOCR {len(ocr_done)}件 / 平均信頼度 {avg:.1f}）")
+        print(f"処理 {len(results)}件（うちOCR {len(ocr_done)}件 / 平均信頼度 {avg:.1f}）", file=out)
     else:
-        print(f"処理 {len(results)}件（すべてPDFのテキスト層から取得）")
+        print(f"処理 {len(results)}件（すべてPDFのテキスト層から取得）", file=out)
 
     if review:
-        print(f"要確認 {len(review)}件: " + " / ".join(r.path.name for r in review))
-    print("※ 検算を通った項目も誤認識の可能性は残ります。金額・日付・口座番号は原本と突合してください。")
+        print(f"要確認 {len(review)}件: " + " / ".join(r.path.name for r in review), file=out)
+    print("※ 検算を通った項目も誤認識の可能性は残ります。金額・日付・口座番号は原本と突合してください。",
+          file=out)
 
 
 if __name__ == "__main__":
