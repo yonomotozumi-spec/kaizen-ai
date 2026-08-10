@@ -32,3 +32,8 @@ venv/
 ~$*.docx
 ~$*.xlsx
 ~$*.pptx
+
+# OCRツールの出力
+tools/ocr/out/
+tools/ocr/*.csv
+tools/ocr/__pycache__/
