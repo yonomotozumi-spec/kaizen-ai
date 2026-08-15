@@ -194,6 +194,41 @@
       </div>
 
       <div class="case-block">
+        <h3>自動化した範囲</h3>
+        <figure class="case-fig">
+          <div class="fig-wrap">
+            <svg viewBox="0 0 880 250" role="img" aria-label="DD項目は全18項目のうち9項目が座標から自動で入り、残る9項目は人が確認する。許認可は全39法令のうち5法令が防災レイヤの該当から自動で「要」となり、残る34法令は従来どおり行政に確認する、という内訳を示した横棒グラフ">
+              <rect x="0" y="10" width="13" height="13" fill="#345BA8"/>
+              <text x="20" y="21" font-size="12" fill="currentColor">座標から自動</text>
+              <rect x="120" y="10" width="13" height="13" fill="#BE9433"/>
+              <text x="140" y="21" font-size="12" fill="currentColor">人が確認</text>
+        
+              <text x="0" y="76" font-size="13" font-weight="700" fill="currentColor">DD項目</text>
+              <text x="0" y="94" font-size="11" fill="currentColor" opacity=".7">全18項目</text>
+              <rect x="210.0" y="56" width="325.0" height="34" fill="#345BA8"/>
+              <text x="372.5" y="78" text-anchor="middle" font-size="12.5" font-weight="700" fill="#fff">9項目</text>
+              <rect x="537.0" y="56" width="323.0" height="34" fill="#BE9433"/>
+              <text x="698.5" y="78" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1E1704">9項目</text>
+              <text x="210" y="106" font-size="11" fill="currentColor" opacity=".75">座標を渡すだけで値が入る</text>
+              <text x="536" y="106" font-size="11" fill="currentColor" opacity=".75">座標入りリンクを開いて確認する</text>
+        
+              <text x="0" y="176" font-size="13" font-weight="700" fill="currentColor">許認可</text>
+              <text x="0" y="194" font-size="11" fill="currentColor" opacity=".7">全39法令</text>
+              <rect x="210.0" y="156" width="83.3" height="34" fill="#345BA8"/>
+              <text x="251.7" y="178" text-anchor="middle" font-size="12.5" font-weight="700" fill="#fff">5法令</text>
+              <rect x="295.3" y="156" width="564.7" height="34" fill="#BE9433"/>
+              <text x="577.7" y="178" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1E1704">34法令</text>
+              <text x="210" y="206" font-size="11" fill="currentColor" opacity=".75">防災レイヤの該当から自動で「要」が立つ</text>
+              <text x="500" y="206" font-size="11" fill="currentColor" opacity=".75">従来どおり行政に確認する（地域差が大きいため）</text>
+        
+              <text x="0" y="238" font-size="11" fill="currentColor" opacity=".75">自動化したのは「調べて転記する」ところまで。判断は人の側に残している。</text>
+            </svg>
+          </div>
+          <figcaption>半分が人の確認として残っているのは、できなかったからではなく、そう設計したためです。APIで機械的に判定すると誤りが混ざる項目は、座標で一発で開けるリンクを用意したうえで人に残しています。</figcaption>
+        </figure>
+      </div>
+
+      <div class="case-block">
         <h3>この案件で大事にしたこと</h3>
         <p class="case-basis"><b>全部を自動にはしていません。</b>農地・森林・鳥獣保護区・埋蔵文化財・景観・騒音／振動・垂直積雪量は、APIで機械的に判定すると誤りが混ざるため、あえて人の確認として残しました。代わりに、その座標で一発で開けるリンクを自動で用意しています。<br>また、許認可の要否は地域差が大きいため、最終的には行政への確認を前提とした運用のままにしています。<strong>自動化したのは「調べて転記する」ところまで</strong>で、判断は人の側に残しています。</p>
       </div>
@@ -423,6 +458,36 @@
       <h2>ここから先は、想定モデルケースです。</h2>
       <p>実際に手がけた案件ではありません。サービス内容と一般的な業務量から「この条件ならこう変わる」を組み立てたものです。数値はすべて試算で、各ケースに前提と測り方を書いています。</p>
     </div>
+
+    <figure class="case-fig">
+      <div class="fig-wrap">
+        <svg viewBox="0 0 880 316" role="img" aria-label="想定モデルケース4件を、人がやる量の削減率で比較した横棒グラフ。議事録づくり83%減、ベテランの中断時間65%減、提案書づくり63%減、人が対応する件数42%減。いずれも試算">
+          <line x1="268.0" y1="42" x2="268.0" y2="284" stroke="currentColor" stroke-opacity=".16"/><text x="268.0" y="34" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".7">0%</text>
+          <line x1="398.0" y1="42" x2="398.0" y2="284" stroke="currentColor" stroke-opacity=".16"/><text x="398.0" y="34" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".7">25%</text>
+          <line x1="528.0" y1="42" x2="528.0" y2="284" stroke="currentColor" stroke-opacity=".16"/><text x="528.0" y="34" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".7">50%</text>
+          <line x1="658.0" y1="42" x2="658.0" y2="284" stroke="currentColor" stroke-opacity=".16"/><text x="658.0" y="34" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".7">75%</text>
+          <line x1="788.0" y1="42" x2="788.0" y2="284" stroke="currentColor" stroke-opacity=".16"/><text x="788.0" y="34" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".7">100%</text>
+          <text x="0" y="76" font-size="13" font-weight="700" fill="currentColor">議事録づくり</text>
+          <text x="0" y="93" font-size="11" fill="currentColor" opacity=".7">月12時間 → 2時間</text>
+          <path d="M268,64 H698.1600000000001 A3,3 0 0 1 701.1600000000001,67 V87 A3,3 0 0 1 698.1600000000001,90 H268 Z" fill="#345BA8"><title>議事録づくり：83%削減（月12時間 → 2時間）</title></path>
+          <text x="713" y="82" font-size="14" font-weight="700" fill="currentColor">83<tspan font-size="11">%減</tspan></text>
+          <text x="0" y="138" font-size="13" font-weight="700" fill="currentColor">ベテランの中断時間</text>
+          <text x="0" y="155" font-size="11" fill="currentColor" opacity=".7">1日100分 → 35分</text>
+          <path d="M268,126 H603.0 A3,3 0 0 1 606.0,129 V149 A3,3 0 0 1 603.0,152 H268 Z" fill="#345BA8"><title>ベテランの中断時間：65%削減（1日100分 → 35分）</title></path>
+          <text x="618" y="144" font-size="14" font-weight="700" fill="currentColor">65<tspan font-size="11">%減</tspan></text>
+          <text x="0" y="200" font-size="13" font-weight="700" fill="currentColor">提案書づくり</text>
+          <text x="0" y="217" font-size="11" fill="currentColor" opacity=".7">月80時間 → 30時間</text>
+          <path d="M268,188 H590.0 A3,3 0 0 1 593.0,191 V211 A3,3 0 0 1 590.0,214 H268 Z" fill="#345BA8"><title>提案書づくり：63%削減（月80時間 → 30時間）</title></path>
+          <text x="605" y="206" font-size="14" font-weight="700" fill="currentColor">63<tspan font-size="11">%減</tspan></text>
+          <text x="0" y="262" font-size="13" font-weight="700" fill="currentColor">人が対応する件数</text>
+          <text x="0" y="279" font-size="11" fill="currentColor" opacity=".7">月2,400件 → 1,390件</text>
+          <path d="M268,250 H483.91999999999996 A3,3 0 0 1 486.91999999999996,253 V273 A3,3 0 0 1 483.91999999999996,276 H268 Z" fill="#345BA8"><title>人が対応する件数：42%削減（月2,400件 → 1,390件）</title></path>
+          <text x="499" y="268" font-size="14" font-weight="700" fill="currentColor">42<tspan font-size="11">%減</tspan></text>
+          <text x="0" y="304" font-size="11" fill="currentColor" opacity=".75">単位の違う4件を「人がやる量」に揃えて比較。いずれも想定モデルケースの試算値。</text>
+        </svg>
+      </div>
+      <figcaption>4件とも実在の顧客事例ではありません。サービス内容と一般的な業務量から組み立てた試算で、各ケースの前提と測り方はそれぞれの「効果」の表に記載しています。</figcaption>
+    </figure>
 
     <!-- ---------- CASE 01 ---------- -->
     <article class="case" id="case-01">
