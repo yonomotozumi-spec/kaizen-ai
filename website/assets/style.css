@@ -12,9 +12,12 @@
   --ai:     #111C31;
   --ai-2:   #1A2A47;
   --ai-3:   #2C4270;
-  /* 朱 */
-  --shu:    #E8543F;
-  --shu-d:  #C23D29;
+  /* 朱 — 面で塗るときは白文字とのコントラストが要るので濃い方を使う
+     #E8543F 白文字=3.64（基準4.5に不足）／#C23D29 白文字=5.26 */
+  --shu:     #E8543F;   /* 文字・罫・図の強調（藍地の上で4.68） */
+  --shu-d:   #C23D29;
+  --shu-btn: #C23D29;   /* ボタンの塗り（白文字5.26／藍地との面コントラスト3.24） */
+  --shu-btn-h: #A32F1C; /* ボタンのホバー */
   /* 真鍮 */
   --kin:    #C6A868;
   --kin-w:  #EBDCB4;
@@ -36,6 +39,7 @@
   --f-body: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", YuGothic, "Meiryo", sans-serif;
   --f-lat: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
   --ease: cubic-bezier(.19,.72,.28,1);
+  --fig-accent: var(--shu);   /* 図の強調色。明地では濃い朱に切り替える */
 }
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -104,13 +108,13 @@ img, svg, canvas { display: block; max-width: 100%; }
 .btn {
   display: inline-flex; align-items: center; gap: 12px;
   padding: 18px 38px; border: 1px solid transparent; border-radius: 0;
-  background: var(--shu); color: #fff; text-decoration: none;
-  font-weight: 700; font-size: 15px; letter-spacing: .08em;
+  background: var(--shu-btn); color: #fff; text-decoration: none;
+  font-weight: 700; font-size: 15.5px; letter-spacing: .08em;
   position: relative; overflow: hidden;
   transition: transform .4s var(--ease), box-shadow .4s var(--ease);
 }
 .btn::before {
-  content: ""; position: absolute; inset: 0; background: var(--shu-d);
+  content: ""; position: absolute; inset: 0; background: var(--shu-btn-h);
   transform: scaleX(0); transform-origin: left; transition: transform .45s var(--ease);
 }
 .btn > * { position: relative; z-index: 1; }
@@ -466,7 +470,8 @@ img, svg, canvas { display: block; max-width: 100%; }
 .case-card::before { content: ""; position: absolute; inset: 0; background: var(--ai-2); transform: translateY(101%); transition: transform .5s var(--ease); z-index: 0; }
 .case-card > * { position: relative; z-index: 1; }
 .case-card:hover::before { transform: none; }
-.case-card .seg { font-family: var(--f-lat); font-size: 11px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--kin); }
+/* 固有名詞（kikitori 等）を大文字化しないため text-transform は使わない */
+.case-card .seg { font-family: var(--f-lat); font-size: 11px; font-weight: 700; letter-spacing: .18em; color: var(--kin); }
 .case-card h3 { font-family: var(--f-display); font-weight: 600; font-size: clamp(19px, 2.2vw, 24px); letter-spacing: .05em; line-height: 1.6; margin: 14px 0 22px; }
 .case-card .metric { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; padding-top: 20px; border-top: 1px solid var(--rule-s); margin-top: auto; }
 .case-card .metric .from { font-family: var(--f-lat); font-size: 15px; color: var(--tx-m); text-decoration: line-through; text-decoration-color: var(--shu); font-variant-numeric: tabular-nums; }
@@ -585,4 +590,206 @@ img, svg, canvas { display: block; max-width: 100%; }
 .case-fig figcaption {
   margin-top: 16px; padding-left: 16px; border-left: 1px solid var(--rule);
   font-size: 12.5px; color: var(--tx-m); max-width: 72ch;
+}
+
+/* ==========================================================================
+   明地のセクション
+   「暗は印象、明は情報」— ヒーロー／ミッション／行動指針の帯／アプローチ／
+   最終CTA は暗いまま、読ませるセクションは紙地に置く。
+   暗地用の定義には触れず、明地のときだけ上書きする加算方式。
+   ========================================================================== */
+.bg-washi { background: var(--washi); color: var(--tx-l); }
+.bg-paper { background: var(--paper); color: var(--tx-l); }
+.bg-washi.grain::before, .bg-paper.grain::before { display: none; }
+
+/* 共通 */
+.bg-washi .h2, .bg-paper .h2 { color: var(--tx-l); }
+.bg-washi .lead, .bg-paper .lead { color: var(--tx-lm); }
+.bg-washi .vlabel, .bg-paper .vlabel { color: var(--kin-l); }
+.bg-washi .ic-box, .bg-paper .ic-box { border-color: var(--rule-l); color: var(--kin-l); background: var(--paper); }
+
+/* 課題 */
+.bg-washi .pain-list, .bg-paper .pain-list { border-top-color: var(--rule-l); }
+.bg-washi .pain-row, .bg-paper .pain-row { border-bottom-color: var(--rule-l); }
+.bg-washi .pain-row:hover, .bg-paper .pain-row:hover { background: rgba(16,26,46,.03); }
+.bg-washi .pain-row p, .bg-paper .pain-row p { color: var(--tx-lm); }
+
+/* サービス */
+.bg-washi .svc-grid, .bg-paper .svc-grid { background: var(--rule-l); border-color: var(--rule-l); }
+.bg-washi .svc-card, .bg-paper .svc-card { background: var(--paper); }
+.bg-washi .svc-card.is-open, .bg-paper .svc-card.is-open { background: #FCEEEA; }
+.bg-washi .svc-card p, .bg-paper .svc-card p { color: var(--tx-lm); }
+.bg-washi .svc-card:hover h3, .bg-paper .svc-card:hover h3 { color: #fff; }
+
+/* 改善例カード */
+.bg-washi .case-grid, .bg-paper .case-grid { background: var(--rule-l); border-color: var(--rule-l); }
+.bg-washi .case-card, .bg-paper .case-card { background: var(--paper); }
+.bg-washi .case-card::before, .bg-paper .case-card::before { background: #F7F9FD; }
+.bg-washi .case-card .seg, .bg-paper .case-card .seg { color: var(--kin-l); }
+.bg-washi .case-card .metric, .bg-paper .case-card .metric { border-top-color: var(--rule-l); }
+.bg-washi .case-card .from, .bg-paper .case-card .from { color: var(--tx-lm); }
+.bg-washi .case-card .to, .bg-paper .case-card .to { color: var(--tx-l); }
+.bg-washi .case-card .lb, .bg-paper .case-card .lb { color: var(--tx-lm); }
+.bg-washi .case-card .go, .bg-paper .case-card .go { color: var(--kin-l); }
+.bg-washi .case-subhead p, .bg-paper .case-subhead p { color: var(--tx-lm); }
+.bg-washi .case-badge.model, .bg-paper .case-badge.model { border-color: #CBBA92; color: var(--kin-l); }
+
+/* 注意書き */
+.bg-washi .disclaimer, .bg-paper .disclaimer { background: #EAEFF7; border-color: var(--rule-l); border-left-color: var(--shu-btn); color: var(--tx-lm); }
+.bg-washi .disclaimer .mark, .bg-paper .disclaimer .mark { color: var(--shu-btn); }
+.bg-washi .disclaimer b, .bg-paper .disclaimer b { color: var(--tx-l); }
+.bg-washi .disclaimer a, .bg-paper .disclaimer a { color: var(--shu-btn) !important; }
+
+/* 選ばれる理由 */
+.bg-washi .reason-grid, .bg-paper .reason-grid { background: var(--rule-l); border-color: var(--rule-l); }
+.bg-washi .reason, .bg-paper .reason { background: var(--paper); }
+.bg-washi .reason p, .bg-paper .reason p { color: var(--tx-lm); }
+.bg-washi .honesty, .bg-paper .honesty { background: var(--paper); border-left-color: var(--shu-btn); color: var(--tx-lm); }
+.bg-washi .honesty b, .bg-paper .honesty b { color: var(--tx-l); }
+
+/* ご依頼の流れ */
+.bg-washi .flow-item::before, .bg-paper .flow-item::before { background: var(--rule-l); }
+.bg-washi .flow-item .node, .bg-paper .flow-item .node { background: var(--washi); border-color: var(--kin-l); }
+.bg-washi .flow-item.last .node, .bg-paper .flow-item.last .node { background: var(--shu-btn); border-color: var(--shu-btn); }
+.bg-washi .flow-item .stepno, .bg-paper .flow-item .stepno { color: var(--kin-l); }
+.bg-washi .flow-item p, .bg-paper .flow-item p { color: var(--tx-lm); }
+.bg-washi .flow-item .dur, .bg-paper .flow-item .dur { color: var(--tx-l); border-color: var(--rule-l); background: var(--paper); }
+.bg-washi .speed, .bg-paper .speed { background: var(--paper); border-left-color: var(--shu-btn); color: var(--tx-lm); }
+.bg-washi .speed b, .bg-paper .speed b { color: var(--shu-btn); }
+
+/* FAQ */
+.bg-washi .faq-list, .bg-paper .faq-list { border-top-color: var(--rule-l); }
+.bg-washi .faq-list details, .bg-paper .faq-list details { border-bottom-color: var(--rule-l); }
+.bg-washi .faq-list summary:hover, .bg-paper .faq-list summary:hover { color: var(--shu-btn); }
+.bg-washi .faq-list summary .q, .bg-paper .faq-list summary .q { color: var(--kin-l); }
+.bg-washi .faq-list summary .pm::before, .bg-paper .faq-list summary .pm::before,
+.bg-washi .faq-list summary .pm::after,  .bg-paper .faq-list summary .pm::after { background: var(--shu-btn); }
+.bg-washi .faq-list .a, .bg-paper .faq-list .a { color: var(--tx-lm); }
+
+/* 改善例ページ本体 */
+.bg-washi .toc, .bg-paper .toc { background: var(--rule-l); border-color: var(--rule-l); }
+.bg-washi .toc a, .bg-paper .toc a { background: var(--paper); }
+.bg-washi .toc a:hover, .bg-paper .toc a:hover { background: #F7F9FD; }
+.bg-washi .toc .n, .bg-paper .toc .n { color: var(--kin-l); }
+.bg-washi .case, .bg-paper .case { border-top-color: #C9CFDA; }
+.bg-washi .case-num, .bg-paper .case-num { color: rgba(16,26,46,.14); -webkit-text-stroke-color: #B49A63; }
+.bg-washi .case-meta, .bg-paper .case-meta { border-top-color: var(--rule-l); border-bottom-color: var(--rule-l); }
+.bg-washi .case-meta .m, .bg-paper .case-meta .m { border-right-color: var(--rule-l); }
+.bg-washi .case-meta .k, .bg-paper .case-meta .k { color: var(--tx-lm); }
+.bg-washi .case-meta .v, .bg-paper .case-meta .v { color: var(--tx-l); }
+.bg-washi .case-block > h3, .bg-paper .case-block > h3 { color: var(--kin-l); }
+.bg-washi .case-block > h3::after, .bg-paper .case-block > h3::after { background: var(--rule-l); }
+.bg-washi .case-block p, .bg-paper .case-block p { color: var(--tx-lm); }
+.bg-washi .case-steps li, .bg-paper .case-steps li { color: var(--tx-lm); }
+.bg-washi .case-steps li::before, .bg-paper .case-steps li::before { color: var(--kin-l); }
+.bg-washi .case-table th, .bg-paper .case-table th { color: var(--kin-l); border-bottom-color: #C9CFDA; }
+.bg-washi .case-table td, .bg-paper .case-table td { color: var(--tx-lm); border-bottom-color: var(--rule-l); }
+.bg-washi .case-table td:first-child, .bg-paper .case-table td:first-child { color: var(--tx-l); }
+.bg-washi .case-table .after, .bg-paper .case-table .after { color: var(--tx-l); }
+.bg-washi .case-tags span, .bg-paper .case-tags span { color: var(--tx-l); border-color: var(--rule-l); background: var(--paper); }
+.bg-washi .case-basis, .bg-paper .case-basis { border-left-color: #C9B489; color: var(--tx-lm); }
+.bg-washi .case-basis b, .bg-paper .case-basis b { color: var(--tx-l); }
+.bg-washi .group-head, .bg-paper .group-head { border-top-color: #C9CFDA; }
+.bg-washi .group-head p, .bg-paper .group-head p { color: var(--tx-lm); }
+
+/* 実装フロー図 */
+.bg-washi .case-fig .fig-wrap, .bg-paper .case-fig .fig-wrap { background: var(--paper); border-color: var(--rule-l); }
+.bg-washi .case-fig svg, .bg-paper .case-fig svg { color: var(--tx-lm); }
+.bg-washi, .bg-paper { --fig-accent: var(--shu-btn); }
+.bg-washi .case-fig figcaption, .bg-paper .case-fig figcaption { border-left-color: #C9B489; color: var(--tx-lm); }
+
+/* ==========================================================================
+   印刷
+   営業で紙に出す前提。全ページを白地・黒文字に落とし、
+   画面用の装飾（固定ヘッダー・円相・巨大文字・流れる帯）は落とす。
+   ========================================================================== */
+@media print {
+  @page { margin: 14mm 12mm; }
+
+  html, body { background: #fff !important; color: #000 !important; font-size: 10.5pt; line-height: 1.7; }
+
+  /* 画面のための要素は印刷しない */
+  .site-header, .enso, .hero-kanji, .marquee, .case-card .go, .mission-rule { display: none !important; }
+
+  /* 地色をすべて白に落とす */
+  .band, .hero, .cta-band, .page-head, .site-footer,
+  .svc-card, .case-card, .reason, .toc a, .kpi, .price-card,
+  .disclaimer, .honesty, .speed, .kpi-panel, .contact-box, .case-fig .fig-wrap {
+    background: #fff !important; color: #000 !important;
+  }
+  .grain::before { display: none !important; }
+  .hero, .cta-band, .page-head { background-image: none !important; }
+  .band, .hero, .page-head { padding: 10mm 0 !important; min-height: 0 !important; }
+
+  /* 罫はグレーに統一 */
+  .svc-grid, .case-grid, .reason-grid, .toc, .kpi-row,
+  .pain-list, .pain-row, .steps, .step, .faq-list, .faq-list details,
+  .case, .case-meta, .case-table th, .case-table td, .case-fig .fig-wrap,
+  .disclaimer, .price-card, .case-tags span, .flow-item .dur, .kpi-panel, .contact-box {
+    border-color: #bbb !important;
+  }
+  .svc-grid, .case-grid, .reason-grid, .toc, .kpi-row { background: #bbb !important; }
+
+  /* 文字は黒、補助文はグレー */
+  .h2, h1, h2, h3, .price, .case-table .after, .case-meta .v, .hero-facts .v { color: #000 !important; }
+  .lead, p, td, .case-steps li, figcaption { color: #333 !important; }
+  .case-block > h3, .vlabel, .stepno, .seg, .case-table th, .crumb { color: #666 !important; }
+
+  /* 縦書き・回転は印刷で崩れるため解除 */
+  .sec { display: block !important; }
+  .vlabel { position: static !important; writing-mode: horizontal-tb !important; margin-bottom: 6mm; }
+  .vlabel::after { display: none !important; }
+  .mission-vert { writing-mode: horizontal-tb !important; height: auto !important; display: block !important; text-align: left !important; }
+  .mission-vert br { display: none !important; }
+
+  /* スクロール演出は無効化（非表示のまま印刷されるのを防ぐ） */
+  [data-rv], [data-rv-group] > * { opacity: 1 !important; transform: none !important; }
+
+  /* 図は白地・黒線で */
+  .case-fig svg { color: #333 !important; min-width: 0 !important; }
+  .case-fig .fig-wrap { overflow: visible !important; }
+  .bg-washi, .bg-paper { --fig-accent: #000; }
+
+  /* ボタンは枠線の見出しとして残す */
+  .btn { background: #fff !important; color: #000 !important; border: 1pt solid #000 !important; box-shadow: none !important; }
+  .btn::before { display: none !important; }
+
+  /* リンク先を併記（内部アンカーは除く） */
+  a[href^="http"]::after, a[href$=".html"]::after { content: " (" attr(href) ")"; font-size: 8pt; color: #666; }
+  a { color: #000 !important; }
+
+  /* 改ページ */
+  h1, h2, h3, .h2 { break-after: avoid; }
+  article.case { break-before: page; }
+  .case-table table, .case-block, .price-card, .svc-card, .case-card, figure { break-inside: avoid; }
+
+  /* 画面用の大きさは紙には過剰 */
+  .hero h1 { font-size: 22pt !important; }
+  .h2, .page-head h1 { font-size: 15pt !important; }
+  .case h2 { font-size: 13pt !important; }
+  .case-num, .step .n { font-size: 20pt !important; -webkit-text-stroke: 0 !important; color: #666 !important; }
+}
+
+/* ==========================================================================
+   1pxグリッドの引き方を box-shadow に統一
+   コンテナ背景を罫の色にする方式だと、要素数が列数の倍数でないときに
+   空セルが色の塊になって出る（目次7件・サービス8件など）。
+   セル側の box-shadow で引けば、空セルには何も描かれない。
+   ========================================================================== */
+.svc-grid, .case-grid, .reason-grid, .toc, .kpi-row,
+.bg-washi .svc-grid, .bg-paper .svc-grid,
+.bg-washi .case-grid, .bg-paper .case-grid,
+.bg-washi .reason-grid, .bg-paper .reason-grid,
+.bg-washi .toc, .bg-paper .toc {
+  background: transparent; border: 0;
+}
+.svc-card, .case-card, .reason, .toc a, .kpi { box-shadow: 0 0 0 1px var(--rule-s); }
+.bg-washi .svc-card, .bg-paper .svc-card,
+.bg-washi .case-card, .bg-paper .case-card,
+.bg-washi .reason,   .bg-paper .reason,
+.bg-washi .toc a,    .bg-paper .toc a { box-shadow: 0 0 0 1px var(--rule-l); }
+
+@media print {
+  .svc-grid, .case-grid, .reason-grid, .toc, .kpi-row { background: transparent !important; }
+  .svc-card, .case-card, .reason, .toc a, .kpi { box-shadow: 0 0 0 1px #bbb !important; }
 }
