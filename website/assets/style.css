@@ -559,3 +559,30 @@ img, svg, canvas { display: block; max-width: 100%; }
   font-size: clamp(24px, 3.2vw, 38px); letter-spacing: .05em; line-height: 1.45; margin-bottom: 18px;
 }
 .group-head p { color: var(--tx-m); font-size: 14.5px; max-width: 60ch; }
+
+/* --- 改善例の小見出し（実例／想定の2グループに分ける） --- */
+.case-subhead {
+  display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+.case-subhead h3 {
+  font-family: var(--f-display); font-weight: 600;
+  font-size: clamp(19px, 2.2vw, 25px); letter-spacing: .06em;
+}
+.case-subhead p { color: var(--tx-m); font-size: 13px; }
+.case-subhead + .case-grid { margin-bottom: clamp(46px, 5vw, 72px); }
+/* 実例3件は3列。2列にすると1件余って空セルが出る */
+.case-grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 900px) { .case-grid.cols-3 { grid-template-columns: 1fr; } }
+
+/* --- 実装フロー図 --- */
+.case-fig { margin: 0; }
+.case-fig .fig-wrap {
+  overflow-x: auto; border: 1px solid var(--rule-s);
+  background: var(--sumi-2); padding: clamp(20px, 2.6vw, 34px);
+}
+.case-fig svg { width: 100%; height: auto; color: var(--tx-m); min-width: 640px; }
+.case-fig figcaption {
+  margin-top: 16px; padding-left: 16px; border-left: 1px solid var(--rule);
+  font-size: 12.5px; color: var(--tx-m); max-width: 72ch;
+}

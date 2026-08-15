@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>改善例 — Kaizen AI</title>
-<meta name="description" content="用地DD判定の自動化（実例）と、4つの想定モデルケース。課題・施策・効果と、その測り方まで記載しています。">
+<meta name="description" content="実際に手がけた3件（用地DD判定の自動化／議事録のCRM連携／営業資料の自動生成）と、4つの想定モデルケース。課題・施策・効果と、その測り方まで記載しています。">
 <meta name="theme-color" content="#080D18">
 <meta name="robots" content="index, follow">
 <meta property="og:type" content="article">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:site_name" content="Kaizen AI">
 <meta property="og:title" content="改善例 — Kaizen AI">
-<meta property="og:description" content="用地DD判定の自動化（実例）と、4つの想定モデルケース。課題・施策・効果と、その測り方まで記載しています。">
+<meta property="og:description" content="実際に手がけた3件（用地DD判定の自動化／議事録のCRM連携／営業資料の自動生成）と、4つの想定モデルケース。課題・施策・効果と、その測り方まで記載しています。">
 <meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="assets/style.css">
 </head>
@@ -47,7 +47,7 @@
   <div class="wrap">
     <div class="crumb"><a href="index.html">Top</a><span>/</span>Cases</div>
     <h1>改善例</h1>
-    <p class="sub">実際に手がけた案件を1件、想定モデルケースを4件掲載しています。課題・実際にやったこと・効果と、その<strong>測り方</strong>まで書いています。</p>
+    <p class="sub">実際に手がけた案件を3件、想定モデルケースを4件掲載しています。課題・実際にやったこと・効果と、その<strong>測り方</strong>まで書いています。</p>
   </div>
 </div>
 
@@ -56,7 +56,7 @@
   <div class="wrap">
     <div class="disclaimer">
       <span class="mark">Notice</span>
-      <div><b>実例と想定ケースを分けて掲載しています。</b>最初の1件は実際に手がけた案件です。それ以降の4件は、サービス内容と一般的な業務量から組み立てた<strong>想定モデルケース</strong>で、数値は「この条件ならこう変わる」という試算です。どちらも成果を保証するものではなく、実際の効果は業務の内容・データの整備状況・現場の運用体制によって変わります。</div>
+      <div><b>実例と想定ケースを分けて掲載しています。</b>最初の3件は実際に手がけた案件です。それ以降の4件は、サービス内容と一般的な業務量から組み立てた<strong>想定モデルケース</strong>で、数値は「この条件ならこう変わる」という試算です。どちらも成果を保証するものではなく、実際の効果は業務の内容・データの整備状況・現場の運用体制によって変わります。</div>
     </div>
   </div>
 </section>
@@ -66,6 +66,8 @@
   <div class="wrap">
     <div class="toc">
       <a href="#case-dd"><div class="n">実例</div><div class="t">用地DD判定の自動化（不動産開発）</div></a>
+      <a href="#case-minutes"><div class="n">実例</div><div class="t">議事録生成からCRM投入・通知まで</div></a>
+      <a href="#case-sales"><div class="n">実例</div><div class="t">営業資料の自動生成</div></a>
       <a href="#case-01"><div class="n">Case 01</div><div class="t">現場定例の議事録・報告書づくり</div></a>
       <a href="#case-02"><div class="n">Case 02</div><div class="t">ベテランへの質問待ちで止まる仕事</div></a>
       <a href="#case-03"><div class="n">Case 03</div><div class="t">提案書を毎回ゼロから書く</div></a>
@@ -106,6 +108,77 @@
       </div>
 
       <div class="case-block">
+        <h3>実装の流れ</h3>
+        <figure class="case-fig">
+          <div class="fig-wrap">
+            <svg viewBox="0 0 880 352" role="img" aria-label="住所からの地図検索では代表点に最大716mのズレが出るのに対し、案件の緯度経度を起点にすると不動産情報ライブラリのAPIからDD9項目と許認可5法令が自動で埋まり、残りは座標入りリンクで人が確認したうえで、すべてが既存のExcel3タブに集約される流れを示した図">
+              <defs>
+              <marker id="d1a" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+                <polygon points="0,0 10,4 0,8" fill="currentColor"/>
+              </marker>
+              <marker id="d1s" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+                <polygon points="0,0 10,4 0,8" fill="#E8543F"/>
+              </marker>
+            </defs>
+        
+              <text x="24" y="20" font-size="10.5" fill="currentColor" opacity=".7" letter-spacing="2">BEFORE</text>
+              <rect x="24" y="32" width="108" height="44" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="1" stroke-dasharray="5 4"/>
+              <text x="78" y="58" text-anchor="middle" font-size="12" fill="currentColor">住所</text>
+              <path d="M132,54 H196" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.2" marker-end="url(#d1a)"/>
+              <text x="164" y="46" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".95">地図で検索</text>
+              <rect x="196" y="32" width="124" height="44" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="1" stroke-dasharray="5 4"/>
+              <text x="258" y="58" text-anchor="middle" font-size="12" fill="currentColor">地図の中心点</text>
+              <path d="M320,54 H396" fill="none" stroke="#E8543F" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#d1s)"/>
+              <text x="404" y="50" font-size="12" fill="#E8543F">最大716mのズレ</text>
+              <text x="404" y="68" font-size="10.5" fill="currentColor" opacity=".75">用途地域・農地は筆単位で変わるため、判定そのものを誤らせる</text>
+        
+              <line x1="24" y1="100" x2="856" y2="100" stroke="currentColor" stroke-opacity=".22"/>
+              <text x="24" y="128" font-size="10.5" fill="#E8543F" letter-spacing="2">AFTER</text>
+        
+              <rect x="24" y="200" width="112" height="52" fill="none" stroke="#E8543F" stroke-width="1.6"/>
+              <text x="80" y="222" text-anchor="middle" font-size="12" fill="#E8543F">案件の</text>
+              <text x="80" y="238" text-anchor="middle" font-size="12" fill="#E8543F">緯度経度</text>
+              <path d="M136,226 H164 V182 H190" fill="none" stroke="#E8543F" stroke-width="1.2" marker-end="url(#d1s)"/>
+              <text x="176" y="170" text-anchor="middle" font-size="10.5" fill="#E8543F" opacity=".95">座標を渡す</text>
+              <path d="M136,226 H164 V300 H190" fill="none" stroke="#E8543F" stroke-width="1.2" marker-end="url(#d1s)"/>
+        
+              <rect x="190" y="154" width="180" height="56" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="1"/>
+              <text x="280" y="178" text-anchor="middle" font-size="12" fill="currentColor">不動産情報ライブラリ</text>
+              <text x="280" y="194" text-anchor="middle" font-size="12" fill="currentColor">（国土交通省）API</text>
+              <rect x="190" y="272" width="180" height="56" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="1"/>
+              <text x="280" y="296" text-anchor="middle" font-size="12" fill="currentColor">座標入り確認リンクを</text>
+              <text x="280" y="312" text-anchor="middle" font-size="12" fill="currentColor">自動生成</text>
+        
+              <path d="M370,182 H400 V162 H426" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.2" marker-end="url(#d1a)"/>
+              <text x="400" y="150" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".95">該当判定</text>
+              <path d="M370,182 H400 V236 H426" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.2" marker-end="url(#d1a)"/>
+              <text x="400" y="210" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".95">防災4レイヤ</text>
+              <path d="M370,300 H400 V310 H426" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.2" marker-end="url(#d1a)"/>
+        
+              <rect x="426" y="138" width="172" height="48" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="1"/>
+              <text x="512" y="166" text-anchor="middle" font-size="12" fill="currentColor">DD 9項目を自動入力</text>
+              <rect x="426" y="212" width="172" height="48" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="1"/>
+              <text x="512" y="232" text-anchor="middle" font-size="12" fill="currentColor">許認可39法令のうち</text>
+              <text x="512" y="248" text-anchor="middle" font-size="12" fill="currentColor">5法令に「要」が立つ</text>
+              <rect x="426" y="286" width="172" height="48" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="1"/>
+              <text x="512" y="314" text-anchor="middle" font-size="12" fill="currentColor">残り9項目は人が確認</text>
+        
+              <path d="M598,162 H630 V226 H654" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.2" marker-end="url(#d1a)"/>
+              <path d="M598,236 H630 V226 H654" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.2" marker-end="url(#d1a)"/>
+              <path d="M598,310 H630 V226 H654" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.2" marker-end="url(#d1a)"/>
+        
+              <rect x="654" y="174" width="182" height="104" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="1"/>
+              <text x="745" y="214" text-anchor="middle" font-size="12" fill="currentColor">既存の Excel（3タブ）</text>
+              <text x="745" y="230" text-anchor="middle" font-size="12" fill="currentColor">許認可事前確認 / 39法令 /</text>
+              <text x="745" y="246" text-anchor="middle" font-size="12" fill="currentColor">輸送確認</text>
+              <text x="745" y="298" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".75">現場の帳票フォーマットは変えない</text>
+            </svg>
+          </div>
+          <figcaption>起点を住所から緯度経度に変えたうえで、1つの座標を判定・リンク生成の両方に渡している。自動判定は7レイヤ、人が確認する項目には同じ座標で開けるリンクを用意し、出力先は既存のExcelのままにした。</figcaption>
+        </figure>
+      </div>
+
+      <div class="case-block">
         <h3>効果</h3>
         <div class="case-table">
           <table>
@@ -128,6 +201,220 @@
       <div class="case-block">
         <h3>使ったサービス</h3>
         <div class="case-tags"><span>業務自動化・AIエージェント</span><span>データ分析・可視化</span></div>
+      </div>
+    </article>
+
+    <!-- ---------- 実例：議事録からCRM投入・通知まで ---------- -->
+    <article class="case" id="case-minutes">
+      <span class="case-badge real">実例</span>
+      <h2>議事録を書いても、<br>CRMには入っていなかった。</h2>
+      <div class="case-meta">
+        <div class="m"><div class="k">顧客</div><div class="v">kikitori</div></div>
+        <div class="m"><div class="k">対象業務</div><div class="v">商談・会議の議事録</div></div>
+        <div class="m"><div class="k">連携先</div><div class="v">HubSpot（CRM）／Slack</div></div>
+      </div>
+
+      <div class="case-block">
+        <h3>課題</h3>
+        <p>商談や会議のあと、担当者は3つの作業をしていました。議事録を書く。HubSpotの該当レコードに転記する。関係者にSlackで共有する。この3つが別々の手作業で、それぞれのタイミングで抜けます。</p>
+        <p style="margin-top:18px">問題は書く負担そのものより、<strong>書いたあとが続かないこと</strong>でした。議事録はあるのにCRMには残っていない。CRMに入れても関係者が気づいていない。記録が資産にならず、その場のメモで終わっていました。</p>
+      </div>
+
+      <div class="case-block">
+        <h3>やったこと</h3>
+        <ol class="case-steps">
+          <li>会議の種類ごとに専用のプロンプトを作成。商談と社内定例では拾うべき項目が違うため、目的別に出力を設計した</li>
+          <li>テキストでも録音でも入力できるようにし、そこから議事録を生成</li>
+          <li>生成した議事録を、HubSpotの該当レコードへ自動で投入</li>
+          <li>投入の完了をSlackへ自動通知し、関係者がその場で内容を確認できるようにした</li>
+        </ol>
+      </div>
+
+      <div class="case-block">
+        <h3>実装の流れ</h3>
+        <figure class="case-fig">
+          <div class="fig-wrap">
+            <svg viewBox="0 0 880 292" role="img" aria-label="以前は議事録を書いたあとCRMへの転記とSlackでの共有が別々の手作業で、どちらも抜けていた。自動化後は録音またはテキストを入力すると会議種別ごとのプロンプトで議事録が生成され、HubSpotへの投入とSlack通知まで人の操作なしでつながる流れを示した図">
+              <defs>
+              <marker id="d2a" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+                <polygon points="0,0 10,4 0,8" fill="currentColor"/>
+              </marker>
+              <marker id="d2s" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+                <polygon points="0,0 10,4 0,8" fill="#E8543F"/>
+              </marker>
+            </defs>
+        
+              <text x="24" y="20" font-size="10.5" fill="currentColor" opacity=".7" letter-spacing="2">BEFORE</text>
+              <rect x="24" y="32" width="152" height="48" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="1" stroke-dasharray="5 4"/>
+              <text x="100" y="60" text-anchor="middle" font-size="12" fill="currentColor">議事録を書く</text>
+              <path d="M176,56 H286" fill="none" stroke="#E8543F" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#d2s)"/>
+              <text x="231" y="46" text-anchor="middle" font-size="10.5" fill="#E8543F" opacity=".95">手作業</text>
+              <text x="231" y="74" text-anchor="middle" font-size="10.5" fill="#E8543F">抜ける</text>
+              <rect x="286" y="32" width="152" height="48" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="1" stroke-dasharray="5 4"/>
+              <text x="362" y="60" text-anchor="middle" font-size="12" fill="currentColor">HubSpotに転記</text>
+              <path d="M438,56 H548" fill="none" stroke="#E8543F" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#d2s)"/>
+              <text x="493" y="46" text-anchor="middle" font-size="10.5" fill="#E8543F" opacity=".95">手作業</text>
+              <text x="493" y="74" text-anchor="middle" font-size="10.5" fill="#E8543F">抜ける</text>
+              <rect x="548" y="32" width="152" height="48" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="1" stroke-dasharray="5 4"/>
+              <text x="624" y="60" text-anchor="middle" font-size="12" fill="currentColor">Slackで共有</text>
+              <text x="24" y="98" font-size="10.5" fill="currentColor" opacity=".75">記録が資産にならず、その場のメモで終わる</text>
+        
+              <line x1="24" y1="112" x2="856" y2="112" stroke="currentColor" stroke-opacity=".22"/>
+              <text x="24" y="140" font-size="10.5" fill="#E8543F" letter-spacing="2">AFTER</text>
+        
+              <rect x="24" y="158" width="112" height="44" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="1"/>
+              <text x="80" y="184" text-anchor="middle" font-size="12" fill="currentColor">録音</text>
+              <rect x="24" y="214" width="112" height="44" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="1"/>
+              <text x="80" y="240" text-anchor="middle" font-size="12" fill="currentColor">テキスト</text>
+              <path d="M136,180 H162 V208 H186" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.2" marker-end="url(#d2a)"/>
+              <path d="M136,236 H162 V208 H186" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.2" marker-end="url(#d2a)"/>
+        
+              <rect x="186" y="184" width="158" height="48" fill="none" stroke="#E8543F" stroke-width="1.6"/>
+              <text x="265" y="204" text-anchor="middle" font-size="12" fill="#E8543F">会議の種類ごとの</text>
+              <text x="265" y="220" text-anchor="middle" font-size="12" fill="#E8543F">プロンプト</text>
+              <path d="M344,208 H388" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.2" marker-end="url(#d2a)"/>
+              <rect x="388" y="184" width="140" height="48" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="1"/>
+              <text x="458" y="212" text-anchor="middle" font-size="12" fill="currentColor">議事録を生成</text>
+              <path d="M528,208 H580" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.2" marker-end="url(#d2a)"/>
+              <text x="554" y="198" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".95">自動投入</text>
+              <rect x="580" y="184" width="140" height="48" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="1"/>
+              <text x="650" y="204" text-anchor="middle" font-size="12" fill="currentColor">HubSpot</text>
+              <text x="650" y="220" text-anchor="middle" font-size="12" fill="currentColor">該当レコード</text>
+              <path d="M720,208 H772" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.2" marker-end="url(#d2a)"/>
+              <text x="746" y="198" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".95">自動通知</text>
+              <rect x="772" y="184" width="84" height="48" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="1"/>
+              <text x="814" y="212" text-anchor="middle" font-size="12" fill="currentColor">Slack</text>
+        
+              <text x="265" y="256" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".8">商談と社内定例で</text>
+              <text x="265" y="272" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".8">拾う項目を変える</text>
+              <text x="650" y="256" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".8">ここから先に人の操作は入らない</text>
+            </svg>
+          </div>
+          <figcaption>要約そのものより、生成したあとをつないだことが効いている。CRMに入り関係者に届くまでが一本になったため、「議事録は書かれたが誰も見ていない」が構造的に起きない。</figcaption>
+        </figure>
+      </div>
+
+      <div class="case-block">
+        <h3>効果</h3>
+        <div class="case-table">
+          <table>
+            <thead><tr><th>指標</th><th>Before</th><th>After</th><th>測り方</th></tr></thead>
+            <tbody>
+              <tr><td>議事録作成後の手作業</td><td class="before">2ステップ<br>（CRM転記・Slack共有）</td><td class="after">0</td><td>人が操作する回数</td></tr>
+              <tr><td>CRMへの記録</td><td class="before">担当者が手で転記</td><td class="after">自動投入</td><td>HubSpotレコードに紐づくまでの操作</td></tr>
+              <tr><td>関係者への共有</td><td class="before">個別に連絡</td><td class="after">Slackに自動通知</td><td>通知の有無</td></tr>
+              <tr><td>受け付ける入力</td><td class="before">テキスト</td><td class="after">テキスト／録音</td><td>対応する入力形式</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="case-block">
+        <h3>この案件で大事にしたこと</h3>
+        <p class="case-basis"><b>議事録の生成だけなら、既製のツールでもできます。</b>この案件で効いたのは、生成したあとをつないだところです。CRMに入り、関係者に届くところまでを一本にしたので、「議事録は書かれたが誰も見ていない」が構造的に起きなくなりました。<br>会議の種類ごとにプロンプトを分けたのも同じ理由です。商談で拾うべきことと社内定例で拾うべきことは違うので、汎用の要約では使われる議事録になりません。<br><strong>※ 時間削減の実測値は未取得のため掲載していません。</strong></p>
+      </div>
+
+      <div class="case-block">
+        <h3>使ったサービス</h3>
+        <div class="case-tags"><span>ドキュメント自動生成</span><span>業務自動化・AIエージェント</span></div>
+      </div>
+    </article>
+
+    <!-- ---------- 実例：営業資料の自動生成 ---------- -->
+    <article class="case" id="case-sales">
+      <span class="case-badge real">実例</span>
+      <h2>提案の前の「下調べ」を、<br>CRMと社内DBに任せる。</h2>
+      <div class="case-meta">
+        <div class="m"><div class="k">対象業務</div><div class="v">営業資料の作成</div></div>
+        <div class="m"><div class="k">連携先</div><div class="v">CRM／社内データベース</div></div>
+      </div>
+
+      <div class="case-block">
+        <h3>課題</h3>
+        <p>提案の前に、担当者が先方の状況を毎回調べ直していました。過去のやり取りも、取引の履歴も、社内に蓄積された情報もCRMと社内データベースにあります。それでも資料をつくるときは、人がそれを読み直し、要点をまとめ、自社のフォーマットに整えるところからでした。</p>
+        <p style="margin-top:18px">情報が無いのではなく、<strong>あるのに使える形になっていない</strong>状態です。</p>
+      </div>
+
+      <div class="case-block">
+        <h3>やったこと</h3>
+        <ol class="case-steps">
+          <li>CRMと社内データベースを参照し、先方の現状と論点の仮説を自動で組み立てるようにした</li>
+          <li>出力を自社の標準フォーマットに合わせ、そのまま営業資料として使える形にした</li>
+          <li>担当者は生成された仮説を確認・修正して使う運用にし、最終的な判断は人に残した</li>
+        </ol>
+      </div>
+
+      <div class="case-block">
+        <h3>実装の流れ</h3>
+        <figure class="case-fig">
+          <div class="fig-wrap">
+            <svg viewBox="0 0 880 268" role="img" aria-label="CRMと社内データベースから先方の現状と論点の仮説を自動で組み立て、自社の標準フォーマットに整えて営業資料のドラフトを出し、最後に担当者が確認・修正して提案に使う流れを示した図。判断は人に残している">
+              <defs>
+              <marker id="d3a" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+                <polygon points="0,0 10,4 0,8" fill="currentColor"/>
+              </marker>
+              <marker id="d3s" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+                <polygon points="0,0 10,4 0,8" fill="#E8543F"/>
+              </marker>
+            </defs>
+        
+              <rect x="24" y="40" width="132" height="48" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="1"/>
+              <text x="90" y="68" text-anchor="middle" font-size="12" fill="currentColor">CRM</text>
+              <rect x="24" y="108" width="132" height="48" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="1"/>
+              <text x="90" y="136" text-anchor="middle" font-size="12" fill="currentColor">社内データベース</text>
+              <path d="M156,64 H184 V98 H210" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.2" marker-end="url(#d3a)"/>
+              <text x="90" y="182" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".85">過去のやり取り・取引履歴・</text>
+              <path d="M156,132 H184 V98 H210" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.2" marker-end="url(#d3a)"/>
+              <text x="90" y="198" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".85">社内に蓄積された情報</text>
+        
+              <rect x="210" y="74" width="170" height="48" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="1"/>
+              <text x="295" y="94" text-anchor="middle" font-size="12" fill="currentColor">先方の現状と論点の</text>
+              <text x="295" y="110" text-anchor="middle" font-size="12" fill="currentColor">仮説を組み立てる</text>
+              <path d="M380,98 H428" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.2" marker-end="url(#d3a)"/>
+              <rect x="428" y="74" width="152" height="48" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="1"/>
+              <text x="504" y="94" text-anchor="middle" font-size="12" fill="currentColor">自社の標準</text>
+              <text x="504" y="110" text-anchor="middle" font-size="12" fill="currentColor">フォーマットに整形</text>
+              <path d="M580,98 H628" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.2" marker-end="url(#d3a)"/>
+              <rect x="628" y="74" width="140" height="48" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="1"/>
+              <text x="698" y="94" text-anchor="middle" font-size="12" fill="currentColor">営業資料の</text>
+              <text x="698" y="110" text-anchor="middle" font-size="12" fill="currentColor">ドラフト</text>
+        
+              <path d="M698,122 V162" fill="none" stroke="#E8543F" stroke-width="1.2" marker-end="url(#d3s)"/>
+              <rect x="596" y="162" width="204" height="52" fill="none" stroke="#E8543F" stroke-width="1.6"/>
+              <text x="698" y="192" text-anchor="middle" font-size="12" fill="#E8543F">担当者が確認・修正して使う</text>
+              <text x="698" y="236" text-anchor="middle" font-size="11" fill="#E8543F">出すのは仮説であって、結論ではない</text>
+              <text x="698" y="254" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".75">先方の状況をどう読むかは営業の判断として残す</text>
+        
+              <text x="295" y="146" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".8">情報が無いのではなく、</text>
+              <text x="295" y="162" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".8">使える形になっていなかった</text>
+            </svg>
+          </div>
+          <figcaption>自動化したのは判断の材料を揃えるところまで。仮説の採否と最終的な組み立ては担当者の側に残している。</figcaption>
+        </figure>
+      </div>
+
+      <div class="case-block">
+        <h3>効果</h3>
+        <div class="case-table">
+          <table>
+            <thead><tr><th>指標</th><th>Before</th><th>After</th><th>測り方</th></tr></thead>
+            <tbody>
+              <tr><td>先方状況の下調べ</td><td class="before">担当者がCRM・社内DBを都度読み直す</td><td class="after">自動で仮説を生成</td><td>資料着手前に人が行う調査作業</td></tr>
+              <tr><td>資料のフォーマット</td><td class="before">担当者ごとに整形</td><td class="after">自社標準FMTで出力</td><td>標準フォーマット適用率</td></tr>
+              <tr><td>参照するデータ</td><td class="before">人が探して集める</td><td class="after">CRM・社内DBから自動取得</td><td>取得元</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="case-block">
+        <h3>この案件で大事にしたこと</h3>
+        <p class="case-basis"><b>出すのは「仮説」であって、結論ではありません。</b>先方の状況をどう読むかは営業の判断であるべきで、AIが決めることではありません。ここで自動化したのは、判断の材料を揃えるまでです。<br><strong>※ 時間削減の実測値は未取得のため掲載していません。</strong></p>
+      </div>
+
+      <div class="case-block">
+        <h3>使ったサービス</h3>
+        <div class="case-tags"><span>ドキュメント自動生成</span><span>データ分析・可視化</span><span>業務自動化・AIエージェント</span></div>
       </div>
     </article>
 
