@@ -532,3 +532,30 @@ img, svg, canvas { display: block; max-width: 100%; }
 .case-tags span { font-size: 12px; letter-spacing: .08em; color: var(--kin-w); border: 1px solid var(--rule); padding: 8px 18px; }
 .case-basis { border-left: 2px solid var(--rule); padding: 4px 0 4px 22px; color: var(--tx-m); font-size: 13px; max-width: 72ch; }
 .case-basis b { color: var(--kin-w); font-family: var(--f-display); font-weight: 600; letter-spacing: .04em; }
+
+/* --- 実例 / 想定モデルケースの区別 --- */
+.case-badge {
+  display: inline-block; align-self: flex-start;   /* flex 列の中で横に伸びるのを防ぐ */
+  font-family: var(--f-lat); font-size: 10.5px; font-weight: 700;
+  letter-spacing: .2em; text-transform: uppercase; padding: 6px 14px; margin-bottom: 18px;
+}
+.case-badge.real { background: var(--shu); color: #fff; }
+.case-badge.model { border: 1px solid var(--rule); color: var(--kin); }
+
+/* 実例は1枚で全幅を使う */
+.case-feature {
+  grid-column: 1 / -1; background: var(--ai-2);
+  display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: clamp(24px, 3vw, 48px); align-items: end;
+}
+@media (max-width: 860px) { .case-feature { grid-template-columns: 1fr; align-items: start; } }
+.case-feature h3 { font-size: clamp(21px, 2.6vw, 30px); }
+.case-feature .metric { border-top-color: var(--rule); }
+
+/* 想定ケース群の見出し */
+.group-head { border-top: 1px solid var(--rule); padding-top: clamp(40px, 5vw, 64px); margin-top: clamp(56px, 7vw, 96px); }
+.group-head h2 {
+  font-family: var(--f-display); font-weight: 600;
+  font-size: clamp(24px, 3.2vw, 38px); letter-spacing: .05em; line-height: 1.45; margin-bottom: 18px;
+}
+.group-head p { color: var(--tx-m); font-size: 14.5px; max-width: 60ch; }

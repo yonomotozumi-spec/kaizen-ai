@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>改善例（モデルケース） — Kaizen AI</title>
-<meta name="description" content="Kaizen AI がどのように業務を改善するかを、4つのモデルケースでご紹介します。課題・施策・効果・測り方まで具体的に記載しています。実在の顧客事例ではありません。">
+<title>改善例 — Kaizen AI</title>
+<meta name="description" content="用地DD判定の自動化（実例）と、4つの想定モデルケース。課題・施策・効果と、その測り方まで記載しています。">
 <meta name="theme-color" content="#080D18">
 <meta name="robots" content="index, follow">
 <meta property="og:type" content="article">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:site_name" content="Kaizen AI">
-<meta property="og:title" content="改善例（モデルケース） — Kaizen AI">
-<meta property="og:description" content="Kaizen AI がどのように業務を改善するかを、4つのモデルケースでご紹介します。実在の顧客事例ではありません。">
+<meta property="og:title" content="改善例 — Kaizen AI">
+<meta property="og:description" content="用地DD判定の自動化（実例）と、4つの想定モデルケース。課題・施策・効果と、その測り方まで記載しています。">
 <meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="assets/style.css">
 </head>
@@ -47,7 +47,7 @@
   <div class="wrap">
     <div class="crumb"><a href="index.html">Top</a><span>/</span>Cases</div>
     <h1>改善例</h1>
-    <p class="sub">Kaizen AI がどう業務を変えるのかを、4つのモデルケースでご説明します。課題・実際にやること・効果と、その<strong>測り方</strong>まで書いています。</p>
+    <p class="sub">実際に手がけた案件を1件、想定モデルケースを4件掲載しています。課題・実際にやったこと・効果と、その<strong>測り方</strong>まで書いています。</p>
   </div>
 </div>
 
@@ -56,7 +56,7 @@
   <div class="wrap">
     <div class="disclaimer">
       <span class="mark">Notice</span>
-      <div><b>これは実在の顧客事例ではありません。</b>Kaizen AI は2026年設立の新しい会社であり、公開できる導入実績はまだありません。以下は、サービス内容と一般的な業務量から組み立てた<strong>想定モデルケース</strong>です。数値は「この条件ならこう変わる」という試算であり、成果を保証するものではありません。実際の効果は、業務の内容・データの整備状況・現場の運用体制によって変わります。<br>実績が出次第、実際の事例に差し替えていきます。</div>
+      <div><b>実例と想定ケースを分けて掲載しています。</b>最初の1件は実際に手がけた案件です。それ以降の4件は、サービス内容と一般的な業務量から組み立てた<strong>想定モデルケース</strong>で、数値は「この条件ならこう変わる」という試算です。どちらも成果を保証するものではなく、実際の効果は業務の内容・データの整備状況・現場の運用体制によって変わります。</div>
     </div>
   </div>
 </section>
@@ -65,6 +65,7 @@
 <section class="band bg-sumi grain" style="padding-top:clamp(40px,5vw,64px);padding-bottom:clamp(56px,7vw,88px)">
   <div class="wrap">
     <div class="toc">
+      <a href="#case-dd"><div class="n">実例</div><div class="t">用地DD判定の自動化（不動産開発）</div></a>
       <a href="#case-01"><div class="n">Case 01</div><div class="t">現場定例の議事録・報告書づくり</div></a>
       <a href="#case-02"><div class="n">Case 02</div><div class="t">ベテランへの質問待ちで止まる仕事</div></a>
       <a href="#case-03"><div class="n">Case 03</div><div class="t">提案書を毎回ゼロから書く</div></a>
@@ -77,8 +78,68 @@
 <section class="band bg-ai grain" style="padding-top:0">
   <div class="wrap">
 
+    <!-- ---------- 実例：用地DD判定の自動化 ---------- -->
+    <article class="case" id="case-dd">
+      <span class="case-badge real">実例</span>
+      <h2>用地のDD判定を、<br>緯度経度から自動で埋める。</h2>
+      <div class="case-meta">
+        <div class="m"><div class="k">業種</div><div class="v">不動産開発（全国展開）</div></div>
+        <div class="m"><div class="k">対象業務</div><div class="v">用地取得のデューデリジェンス</div></div>
+        <div class="m"><div class="k">使ったデータ</div><div class="v">国土交通省 不動産情報ライブラリ／国土地理院</div></div>
+      </div>
+
+      <div class="case-block">
+        <h3>課題</h3>
+        <p>用地候補地ごとに、法規制と災害リスクのDD判定をExcelで作成していました。用途地域・区域区分・浸水・土砂災害・液状化・自然公園などを、担当者がそれぞれ別の行政サイトや地図で1件ずつ調べ、手で転記する作業です。全国展開のため案件数が多く、参照先も地域ごとに異なります。</p>
+        <p style="margin-top:18px">さらに、住所から地図を検索して中心点を読み取る運用だったため、判定している場所が実際の筆とずれることがありました。検証したところ、<strong>最大716mのズレ</strong>が確認されています。用途地域や農地の判定は筆単位で変わるため、これは判定そのものを誤らせる問題でした。</p>
+      </div>
+
+      <div class="case-block">
+        <h3>やったこと</h3>
+        <ol class="case-steps">
+          <li>判定の起点を案件の<strong>緯度経度</strong>に統一。住所から地図を検索し直す運用をやめ、判定・地図リンク・目視確認のすべてに同じ座標を渡すようにした</li>
+          <li>国土交通省「不動産情報ライブラリ」APIに座標を渡し、用途地域・市街化区域・市街化調整区域・浸水（河川名・浸水深）・土砂災害・液状化・自然公園を自動判定</li>
+          <li>防災レイヤ（地すべり・急傾斜地・土砂災害特別警戒区域・大規模盛土造成地）の該当を、許認可チェックの該当法令に自動で反映</li>
+          <li>自動判定できない項目は、その座標で直接開ける確認リンクを自動生成。人が見るべきものは人が見る形で残した</li>
+          <li>出力は既存のExcelフォーマットのまま（3タブ構成）。現場の作業手順は変えず、埋まり方だけを変えた</li>
+        </ol>
+      </div>
+
+      <div class="case-block">
+        <h3>効果</h3>
+        <div class="case-table">
+          <table>
+            <thead><tr><th>指標</th><th>Before</th><th>After</th><th>測り方</th></tr></thead>
+            <tbody>
+              <tr><td>DD項目の自動入力</td><td class="before">0項目</td><td class="after">9項目</td><td>座標を渡すだけで値が入る項目数</td></tr>
+              <tr><td>許認可への自動反映</td><td class="before">なし</td><td class="after">5法令</td><td>防災4レイヤの該当から自動で「要」が立つ法令数（全39法令中）</td></tr>
+              <tr><td>判定地点の精度</td><td class="before">住所の代表点<br>（最大716mのズレ）</td><td class="after">案件の緯度経度</td><td>代表点と実座標の距離を実測</td></tr>
+              <tr><td>参照先へのアクセス</td><td class="before">サイトごとに個別検索</td><td class="after">座標入りリンクを自動生成</td><td>Googleマップ・GSI航空写真・重ねるハザードマップ・J-SHIS</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="case-block">
+        <h3>この案件で大事にしたこと</h3>
+        <p class="case-basis"><b>全部を自動にはしていません。</b>農地・森林・鳥獣保護区・埋蔵文化財・景観・騒音／振動・垂直積雪量は、APIで機械的に判定すると誤りが混ざるため、あえて人の確認として残しました。代わりに、その座標で一発で開けるリンクを自動で用意しています。<br>また、許認可の要否は地域差が大きいため、最終的には行政への確認を前提とした運用のままにしています。<strong>自動化したのは「調べて転記する」ところまで</strong>で、判断は人の側に残しています。</p>
+      </div>
+
+      <div class="case-block">
+        <h3>使ったサービス</h3>
+        <div class="case-tags"><span>業務自動化・AIエージェント</span><span>データ分析・可視化</span></div>
+      </div>
+    </article>
+
+    <!-- ---------- ここから想定モデルケース ---------- -->
+    <div class="group-head">
+      <h2>ここから先は、想定モデルケースです。</h2>
+      <p>実際に手がけた案件ではありません。サービス内容と一般的な業務量から「この条件ならこう変わる」を組み立てたものです。数値はすべて試算で、各ケースに前提と測り方を書いています。</p>
+    </div>
+
     <!-- ---------- CASE 01 ---------- -->
     <article class="case" id="case-01">
+      <span class="case-badge model">想定ケース</span>
       <div class="case-num">01</div>
       <h2>現場定例の議事録が、<br>毎回90分の残業になっていた。</h2>
       <div class="case-meta">
@@ -132,6 +193,7 @@
 
     <!-- ---------- CASE 02 ---------- -->
     <article class="case" id="case-02">
+      <span class="case-badge model">想定ケース</span>
       <div class="case-num">02</div>
       <h2>「あの件どうなってましたっけ」が、<br>1日20回飛んでいた。</h2>
       <div class="case-meta">
@@ -185,6 +247,7 @@
 
     <!-- ---------- CASE 03 ---------- -->
     <article class="case" id="case-03">
+      <span class="case-badge model">想定ケース</span>
       <div class="case-num">03</div>
       <h2>提案書を毎回ゼロから書いていて、<br>営業が営業する時間を失っていた。</h2>
       <div class="case-meta">
@@ -237,6 +300,7 @@
 
     <!-- ---------- CASE 04 ---------- -->
     <article class="case" id="case-04">
+      <span class="case-badge model">想定ケース</span>
       <div class="case-num">04</div>
       <h2>問い合わせが月2,400件。<br>一次対応だけで3名が張りついていた。</h2>
       <div class="case-meta">
