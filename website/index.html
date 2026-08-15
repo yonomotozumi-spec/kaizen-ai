@@ -3,416 +3,646 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kaizen AI — AIで、日本の現場に "改善" を。</title>
+<title>Kaizen AI — AIで、日本の現場に「改善」を。</title>
 <meta name="description" content="Kaizen AI は、AIを駆使した業務効率化コンサルティング会社です。診断から定着まで一気通貫で伴走し、効果を数字で示します。まずは60分の無料相談から。">
-<style>
-  :root {
-    --ink: #22335C;
-    --ink2: #3A4E85;
-    --panel: #2C3E6B;
-    --ice: #C9D8EE;
-    --bg-soft: #F4F7FB;
-    --acc: #E8543F;
-    --acc-soft: #FDEDE9;
-    --gray: #5B6570;
-    --white: #FFFFFF;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
-    color: var(--ink);
-    background: var(--white);
-    line-height: 1.75;
-  }
-  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
-  section { padding: 88px 0; }
-  h2 { font-size: clamp(26px, 4vw, 34px); margin-bottom: 10px; }
-  .lead { color: var(--gray); margin-bottom: 48px; font-size: 15px; }
-  .accent { color: var(--acc); }
-
-  /* ---------- header ---------- */
-  header {
-    position: sticky; top: 0; z-index: 50;
-    background: rgba(255,255,255,.94); backdrop-filter: blur(8px);
-    border-bottom: 1px solid #E5EAF2;
-  }
-  .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; }
-  .logo { font-size: 20px; font-weight: 800; letter-spacing: .5px; color: var(--ink); text-decoration: none; }
-  .logo span { color: var(--acc); }
-  .nav-links { display: flex; gap: 26px; align-items: center; }
-  .nav-links a { color: var(--ink); text-decoration: none; font-size: 14px; }
-  .nav-links a:hover { color: var(--acc); }
-  .btn {
-    display: inline-block; padding: 12px 28px; border-radius: 999px;
-    background: var(--acc); color: var(--white); text-decoration: none;
-    font-weight: 700; font-size: 15px; transition: opacity .2s, transform .2s;
-  }
-  .btn:hover { opacity: .88; transform: translateY(-1px); }
-  .btn.small { padding: 9px 20px; font-size: 13px; }
-  .btn.ghost { background: transparent; border: 2px solid var(--ice); color: var(--white); }
-  @media (max-width: 720px) { .nav-links a:not(.btn) { display: none; } }
-
-  /* ---------- hero ---------- */
-  .hero {
-    background: var(--ink); color: var(--white);
-    position: relative; overflow: hidden; padding: 110px 0 120px;
-  }
-  .hero .circles { position: absolute; right: -140px; top: 50%; transform: translateY(-50%); width: 560px; height: 560px; pointer-events: none; }
-  .hero .c1, .hero .c2, .hero .c3 { position: absolute; border-radius: 50%; }
-  .hero .c1 { inset: 0; border: 2px solid var(--ink2); }
-  .hero .c2 { inset: 90px; border: 3px solid var(--acc); }
-  .hero .c3 { inset: 205px; background: var(--panel); }
-  .hero .dot { position: absolute; top: 60px; right: 70px; width: 22px; height: 22px; border-radius: 50%; background: var(--ice); }
-  .hero .eyebrow { color: var(--ice); font-size: 13px; letter-spacing: 3px; margin-bottom: 22px; }
-  .hero h1 { font-size: clamp(34px, 6vw, 56px); line-height: 1.35; margin-bottom: 22px; }
-  .hero h1 em { font-style: normal; color: var(--acc); }
-  .hero p.sub { color: var(--ice); font-size: clamp(15px, 2vw, 18px); margin-bottom: 40px; max-width: 560px; }
-  .hero .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
-  @media (max-width: 860px) { .hero .circles { opacity: .35; } }
-
-  /* ---------- pain ---------- */
-  .pain-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
-  .pain-card {
-    background: var(--bg-soft); border-radius: 14px; padding: 26px 24px;
-    display: flex; gap: 16px; align-items: flex-start;
-  }
-  .pain-card .ico { flex: 0 0 46px; height: 46px; border-radius: 50%; background: var(--ink); color: var(--white); display: grid; place-items: center; font-size: 20px; }
-  .pain-card h3 { font-size: 16.5px; margin-bottom: 6px; }
-  .pain-card p { color: var(--gray); font-size: 13.5px; }
-  .pain-close { margin-top: 42px; font-size: clamp(18px, 3vw, 22px); font-weight: 800; }
-
-  /* ---------- about ---------- */
-  .about { background: var(--ink); color: var(--white); }
-  .about-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 56px; align-items: start; }
-  @media (max-width: 860px) { .about-grid { grid-template-columns: 1fr; } }
-  .about .mission-label { color: var(--acc); font-size: 12px; letter-spacing: 3px; font-weight: 700; margin-bottom: 14px; }
-  .about .mission { font-size: clamp(24px, 3.4vw, 32px); font-weight: 800; line-height: 1.5; margin-bottom: 20px; }
-  .about .mission-sub { color: var(--ice); font-size: 14.5px; }
-  .feature { display: flex; gap: 18px; margin-bottom: 30px; }
-  .feature .ico { flex: 0 0 52px; height: 52px; border-radius: 50%; background: var(--panel); display: grid; place-items: center; font-size: 22px; }
-  .feature .ico.acc { background: var(--acc); }
-  .feature h3 { font-size: 17px; margin-bottom: 5px; }
-  .feature p { color: var(--ice); font-size: 13.5px; }
-  .chip-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
-  .chip { background: var(--panel); color: var(--ice); font-size: 12px; font-weight: 700; padding: 7px 16px; border-radius: 999px; }
-
-  /* ---------- services ---------- */
-  .svc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
-  .svc-card { background: var(--bg-soft); border-radius: 14px; padding: 26px 22px; }
-  .svc-card.acc { background: var(--acc-soft); }
-  .svc-card .ico { width: 46px; height: 46px; border-radius: 50%; background: var(--ink); color: var(--white); display: grid; place-items: center; font-size: 20px; margin-bottom: 16px; }
-  .svc-card.acc .ico { background: var(--acc); }
-  .svc-card h3 { font-size: 15.5px; margin-bottom: 6px; }
-  .svc-card p { color: var(--gray); font-size: 13px; }
-
-  /* ---------- approach ---------- */
-  .approach { background: var(--bg-soft); }
-  .step-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-bottom: 46px; }
-  .step-card { background: var(--white); border-radius: 14px; padding: 26px 22px; position: relative; }
-  .step-card .num { position: absolute; top: 20px; right: 20px; color: var(--acc); font-weight: 800; font-size: 15px; }
-  .step-card .ico { width: 46px; height: 46px; border-radius: 50%; background: var(--ink); color: var(--white); display: grid; place-items: center; font-size: 20px; margin-bottom: 16px; }
-  .step-card.last .ico { background: var(--acc); }
-  .step-card h3 { font-size: 18px; margin-bottom: 6px; }
-  .step-card p { color: var(--gray); font-size: 13px; }
-  .kpi-note h3 { font-size: 20px; margin-bottom: 6px; }
-  .kpi-note > p { color: var(--gray); font-size: 14px; margin-bottom: 18px; }
-  .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
-  .kpi { background: var(--acc-soft); border-radius: 10px; padding: 13px 16px; font-size: 13px; }
-  .kpi b { color: var(--acc); }
-
-  /* ---------- pricing ---------- */
-  .price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; margin-bottom: 30px; }
-  .price-card { background: var(--bg-soft); border-radius: 14px; padding: 30px 24px; position: relative; }
-  .price-card.top { background: var(--acc-soft); }
-  .price-card .badge {
-    position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
-    background: var(--acc); color: var(--white); font-size: 11.5px; font-weight: 700;
-    padding: 5px 16px; border-radius: 999px; white-space: nowrap;
-  }
-  .price-card h3 { font-size: 16px; margin-bottom: 12px; }
-  .price-card .price { font-size: 24px; font-weight: 800; margin-bottom: 2px; }
-  .price-card.top .price { color: var(--acc); }
-  .price-card .unit { color: var(--gray); font-size: 11.5px; margin-bottom: 14px; }
-  .price-card p.desc { color: var(--gray); font-size: 13px; }
-  .price-note { font-size: 13.5px; color: var(--gray); }
-  .price-note b { color: var(--ink); }
-
-  /* ---------- reasons ---------- */
-  .reasons { background: var(--bg-soft); }
-  .reason-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 26px; margin-bottom: 40px; }
-  .reason { text-align: center; }
-  .reason .ico { width: 68px; height: 68px; border-radius: 50%; background: var(--ink); color: var(--white); display: grid; place-items: center; font-size: 28px; margin: 0 auto 16px; }
-  .reason:nth-child(even) .ico { background: var(--acc); }
-  .reason h3 { font-size: 17px; margin-bottom: 8px; }
-  .reason p { color: var(--gray); font-size: 13px; text-align: left; }
-  .honesty { background: var(--white); border-radius: 12px; padding: 18px 24px; font-size: 14px; }
-  .honesty b { color: var(--ink); }
-  .honesty span { color: var(--gray); }
-
-  /* ---------- flow ---------- */
-  .flow-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px; margin-bottom: 40px; }
-  .flow-item { text-align: center; padding: 10px; }
-  .flow-item .stepno { color: var(--acc); font-weight: 800; font-size: 12px; letter-spacing: 2px; }
-  .flow-item h3 { font-size: 17px; margin: 6px 0 12px; }
-  .flow-item .ico { width: 60px; height: 60px; border-radius: 50%; background: var(--ink); color: var(--white); display: grid; place-items: center; font-size: 24px; margin: 0 auto 14px; }
-  .flow-item.last .ico { background: var(--acc); }
-  .flow-item p { color: var(--gray); font-size: 12.5px; margin-bottom: 12px; }
-  .flow-item .dur { display: inline-block; background: var(--bg-soft); border-radius: 999px; font-size: 12px; font-weight: 700; padding: 5px 16px; }
-  .speed { background: var(--acc-soft); border-radius: 12px; padding: 18px 24px; font-size: 14.5px; }
-  .speed b { color: var(--acc); }
-
-  /* ---------- faq ---------- */
-  .faq details { border-bottom: 1px solid #E5EAF2; padding: 4px 0; }
-  .faq summary { cursor: pointer; font-weight: 700; font-size: 15.5px; padding: 16px 4px; list-style: none; display: flex; justify-content: space-between; align-items: center; }
-  .faq summary::-webkit-details-marker { display: none; }
-  .faq summary::after { content: "＋"; color: var(--acc); font-weight: 400; }
-  .faq details[open] summary::after { content: "−"; }
-  .faq .a { color: var(--gray); font-size: 14px; padding: 0 4px 18px; }
-
-  /* ---------- cta ---------- */
-  .cta { background: var(--ink); color: var(--white); position: relative; overflow: hidden; }
-  .cta .circles { position: absolute; right: -120px; top: -180px; width: 420px; height: 420px; pointer-events: none; }
-  .cta .c1 { position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--ink2); }
-  .cta .c2 { position: absolute; inset: 80px; border-radius: 50%; border: 3px solid var(--acc); }
-  @media (max-width: 860px) { .cta .circles { opacity: .18; } }
-  .cta h2 { font-size: clamp(26px, 4.4vw, 38px); }
-  .cta p.sub { color: var(--ice); margin: 18px 0 34px; max-width: 620px; font-size: 15px; }
-  .cta-steps { display: flex; gap: 22px; flex-wrap: wrap; margin-bottom: 44px; }
-  .cta-steps .s { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 14px; }
-  .cta-steps .n { width: 30px; height: 30px; border-radius: 50%; background: var(--acc); display: grid; place-items: center; font-size: 13px; }
-  .contact-box { background: var(--panel); border-radius: 14px; padding: 26px 30px; max-width: 640px; }
-  .contact-box h3 { font-size: 15px; margin-bottom: 8px; }
-  .contact-box p { color: var(--ice); font-size: 13.5px; }
-
-  footer { background: var(--ink); color: var(--ink2); border-top: 1px solid var(--panel); padding: 26px 0; }
-  .foot { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; font-size: 12.5px; }
-  .foot .flogo { color: var(--white); font-weight: 800; font-size: 16px; }
-  .foot .flogo span { color: var(--acc); }
-</style>
+<meta name="theme-color" content="#080D18">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="Kaizen AI">
+<meta property="og:title" content="Kaizen AI — AIで、日本の現場に「改善」を。">
+<meta property="og:description" content="Kaizen AI は、AIを駆使した業務効率化コンサルティング会社です。診断から定着まで一気通貫で伴走し、効果を数字で示します。まずは60分の無料相談から。">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
-<header>
+<div class="page">
+
+<!-- ===================== アイコン定義 ===================== -->
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <defs>
+    <symbol id="i-question" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M9.4 9.3a2.7 2.7 0 1 1 3.6 2.6c-.7.3-1 .9-1 1.6v.5"/><circle cx="12" cy="17.2" r=".95" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-plug" viewBox="0 0 24 24"><path d="M9 2.6v4M15 2.6v4"/><path d="M6 6.6h12v3.6a6 6 0 0 1-12 0z"/><path d="M12 16.2v5.2"/></symbol>
+    <symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.3"/><path d="M2.8 20.2c0-3.4 2.8-5.8 6.2-5.8s6.2 2.4 6.2 5.8"/><path d="M16.4 5.2a3.3 3.3 0 0 1 0 5.9"/><path d="M18.1 14.9c1.9.9 3.1 2.8 3.1 5.3"/></symbol>
+    <symbol id="i-chart-down" viewBox="0 0 24 24"><path d="M3.5 3v18h18"/><path d="M7 8.5l4 4.5 3-2.6 4.6 5.1"/><path d="M15.2 15.5h3.4v-3.4"/></symbol>
+    <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M15.7 8.3l-2.1 5.3-5.3 2.1 2.1-5.3z"/></symbol>
+    <symbol id="i-loop" viewBox="0 0 24 24"><path d="M20.2 12a8.2 8.2 0 0 1-14.9 4.7"/><path d="M3.8 12a8.2 8.2 0 0 1 14.9-4.7"/><path d="M18.9 3.6v3.9h-3.9"/><path d="M5.1 20.4v-3.9h3.9"/></symbol>
+    <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2.4"/><rect x="9.7" y="9.7" width="4.6" height="4.6" rx="1"/><path d="M9.5 2.6V6M14.5 2.6V6M9.5 18v3.4M14.5 18v3.4M2.6 9.5H6M2.6 14.5H6M18 9.5h3.4M18 14.5h3.4"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M11 2.4c0 5 1.7 6.7 6.7 6.7-5 0-6.7 1.7-6.7 6.7 0-5-1.7-6.7-6.7-6.7 5 0 6.7-1.7 6.7-6.7z"/><path d="M18 15.4c0 2.2.8 3 3 3-2.2 0-3 .8-3 3 0-2.2-.8-3-3-3 2.2 0 3-.8 3-3z"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.3"/><path d="M12 2.4v2.8M12 18.8v2.8M21.6 12h-2.8M5.2 12H2.4M18.8 5.2l-2 2M7.2 16.8l-2 2M18.8 18.8l-2-2M7.2 7.2l-2-2"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 2.6H6.6A1.6 1.6 0 0 0 5 4.2v15.6a1.6 1.6 0 0 0 1.6 1.6h10.8a1.6 1.6 0 0 0 1.6-1.6V7.6z"/><path d="M14 2.6v5h5"/><path d="M8.4 12.6h7.2M8.4 16.4h5"/></symbol>
+    <symbol id="i-bars" viewBox="0 0 24 24"><path d="M3.2 20.6h17.6"/><path d="M7 20.6v-6.2M12 20.6v-11.4M17 20.6v-8.2"/><path d="M6 8.6l5-4.6 5 3.4"/></symbol>
+    <symbol id="i-knowledge" viewBox="0 0 24 24"><path d="M4 4.6A1.6 1.6 0 0 1 5.6 3H19v12.6"/><path d="M4 4.6v14.2A2.4 2.4 0 0 0 6.4 21.2H19"/><path d="M19 15.6H6.4a2.4 2.4 0 0 0-2.4 2.4"/><circle cx="11.4" cy="9" r="2.9"/><path d="M13.5 11.1l2.3 2.3"/></symbol>
+    <symbol id="i-headset" viewBox="0 0 24 24"><path d="M4.6 14v-2.2a7.4 7.4 0 0 1 14.8 0V14"/><rect x="2.7" y="13.3" width="4" height="6" rx="2"/><rect x="17.3" y="13.3" width="4" height="6" rx="2"/><path d="M19.3 19.3v.4a2.2 2.2 0 0 1-2.2 2.2h-3.9"/></symbol>
+    <symbol id="i-cap" viewBox="0 0 24 24"><path d="M12 3.2L22 7.9l-10 4.7L2 7.9z"/><path d="M6.2 10.3v5.2c0 1.9 2.6 3.4 5.8 3.4s5.8-1.5 5.8-3.4v-5.2"/><path d="M22 7.9v5.6"/></symbol>
+    <symbol id="i-puzzle" viewBox="0 0 24 24"><path d="M10.1 3.4a2 2 0 0 1 3.9 0c0 .6-.3 1-.3 1.5h4.1a.8.8 0 0 1 .8.8v4c-.5 0-.9-.3-1.5-.3a2 2 0 0 0 0 3.9c.6 0 1-.3 1.5-.3v4a.8.8 0 0 1-.8.8h-4c0-.5.3-.9.3-1.5a2 2 0 0 0-3.9 0c0 .6.3 1 .3 1.5H6.5a.8.8 0 0 1-.8-.8v-4c-.5 0-.9.3-1.5.3a2 2 0 0 1 0-3.9c.6 0 1 .3 1.5.3v-4a.8.8 0 0 1 .8-.8h3.9c0-.5-.3-.9-.3-1.5z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="7.2"/><path d="M15.6 15.6L21 21"/></symbol>
+    <symbol id="i-draft" viewBox="0 0 24 24"><path d="M3.2 20.8h17.6L3.2 3.2z"/><path d="M7 17.8v-2.6M10 17.8v-3.8M13 17.8v-2.6"/></symbol>
+    <symbol id="i-rocket" viewBox="0 0 24 24"><path d="M12 2.4c3.1 2.5 4.7 6.2 4.7 9.9L14.5 15.2H9.5L7.3 12.3C7.3 8.6 8.9 4.9 12 2.4z"/><circle cx="12" cy="9.6" r="1.9"/><path d="M9.5 15.2l-2.3 3.7M14.5 15.2l2.3 3.7"/><path d="M10.5 18.6c.4 1.3.9 2.2 1.5 3.1.6-.9 1.1-1.8 1.5-3.1"/></symbol>
+    <symbol id="i-helmet" viewBox="0 0 24 24"><path d="M4 15.4a8 8 0 0 1 16 0"/><path d="M2.4 15.4h19.2v1.7a1.4 1.4 0 0 1-1.4 1.4H3.8a1.4 1.4 0 0 1-1.4-1.4z"/><path d="M9.6 8.2v7.2M14.4 8.2v7.2"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13.5 2.4L5.2 13.3h5.9L10.5 21.6 18.8 10.7h-5.9z"/></symbol>
+    <symbol id="i-sprout" viewBox="0 0 24 24"><path d="M12 21.2v-8.7"/><path d="M12 12.5C12 8.9 9.1 6 5.5 6c0 3.6 2.9 6.5 6.5 6.5z"/><path d="M12 12.5C12 9.5 14.5 7 17.5 7c0 3-2.5 5.5-5.5 5.5z"/><path d="M7.4 21.2h9.2"/></symbol>
+    <symbol id="i-trend" viewBox="0 0 24 24"><path d="M3.5 3v18h18"/><path d="M7 16.2l4-4.6 3 2.6 4.6-6"/><path d="M15.2 8.2h3.4v3.4"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M2.8 5.8A1.8 1.8 0 0 1 4.6 4h10.6a1.8 1.8 0 0 1 1.8 1.8v6.4a1.8 1.8 0 0 1-1.8 1.8H7.8l-5 3.6z"/><path d="M17 8.8h2.2A1.8 1.8 0 0 1 21 10.6V17a1.8 1.8 0 0 1-1.8 1.8h-1.3l.2 2.9-3.5-2.9H10.4"/></symbol>
+    <symbol id="i-arw" viewBox="0 0 24 24"><path d="M4 12h15"/><path d="M13 6l6 6-6 6"/></symbol>
+  </defs>
+</svg>
+
+<!-- ===================== ヘッダー ===================== -->
+<header class="site-header">
   <div class="wrap nav">
-    <a class="logo" href="#top">Kaizen <span>AI</span></a>
+    <a class="logo" href="#top">Kaizen <em>AI</em></a>
     <nav class="nav-links">
       <a href="#services">サービス</a>
       <a href="#approach">アプローチ</a>
+      <a href="#cases">改善例</a>
       <a href="#pricing">料金</a>
-      <a href="#flow">ご依頼の流れ</a>
       <a href="#faq">FAQ</a>
-      <a class="btn small" href="#contact">無料相談</a>
+      <a class="btn btn-sm" href="#contact">無料相談</a>
     </nav>
   </div>
 </header>
 
-<!-- ================= HERO ================= -->
-<div class="hero" id="top">
-  <div class="circles"><div class="c1"></div><div class="c2"></div><div class="c3"></div><div class="dot"></div></div>
-  <div class="wrap" style="position:relative">
-    <div class="eyebrow">AI × 業務効率化コンサルティング</div>
-    <h1>AIで、日本の現場に<br><em>"改善"</em> を。</h1>
-    <p class="sub">業務の一つひとつにAIを組み込み、無理・無駄・ムラをなくす。診断から定着まで一気通貫で伴走し、効果は必ず数字で示します。</p>
-    <div class="cta-row">
-      <a class="btn" href="#contact">60分の無料相談を予約する</a>
-      <a class="btn ghost" href="#services">サービスを見る</a>
+<!-- ===================== ヒーロー ===================== -->
+<div class="hero grain" id="top">
+  <div class="hero-kanji" aria-hidden="true">改善</div>
+  <canvas class="enso" id="enso" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="hero-inner">
+      <div class="hero-eyebrow rise d1">AI &times; 業務効率化コンサルティング</div>
+      <h1>
+        <span class="ln curtain"><span class="d1">AIで、日本の</span></span>
+        <span class="ln curtain"><span class="d2">現場に</span></span>
+        <span class="ln curtain"><span class="d3"><em>「改善」</em>を。</span></span>
+      </h1>
+      <p class="hero-sub rise d4">業務の一つひとつにAIを組み込み、無理・無駄・ムラをなくす。診断から定着まで一気通貫で伴走し、効果は必ず数字で示します。</p>
+      <div class="hero-cta rise d5">
+        <a class="btn" href="#contact"><span>60分の無料相談を予約する</span><svg class="ic arw" width="18" height="18"><use href="#i-arw"/></svg></a>
+        <a class="btn btn-line" href="#services"><span>サービスを見る</span></a>
+      </div>
+      <div class="hero-facts rise d6">
+        <div class="f"><div class="v">60分</div><div class="k">初回相談・無料</div></div>
+        <div class="f"><div class="v">2〜4週間</div><div class="k">業務診断</div></div>
+        <div class="f"><div class="v">約2週間</div><div class="k">最初の「動く改善」まで</div></div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- ================= PAIN ================= -->
-<section>
-  <div class="wrap">
-    <h2>こんなお悩みはありませんか？</h2>
-    <p class="lead">AI活用が進む一方で、現場ではこんな声をよく伺います。</p>
-    <div class="pain-grid">
-      <div class="pain-card"><div class="ico">？</div><div><h3>何に使えばいいか分からない</h3><p>AIが話題だが、自社の業務への活かし方が見えない。</p></div></div>
-      <div class="pain-card"><div class="ico">🔌</div><div><h3>ツールが定着しない</h3><p>導入はしたものの、一部の人しか使っていない。</p></div></div>
-      <div class="pain-card"><div class="ico">👥</div><div><h3>社内にAI人材がいない</h3><p>推進役が不在で、外部への丸投げも不安。</p></div></div>
-      <div class="pain-card"><div class="ico">📉</div><div><h3>効果が見えない</h3><p>投資に見合う成果が出ているのか分からない。</p></div></div>
+<!-- ===================== 課題 ===================== -->
+<section class="band bg-washi">
+  <div class="wrap sec">
+    <div class="rail"><div class="vlabel">Issues</div></div>
+    <div>
+      <div data-rv>
+        <h2 class="h2">その違和感は、<br>だいたい当たっている。</h2>
+        <p class="lead">AI活用が進む一方で、現場ではこんな声をよく伺います。</p>
+      </div>
+      <div class="pain-list" data-rv-group>
+        <div class="pain-row">
+          <div class="ic-box"><svg class="ic"><use href="#i-question"/></svg></div>
+          <h3>何に使えばいいか分からない</h3>
+          <p>AIが話題だが、自社の業務への活かし方が見えない。</p>
+        </div>
+        <div class="pain-row">
+          <div class="ic-box"><svg class="ic"><use href="#i-plug"/></svg></div>
+          <h3>ツールが定着しない</h3>
+          <p>導入はしたものの、一部の人しか使っていない。</p>
+        </div>
+        <div class="pain-row">
+          <div class="ic-box"><svg class="ic"><use href="#i-people"/></svg></div>
+          <h3>社内にAI人材がいない</h3>
+          <p>推進役が不在で、外部への丸投げも不安。</p>
+        </div>
+        <div class="pain-row">
+          <div class="ic-box"><svg class="ic"><use href="#i-chart-down"/></svg></div>
+          <h3>効果が見えない</h3>
+          <p>投資に見合う成果が出ているのか分からない。</p>
+        </div>
+      </div>
+      <p class="pain-close" data-rv>その悩みは、<br><em>「仕組み」</em>で解ける。</p>
     </div>
-    <p class="pain-close">その悩み、<span class="accent">「仕組み」</span>で解決できます。</p>
   </div>
 </section>
 
-<!-- ================= ABOUT ================= -->
-<section class="about">
-  <div class="wrap">
-    <div class="about-grid">
-      <div>
-        <div class="mission-label">MISSION</div>
-        <div class="mission">AIで、日本の現場に<br>"改善" を。</div>
-        <p class="mission-sub">一度きりの効率化ではなく、継続的な改善（カイゼン）を回し続けられる状態を、お客様とともにつくります。</p>
+<!-- ===================== ミッション ===================== -->
+<section class="band bg-sumi grain">
+  <div class="wrap mission-band">
+    <div data-rv>
+      <div class="mission-rule"></div>
+      <div class="mission-label">Mission</div>
+      <div class="mission-vert">AIで、日本の現場に<br><em>「改善」</em>を。</div>
+      <div class="mission-rule bottom"></div>
+      <p class="mission-sub">一度きりの効率化ではなく、継続的な改善（カイゼン）を回し続けられる状態を、お客様とともにつくります。</p>
+    </div>
+
+    <div class="feature-row" data-rv-group>
+      <div class="feature">
+        <div class="ic-box"><svg class="ic"><use href="#i-compass"/></svg></div>
+        <h3>一気通貫の伴走</h3>
+        <p>診断 → 設計 → 導入 → 定着まで丸ごと支援。ツールを入れて終わり、にしません。</p>
       </div>
-      <div>
-        <div class="feature"><div class="ico">🧭</div><div><h3>一気通貫の伴走</h3><p>診断 → 設計 → 導入 → 定着まで丸ごと支援。ツールを入れて終わり、にしません。</p></div></div>
-        <div class="feature"><div class="ico">🔄</div><div><h3>改善が続く仕組みづくり</h3><p>現場が自ら改善を回し続けられる状態をゴールにします。</p></div></div>
-        <div class="feature"><div class="ico acc">🤖</div><div><h3>自らも "AI経営" を実践</h3><p>AIを経営の中枢に据えた体制で自社を運営。日々検証した実践知をそのまま提供します。</p></div></div>
-        <div class="chip-row">
-          <span class="chip">現場ファースト</span><span class="chip">小さく速く</span><span class="chip">内製化を助ける</span><span class="chip">数字で語る</span><span class="chip">誠実なAI活用</span>
+      <div class="feature">
+        <div class="ic-box"><svg class="ic"><use href="#i-loop"/></svg></div>
+        <h3>改善が続く仕組みづくり</h3>
+        <p>現場が自ら改善を回し続けられる状態をゴールにします。</p>
+      </div>
+      <div class="feature">
+        <div class="ic-box"><svg class="ic"><use href="#i-cpu"/></svg></div>
+        <h3>自らも「AI経営」を実践</h3>
+        <p>AIを経営の中枢に据えた体制で自社を運営。日々検証した実践知をそのまま提供します。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 行動指針の帯 ===================== -->
+<div class="marquee">
+  <div class="marquee-track">
+    <div class="marquee-set">
+      <span>現場ファースト</span><i>◆</i><span>小さく速く</span><i>◆</i><span>内製化を助ける</span><i>◆</i><span>数字で語る</span><i>◆</i><span>誠実なAI活用</span><i>◆</i>
+    </div>
+    <div class="marquee-set" aria-hidden="true">
+      <span>現場ファースト</span><i>◆</i><span>小さく速く</span><i>◆</i><span>内製化を助ける</span><i>◆</i><span>数字で語る</span><i>◆</i><span>誠実なAI活用</span><i>◆</i>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== サービス ===================== -->
+<section class="band bg-paper" id="services">
+  <div class="wrap sec">
+    <div class="rail"><div class="vlabel">Services</div></div>
+    <div>
+      <div data-rv>
+        <h2 class="h2">できることは、<br>ひととおり。</h2>
+        <p class="lead">課題に合わせて、単体でも組み合わせでもご提供します。</p>
+      </div>
+      <div class="svc-grid" data-rv-group>
+        <div class="svc-card"><div class="ic-box"><svg class="ic"><use href="#i-spark"/></svg></div><h3>生成AI導入支援</h3><p>利用ルール整備と現場ユースケース設計で「使われるAI」に。</p></div>
+        <div class="svc-card"><div class="ic-box"><svg class="ic"><use href="#i-gear"/></svg></div><h3>業務自動化・AIエージェント</h3><p>定型作業を自動化し、工数を大幅削減。</p></div>
+        <div class="svc-card"><div class="ic-box"><svg class="ic"><use href="#i-doc"/></svg></div><h3>ドキュメント自動生成</h3><p>議事録・報告書・提案書の作成を高速化。</p></div>
+        <div class="svc-card"><div class="ic-box"><svg class="ic"><use href="#i-bars"/></svg></div><h3>データ分析・可視化</h3><p>意思決定に使える数字とダッシュボード。</p></div>
+        <div class="svc-card"><div class="ic-box"><svg class="ic"><use href="#i-knowledge"/></svg></div><h3>社内ナレッジ検索（RAG）</h3><p>散らばる社内情報を「探せる資産」に。</p></div>
+        <div class="svc-card"><div class="ic-box"><svg class="ic"><use href="#i-headset"/></svg></div><h3>サポート業務効率化</h3><p>AIチャットボットで一次対応を自動化。</p></div>
+        <div class="svc-card"><div class="ic-box"><svg class="ic"><use href="#i-cap"/></svg></div><h3>AI研修・内製化支援</h3><p>自走できる人材と推進体制づくり。</p></div>
+        <div class="svc-card is-open"><div class="ic-box"><svg class="ic"><use href="#i-puzzle"/></svg></div><h3>組み合わせは自由</h3><p>課題に合わせて最適な形をご提案します。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== アプローチ ===================== -->
+<section class="band bg-sumi grain" id="approach">
+  <div class="wrap sec">
+    <div class="rail"><div class="vlabel">Approach</div></div>
+    <div>
+      <div data-rv>
+        <h2 class="h2">やることは、<br>この4つだけ。</h2>
+        <p class="lead">「使われるAI」と「続く改善」は、この順番でしか実現しません。</p>
+      </div>
+      <div class="steps" data-rv-group>
+        <div class="step">
+          <div class="n">01</div>
+          <h3>診断</h3>
+          <div class="body">
+            <div class="ic-box"><svg class="ic"><use href="#i-search"/></svg></div>
+            <p>業務を可視化し、AIで改善できる領域と優先順位を特定。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="n">02</div>
+          <h3>設計</h3>
+          <div class="body">
+            <div class="ic-box"><svg class="ic"><use href="#i-draft"/></svg></div>
+            <p>改善施策・ツール選定・新しい業務フローを設計。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="n">03</div>
+          <h3>導入</h3>
+          <div class="body">
+            <div class="ic-box"><svg class="ic"><use href="#i-rocket"/></svg></div>
+            <p>生成AI・自動化ツール・エージェントを実装。</p>
+          </div>
+        </div>
+        <div class="step last">
+          <div class="n">04</div>
+          <h3>定着</h3>
+          <div class="body">
+            <div class="ic-box"><svg class="ic"><use href="#i-loop"/></svg></div>
+            <p>教育・運用ルール・伴走支援で現場に定着させる。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="kpi-panel" data-rv>
+        <h3>効果は、必ず数字で。</h3>
+        <p>すべての施策で Before / After を測定し、改善効果をレポートでご報告します。</p>
+        <div class="kpi-row">
+          <div class="kpi"><b>時間</b>作業時間・月間削減時間</div>
+          <div class="kpi"><b>コスト</b>人件費換算・外注費削減</div>
+          <div class="kpi"><b>品質</b>エラー率・手戻り件数</div>
+          <div class="kpi"><b>量</b>処理件数・対応キャパ</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ================= SERVICES ================= -->
-<section id="services">
-  <div class="wrap">
-    <h2>サービス一覧</h2>
-    <p class="lead">課題に合わせて、単体でも組み合わせでもご提供します。</p>
-    <div class="svc-grid">
-      <div class="svc-card"><div class="ico">🤖</div><h3>生成AI導入支援</h3><p>利用ルール整備と現場ユースケース設計で "使われるAI" に。</p></div>
-      <div class="svc-card"><div class="ico">⚙️</div><h3>業務自動化・AIエージェント</h3><p>定型作業を自動化し、工数を大幅削減。</p></div>
-      <div class="svc-card"><div class="ico">📄</div><h3>ドキュメント自動生成</h3><p>議事録・報告書・提案書の作成を高速化。</p></div>
-      <div class="svc-card"><div class="ico">📊</div><h3>データ分析・可視化</h3><p>意思決定に使える数字とダッシュボード。</p></div>
-      <div class="svc-card"><div class="ico">📚</div><h3>社内ナレッジ検索（RAG）</h3><p>散らばる社内情報を "探せる資産" に。</p></div>
-      <div class="svc-card"><div class="ico">🎧</div><h3>サポート業務効率化</h3><p>AIチャットボットで一次対応を自動化。</p></div>
-      <div class="svc-card"><div class="ico">🎓</div><h3>AI研修・内製化支援</h3><p>自走できる人材と推進体制づくり。</p></div>
-      <div class="svc-card acc"><div class="ico">🧩</div><h3>組み合わせは自由</h3><p>課題に合わせて最適な形をご提案します。</p></div>
-    </div>
-  </div>
-</section>
+<!-- ===================== 改善例 ===================== -->
+<section class="band bg-washi" id="cases">
+  <div class="wrap sec">
+    <div class="rail"><div class="vlabel">Cases</div></div>
+    <div>
+      <div data-rv>
+        <h2 class="h2">たとえば、<br>こう変わります。</h2>
+        <p class="lead">実際に手がけた案件を3件と、想定モデルケースを4件。何をして、どこがどう変わるのかを、効果の「測り方」まで含めて書きました。</p>
+      </div>
+      <div class="case-subhead" data-rv>
+        <h3>実例</h3><p>実際に手がけた案件です。</p>
+      </div>
+      <div class="case-grid cols-3" data-rv-group>
+        <a class="case-card" href="cases.html#case-dd">
+          <span class="case-badge real">実例</span>
+          <div class="seg">不動産開発（全国展開）</div>
+          <h3>用地のDD判定を、緯度経度から自動で埋める。</h3>
+          <div class="metric">
+            <span class="from">0項目</span><span class="to">9項目</span>
+            <span class="lb">座標だけで自動入力されるDD項目</span>
+          </div>
+          <div class="go">詳しく見る<svg class="ic"><use href="#i-arw"/></svg></div>
+        </a>
+        <a class="case-card" href="cases.html#case-minutes">
+          <span class="case-badge real">実例</span>
+          <div class="seg">kikitori</div>
+          <h3>議事録を書いても、CRMには入っていなかった。</h3>
+          <div class="metric">
+            <span class="from">2ステップ</span><span class="to">0</span>
+            <span class="lb">議事録作成後に人が行う操作</span>
+          </div>
+          <div class="go">詳しく見る<svg class="ic"><use href="#i-arw"/></svg></div>
+        </a>
+        <a class="case-card" href="cases.html#case-sales">
+          <span class="case-badge real">実例</span>
+          <div class="seg">営業部門</div>
+          <h3>提案の前の「下調べ」を、CRMと社内DBに任せる。</h3>
+          <div class="metric">
+            <span class="from">都度手作業</span><span class="to">自動</span>
+            <span class="lb">資料着手前の先方状況の整理</span>
+          </div>
+          <div class="go">詳しく見る<svg class="ic"><use href="#i-arw"/></svg></div>
+        </a>
+      </div>
 
-<!-- ================= APPROACH ================= -->
-<section class="approach" id="approach">
-  <div class="wrap">
-    <h2>私たちのアプローチ</h2>
-    <p class="lead">4つのステップで、"使われるAI" と "続く改善" を実現します。</p>
-    <div class="step-grid">
-      <div class="step-card"><span class="num">01</span><div class="ico">🔍</div><h3>診断</h3><p>業務を可視化し、AIで改善できる領域と優先順位を特定。</p></div>
-      <div class="step-card"><span class="num">02</span><div class="ico">📐</div><h3>設計</h3><p>改善施策・ツール選定・新しい業務フローを設計。</p></div>
-      <div class="step-card"><span class="num">03</span><div class="ico">🚀</div><h3>導入</h3><p>生成AI・自動化ツール・エージェントを実装。</p></div>
-      <div class="step-card last"><span class="num">04</span><div class="ico">🔄</div><h3>定着</h3><p>教育・運用ルール・伴走支援で現場に定着させる。</p></div>
-    </div>
-    <div class="kpi-note">
-      <h3>効果は、必ず数字で。</h3>
-      <p>すべての施策で Before / After を測定し、改善効果をレポートでご報告します。</p>
-      <div class="kpi-row">
-        <div class="kpi"><b>時間</b>｜作業時間・月間削減時間</div>
-        <div class="kpi"><b>コスト</b>｜人件費換算・外注費削減</div>
-        <div class="kpi"><b>品質</b>｜エラー率・手戻り件数</div>
-        <div class="kpi"><b>量</b>｜処理件数・対応キャパ</div>
+      <div class="case-subhead" data-rv>
+        <h3>想定モデルケース</h3><p>実在の顧客事例ではありません。試算です。</p>
+      </div>
+      <div class="case-grid" data-rv-group>
+        <a class="case-card" href="cases.html#case-01">
+          <span class="case-badge model">想定ケース</span>
+          <div class="seg">Case 01 ／ 建設業</div>
+          <h3>現場定例の議事録が、毎回90分の残業になっていた。</h3>
+          <div class="metric">
+            <span class="from">90分</span><span class="to">15分</span>
+            <span class="lb">議事録の作成時間（1回あたり）</span>
+          </div>
+          <div class="go">詳しく見る<svg class="ic"><use href="#i-arw"/></svg></div>
+        </a>
+        <a class="case-card" href="cases.html#case-02">
+          <span class="case-badge model">想定ケース</span>
+          <div class="seg">Case 02 ／ 士業事務所</div>
+          <h3>「あの件どうなってましたっけ」が、1日20回飛んでいた。</h3>
+          <div class="metric">
+            <span class="from">20件</span><span class="to">7件</span>
+            <span class="lb">ベテランへの質問件数（1日あたり）</span>
+          </div>
+          <div class="go">詳しく見る<svg class="ic"><use href="#i-arw"/></svg></div>
+        </a>
+        <a class="case-card" href="cases.html#case-03">
+          <span class="case-badge model">想定ケース</span>
+          <div class="seg">Case 03 ／ 不動産</div>
+          <h3>提案書を毎回ゼロから書いていて、営業する時間を失っていた。</h3>
+          <div class="metric">
+            <span class="from">4時間</span><span class="to">1.5時間</span>
+            <span class="lb">提案書1件あたりの作成時間</span>
+          </div>
+          <div class="go">詳しく見る<svg class="ic"><use href="#i-arw"/></svg></div>
+        </a>
+        <a class="case-card" href="cases.html#case-04">
+          <span class="case-badge model">想定ケース</span>
+          <div class="seg">Case 04 ／ EC・CS部門</div>
+          <h3>問い合わせが月2,400件。一次対応だけで3名が張りついていた。</h3>
+          <div class="metric">
+            <span class="from">0%</span><span class="to">42%</span>
+            <span class="lb">一次対応の自動解決率</span>
+          </div>
+          <div class="go">詳しく見る<svg class="ic"><use href="#i-arw"/></svg></div>
+        </a>
+      </div>
+
+      <div class="disclaimer" data-rv>
+        <span class="mark">Notice</span>
+        <div><b>「想定ケース」は実在の顧客事例ではありません。</b>サービス内容と一般的な業務量から組み立てた試算であり、成果を保証するものではありません。「実例」と記載した3件のみ、実際に手がけた案件です。<a href="cases.html" style="color:var(--kin-w)">前提と測り方はこちら</a>。</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ================= PRICING ================= -->
-<section id="pricing">
-  <div class="wrap">
-    <h2>料金と始め方</h2>
-    <p class="lead">小さく始めて、成果を確認しながら広げられます。</p>
-    <div class="price-grid">
-      <div class="price-card top">
-        <span class="badge">おすすめの始め方</span>
-        <h3>業務診断</h3>
-        <div class="price">20〜80<span style="font-size:15px">万円</span></div>
-        <div class="unit">目安（税抜）／1回</div>
-        <p class="desc">現状分析＋改善提案レポート。まずはここから。</p>
+<!-- ===================== 料金（唯一の白抜き） ===================== -->
+<section class="band bg-paper" id="pricing">
+  <div class="wrap sec">
+    <div class="rail"><div class="vlabel">Pricing</div></div>
+    <div>
+      <div data-rv>
+        <h2 class="h2">小さく始めて、<br>確かめながら広げる。</h2>
+        <p class="lead">いきなり大きく契約する必要はありません。まず診断で改善余地を可視化するところから。</p>
       </div>
-      <div class="price-card">
-        <h3>プロジェクト型</h3>
-        <div class="price">30〜300<span style="font-size:15px">万円</span></div>
-        <div class="unit">目安（税抜）／1件</div>
-        <p class="desc">特定業務の自動化・AI導入をスポットで実施。</p>
+      <div class="price-grid" data-rv-group>
+        <div class="price-card top">
+          <span class="badge">Start here</span>
+          <h3>業務診断</h3>
+          <div class="price">20〜80<span class="u">万円</span></div>
+          <div class="unit">目安（税抜）／1回</div>
+          <p class="desc">現状分析＋改善提案レポート。まずはここから。</p>
+        </div>
+        <div class="price-card">
+          <h3>プロジェクト型</h3>
+          <div class="price">30〜300<span class="u">万円</span></div>
+          <div class="unit">目安（税抜）／1件</div>
+          <p class="desc">特定業務の自動化・AI導入をスポットで実施。</p>
+        </div>
+        <div class="price-card">
+          <h3>顧問契約</h3>
+          <div class="price">15〜50<span class="u">万円</span></div>
+          <div class="unit">目安（税抜）／月額</div>
+          <p class="desc">継続的に改善を支援。社内のAI推進役として伴走。</p>
+        </div>
+        <div class="price-card">
+          <h3>研修・ワークショップ</h3>
+          <div class="price">10〜50<span class="u">万円</span></div>
+          <div class="unit">目安（税抜）／1回</div>
+          <p class="desc">生成AI活用研修・プロンプト研修（半日〜1日）。</p>
+        </div>
       </div>
-      <div class="price-card">
-        <h3>顧問契約</h3>
-        <div class="price">月15〜50<span style="font-size:15px">万円</span></div>
-        <div class="unit">目安（税抜）／月額</div>
-        <p class="desc">継続的に改善を支援。社内のAI推進役として伴走。</p>
+      <p class="price-note" data-rv><b>診断 → プロジェクト → 顧問</b> と段階的に。価格は範囲・規模により個別にお見積りします。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 選ばれる理由 ===================== -->
+<section class="band bg-washi">
+  <div class="wrap sec">
+    <div class="rail"><div class="vlabel">Why us</div></div>
+    <div>
+      <div data-rv>
+        <h2 class="h2">行動指針が、<br>そのまま約束になる。</h2>
+        <p class="lead">Kaizen AI が大事にしている4つのことです。</p>
       </div>
-      <div class="price-card">
-        <h3>研修・ワークショップ</h3>
-        <div class="price">10〜50<span style="font-size:15px">万円</span></div>
-        <div class="unit">目安（税抜）／1回</div>
-        <p class="desc">生成AI活用研修・プロンプト研修（半日〜1日）。</p>
+      <div class="reason-grid" data-rv-group>
+        <div class="reason">
+          <div class="ic-box"><svg class="ic"><use href="#i-helmet"/></svg></div>
+          <h3>現場ファースト</h3><p>机上論ではなく、実際の業務フローに手を入れて成果を出します。</p>
+        </div>
+        <div class="reason">
+          <div class="ic-box"><svg class="ic"><use href="#i-bolt"/></svg></div>
+          <h3>小さく速く</h3><p>大きな計画より、まず2週間で動くもの。高速で改善を回します。</p>
+        </div>
+        <div class="reason">
+          <div class="ic-box"><svg class="ic"><use href="#i-sprout"/></svg></div>
+          <h3>内製化を助ける</h3><p>依存させない支援。お客様が自走できる状態がゴールです。</p>
+        </div>
+        <div class="reason">
+          <div class="ic-box"><svg class="ic"><use href="#i-trend"/></svg></div>
+          <h3>数字で語る</h3><p>削減時間・コスト・エラー率。効果は必ず定量で示します。</p>
+        </div>
+      </div>
+      <p class="honesty" data-rv><b>誠実なAI活用。</b>過度な期待は煽りません。できること・できないことを正直にお伝えします。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ご依頼の流れ ===================== -->
+<section class="band bg-paper" id="flow">
+  <div class="wrap sec">
+    <div class="rail"><div class="vlabel">Process</div></div>
+    <div>
+      <div data-rv>
+        <h2 class="h2">まず、話すところから。</h2>
+        <p class="lead">初回のご相談は無料です。お気軽にお問い合わせください。</p>
+      </div>
+      <div class="flow" data-rv-group>
+        <div class="flow-item">
+          <span class="node"></span>
+          <div class="inner">
+            <div class="stepno">Step 1</div><h3>無料相談</h3>
+            <div class="ic-box"><svg class="ic"><use href="#i-chat"/></svg></div>
+            <p>困りごとを伺い、改善の方向性をその場でご提案。</p><span class="dur">60分</span>
+          </div>
+        </div>
+        <div class="flow-item">
+          <span class="node"></span>
+          <div class="inner">
+            <div class="stepno">Step 2</div><h3>業務診断</h3>
+            <div class="ic-box"><svg class="ic"><use href="#i-search"/></svg></div>
+            <p>現場ヒアリングと業務の可視化・改善マップ作成。</p><span class="dur">2〜4週間</span>
+          </div>
+        </div>
+        <div class="flow-item">
+          <span class="node"></span>
+          <div class="inner">
+            <div class="stepno">Step 3</div><h3>ご提案・お見積り</h3>
+            <div class="ic-box"><svg class="ic"><use href="#i-doc"/></svg></div>
+            <p>施策・体制・効果目標をご提案。</p><span class="dur">約1週間</span>
+          </div>
+        </div>
+        <div class="flow-item last">
+          <span class="node"></span>
+          <div class="inner">
+            <div class="stepno">Step 4</div><h3>導入・伴走</h3>
+            <div class="ic-box"><svg class="ic"><use href="#i-rocket"/></svg></div>
+            <p>実装と定着支援。効果を測定しながら改善。</p><span class="dur">継続</span>
+          </div>
+        </div>
+      </div>
+      <p class="speed" data-rv><b>スピード重視。</b>診断開始から約2週間で、最初の「動く改善」をお見せすることを目指します。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section class="band bg-washi" id="faq">
+  <div class="wrap sec">
+    <div class="rail"><div class="vlabel">FAQ</div></div>
+    <div>
+      <div data-rv>
+        <h2 class="h2">よくあるご質問</h2>
+        <p class="lead">その他のご質問は無料相談でお気軽にどうぞ。</p>
+      </div>
+      <div class="faq-list" data-rv>
+        <details>
+          <summary><span class="q">Q.</span>ITに詳しい社員がいなくても大丈夫ですか？<span class="pm"></span></summary>
+          <p class="a">はい。非IT部門・中小企業のご支援を前提に設計しています。専門用語を使わない説明と、現場に合わせた運用ルールづくりまで含めて伴走します。</p>
+        </details>
+        <details>
+          <summary><span class="q">Q.</span>どのくらいの規模の会社が対象ですか？<span class="pm"></span></summary>
+          <p class="a">従業員10〜300名規模の中小企業、士業・不動産・建設・医療・教育などの専門サービス業、大企業の特定部門を主な対象としています。</p>
+        </details>
+        <details>
+          <summary><span class="q">Q.</span>機密情報をAIに入力するのが不安です。<span class="pm"></span></summary>
+          <p class="a">取り扱うデータは最小限にとどめ、生成AIへの入力可否は事前にお客様と合意します。学習利用オフ設定の確認など、安全な利用ルールの整備自体もサービスに含まれます。</p>
+        </details>
+        <details>
+          <summary><span class="q">Q.</span>小さく試すことはできますか？<span class="pm"></span></summary>
+          <p class="a">はい、それが推奨の始め方です。まず業務診断で改善余地を可視化し、効果を確認しながら段階的に広げられます。</p>
+        </details>
       </div>
     </div>
-    <p class="price-note"><b>診断 → プロジェクト → 顧問</b> と段階的に。価格は範囲・規模により個別にお見積りします。</p>
   </div>
 </section>
 
-<!-- ================= REASONS ================= -->
-<section class="reasons">
-  <div class="wrap">
-    <h2>Kaizen AI が選ばれる理由</h2>
-    <p class="lead">私たちの行動指針が、そのままお客様への約束です。</p>
-    <div class="reason-grid">
-      <div class="reason"><div class="ico">⛑️</div><h3>現場ファースト</h3><p>机上論ではなく、実際の業務フローに手を入れて成果を出します。</p></div>
-      <div class="reason"><div class="ico">⚡</div><h3>小さく速く</h3><p>大きな計画より、まず2週間で動くもの。高速で改善を回します。</p></div>
-      <div class="reason"><div class="ico">🌱</div><h3>内製化を助ける</h3><p>依存させない支援。お客様が自走できる状態がゴールです。</p></div>
-      <div class="reason"><div class="ico">📈</div><h3>数字で語る</h3><p>削減時間・コスト・エラー率。効果は必ず定量で示します。</p></div>
-    </div>
-    <div class="honesty"><b>誠実なAI活用：</b><span>過度な期待は煽りません。できること・できないことを正直にお伝えします。</span></div>
-  </div>
-</section>
-
-<!-- ================= FLOW ================= -->
-<section id="flow">
-  <div class="wrap">
-    <h2>ご依頼からの流れ</h2>
-    <p class="lead">初回のご相談は無料です。お気軽にお問い合わせください。</p>
-    <div class="flow-grid">
-      <div class="flow-item"><div class="stepno">STEP 1</div><h3>無料相談</h3><div class="ico">🤝</div><p>困りごとを伺い、改善の方向性をその場でご提案。</p><span class="dur">60分</span></div>
-      <div class="flow-item"><div class="stepno">STEP 2</div><h3>業務診断</h3><div class="ico">🔍</div><p>現場ヒアリングと業務の可視化・改善マップ作成。</p><span class="dur">2〜4週間</span></div>
-      <div class="flow-item"><div class="stepno">STEP 3</div><h3>ご提案・お見積り</h3><div class="ico">📄</div><p>施策・体制・効果目標をご提案。</p><span class="dur">約1週間</span></div>
-      <div class="flow-item last"><div class="stepno">STEP 4</div><h3>導入・伴走</h3><div class="ico">🚀</div><p>実装と定着支援。効果を測定しながら改善。</p><span class="dur">継続</span></div>
-    </div>
-    <div class="speed"><b>スピード重視：</b>診断開始から約2週間で、最初の「動く改善」をお見せすることを目指します。</div>
-  </div>
-</section>
-
-<!-- ================= FAQ ================= -->
-<section class="faq" id="faq" style="padding-top:0">
-  <div class="wrap">
-    <h2>よくあるご質問</h2>
-    <p class="lead">その他のご質問は無料相談でお気軽にどうぞ。</p>
-    <details>
-      <summary>ITに詳しい社員がいなくても大丈夫ですか？</summary>
-      <p class="a">はい。非IT部門・中小企業のご支援を前提に設計しています。専門用語を使わない説明と、現場に合わせた運用ルールづくりまで含めて伴走します。</p>
-    </details>
-    <details>
-      <summary>どのくらいの規模の会社が対象ですか？</summary>
-      <p class="a">従業員10〜300名規模の中小企業、士業・不動産・建設・医療・教育などの専門サービス業、大企業の特定部門を主な対象としています。</p>
-    </details>
-    <details>
-      <summary>機密情報をAIに入力するのが不安です。</summary>
-      <p class="a">取り扱うデータは最小限にとどめ、生成AIへの入力可否は事前にお客様と合意します。学習利用オフ設定の確認など、安全な利用ルールの整備自体もサービスに含まれます。</p>
-    </details>
-    <details>
-      <summary>小さく試すことはできますか？</summary>
-      <p class="a">はい、それが推奨の始め方です。まず業務診断で改善余地を可視化し、効果を確認しながら段階的に広げられます。</p>
-    </details>
-  </div>
-</section>
-
-<!-- ================= CTA ================= -->
-<section class="cta" id="contact">
-  <div class="circles"><div class="c1"></div><div class="c2"></div></div>
-  <div class="wrap" style="position:relative">
-    <h2>まずは、60分の無料相談から。</h2>
-    <p class="sub">現状の業務の困りごとを伺い、AIで改善できるポイントをその場でご提案します。売り込みはいたしません。情報収集の段階でも歓迎です。</p>
-    <div class="cta-steps">
-      <div class="s"><span class="n">1</span>無料相談</div>
-      <div class="s"><span class="n">2</span>簡易診断のご提案</div>
-      <div class="s"><span class="n">3</span>お見積り・開始</div>
-    </div>
-    <div class="contact-box">
-      <h3>お問い合わせ</h3>
-      <p>メールアドレス・お問い合わせフォームは現在準備中です。（設立手続き完了後に掲載します）</p>
+<!-- ===================== 最終CTA ===================== -->
+<section class="band cta-band grain" id="contact">
+  <div class="wrap sec">
+    <div class="rail"><div class="vlabel">Contact</div></div>
+    <div>
+      <div data-rv>
+        <h2>売り込みは、<br>しません。</h2>
+        <p class="sub">まずは60分。現状の業務の困りごとを伺い、AIで改善できるポイントをその場でご提案します。情報収集の段階でも歓迎です。</p>
+      </div>
+      <div class="cta-steps" data-rv-group>
+        <div class="s"><span class="n">1</span>無料相談</div>
+        <div class="s"><span class="n">2</span>簡易診断のご提案</div>
+        <div class="s"><span class="n">3</span>お見積り・開始</div>
+      </div>
+      <div class="contact-box" data-rv>
+        <h3>お問い合わせ</h3>
+        <p>メールアドレス・お問い合わせフォームは現在準備中です。（設立手続き完了後に掲載します）</p>
+      </div>
     </div>
   </div>
 </section>
 
-<footer>
+<footer class="site-footer">
   <div class="wrap foot">
-    <div class="flogo">Kaizen <span>AI</span></div>
-    <div>© 2026 Kaizen AI — AIで、日本の現場に "改善" を。</div>
+    <div class="flogo">Kaizen <em>AI</em></div>
+    <div>&copy; 2026 Kaizen AI &mdash; AIで、日本の現場に「改善」を。</div>
   </div>
 </footer>
+
+</div>
+
+<script>
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* --- 縦組みの字送りを持つ書体があるか実測する --- */
+  var mv = document.querySelector('.mission-vert');
+  if (mv) {
+    var probe = document.createElement('span');
+    probe.textContent = '改善現場';
+    probe.style.cssText = 'position:absolute;visibility:hidden;letter-spacing:0;line-height:1';
+    mv.appendChild(probe);
+    var adv = probe.getBoundingClientRect().height / 4;
+    var fs = parseFloat(window.getComputedStyle(mv).fontSize) || 16;
+    mv.removeChild(probe);
+    if (adv < fs * 0.6) document.documentElement.classList.add('no-vert');
+  }
+
+  /* --- ヘッダーの背景切り替え --- */
+  var hdr = document.querySelector('.site-header');
+  function onScroll() { hdr.classList.toggle('solid', window.scrollY > 60); }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* --- スクロール演出 --- */
+  var targets = document.querySelectorAll('[data-rv], [data-rv-group]');
+  if (reduce || !('IntersectionObserver' in window)) {
+    targets.forEach(function (el) { el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.04 });
+    targets.forEach(function (el) { io.observe(el); });
+  }
+
+  /* --- 円相（ヒーローの同心円。スクロールに反応する）--- */
+  var cv = document.getElementById('enso');
+  if (!cv) return;
+  var ctx = cv.getContext('2d');
+  var w = 0, h = 0, cx = 0, cy = 0, R = 0;
+
+  var rings = [
+    { r: 1.00, ticks: 90, len: 12, lw: 1,   color: 'rgba(198,168,104,.42)', spin:  0.018 },
+    { r: 0.88, ticks:  0, len:  0, lw: 1,   color: 'rgba(44,66,112,1)',     spin: -0.012 },
+    { r: 0.74, ticks: 24, len: 18, lw: 1,   color: 'rgba(198,168,104,.24)', spin:  0.028 },
+    { r: 0.60, ticks:  0, len:  0, lw: 2.6, color: 'rgba(232,84,63,.92)',   spin: -0.009, arc: 0.63 },
+    { r: 0.44, ticks:  0, len:  0, lw: 1,   color: 'rgba(159,174,198,.34)', spin:  0.022 },
+    { r: 0.30, ticks: 12, len: 11, lw: 1,   color: 'rgba(198,168,104,.32)', spin: -0.020 }
+  ];
+
+  function size() {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var r = cv.getBoundingClientRect();
+    w = r.width; h = r.height;
+    if (!w || !h) return;
+    cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    cx = w / 2; cy = h / 2; R = Math.max(0, Math.min(w, h) / 2 - 8);
+  }
+
+  function draw(t) {
+    if (!w || !h || R < 1) return;
+    /* スクロール量を回転に上乗せする */
+    var sc = (window.scrollY || 0) * 0.0016;
+    ctx.clearRect(0, 0, w, h);
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, R * 0.19, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(26,42,71,.55)';
+    ctx.fill();
+
+    for (var i = 0; i < rings.length; i++) {
+      var g = rings[i], rad = R * g.r;
+      if (rad <= 0) continue;
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(t * g.spin + sc * (i % 2 ? -1 : 1));
+      ctx.strokeStyle = g.color;
+      ctx.lineWidth = g.lw;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.arc(0, 0, rad, 0, Math.PI * 2 * (g.arc || 1));
+      ctx.stroke();
+      if (g.ticks) {
+        for (var k = 0; k < g.ticks; k++) {
+          var a = k / g.ticks * Math.PI * 2;
+          ctx.beginPath();
+          ctx.moveTo(Math.cos(a) * rad, Math.sin(a) * rad);
+          ctx.lineTo(Math.cos(a) * (rad - g.len), Math.sin(a) * (rad - g.len));
+          ctx.stroke();
+        }
+      }
+      ctx.restore();
+    }
+  }
+
+  size();
+  if (reduce) {
+    draw(0);
+    window.addEventListener('scroll', function () { draw(0); }, { passive: true });
+  } else {
+    var t0 = null;
+    (function loop(ts) {
+      if (t0 === null) t0 = ts;
+      draw((ts - t0) / 1000);
+      window.requestAnimationFrame(loop);
+    })(performance.now());
+  }
+  window.addEventListener('resize', function () { size(); if (reduce) draw(0); });
+})();
+</script>
 
 </body>
 </html>
